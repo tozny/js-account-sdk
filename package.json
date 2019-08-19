@@ -1,10 +1,14 @@
 {
-  "name": "@tozny-private/js-account-sdk",
+  "name": "@tozny/account-sdk",
   "version": "0.0.1-alpha.0",
   "description": "Enables account-level operations against the Tozny platform",
   "main": "src/index.js",
+  "publishConfig": {
+    "access": "restricted",
+    "tag": "alpha"
+  },
   "scripts": {
-    "test": "test"
+    "test": "echo \"No tests currently available. Please set them up!\" && exit 0"
   },
   "repository": {
     "type": "git",
