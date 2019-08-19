@@ -1,0 +1,72 @@
+{
+  "name": "@tozny-private/js-account-sdk",
+  "version": "0.0.1-alpha.0",
+  "description": "Enables account-level operations against the Tozny platform",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tozny/tozny-js-account-sdk.git"
+  },
+  "keywords": [
+    "crypto",
+    "tozny",
+    "js",
+    "javascript",
+    "account",
+    "administration"
+  ],
+  "author": {
+    "name": "Tozny, LLC",
+    "email": "info@tozny.com",
+    "url": "https://tozny.com"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/tozny/tozny-js-account-sdk/issues"
+  },
+  "homepage": "https://github.com/tozny/tozny-js-account-sdk#readme",
+  "eslintConfig": {
+    "extends": [
+      "xo",
+      "prettier"
+    ],
+    "env": {
+      "jest": true,
+      "node": true
+    },
+    "globals": {
+      "fetch": "readonly"
+    },
+    "rules": {
+      "max-params": [
+        "error",
+        9
+      ],
+      "no-prototype-builtins": [
+        "off"
+      ],
+      "no-await-in-loop": [
+        "off"
+      ],
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "printWidth": 90
+        }
+      ]
+    },
+    "plugins": [
+      "prettier"
+    ]
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "niceware": "^1.0.7",
+    "tozny-node-sdk": "^1.0.0-alpha.0",
+    "uuid": "^3.3.2"
+  }
+}
