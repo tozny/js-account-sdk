@@ -124,7 +124,7 @@ class Account {
     }
 
     const registration = await this.api.register(profile, account)
-    // Set up client API with token an refresh
+    // Set up client API with token and refresh
     const clientToken = new Token(registration.token)
     const clientApi = this.api.clone()
     clientToken.refresher = new Refresher(clientApi, this.crypto, authKeypair, name)
