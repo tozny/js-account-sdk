@@ -70,7 +70,6 @@
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "niceware": "^1.0.7",
-    "tozny-node-sdk": "^1.0.0-alpha.0",
     "uuid": "^3.3.2"
   }
 }

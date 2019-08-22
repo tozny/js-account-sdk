@@ -24,6 +24,10 @@ class Account {
     return this._sdk.Identity
   }
 
+  get Billing() {
+    return this._sdk.Billing
+  }
+
   get toznyTypes() {
     return this._sdk.types
   }
@@ -164,10 +168,10 @@ class Account {
   fromObject(obj) {
     let token, api
     if ( obj.api && typeof obj.api === 'object' ) {
-      if (obj.api.token && obj.api.token === 'object' ) {
+      if (obj.api.token && typeof obj.api.token === 'object' ) {
         token = new Token(obj.api.token.token, obj.api.token.created )
       }
-      api = new API(api.apiUrl)
+      api = new API(obj.api.apiUrl)
       api.token = token
     }
     const clientConfig = this.Storage.Config.fromObject( obj.storageClient )
