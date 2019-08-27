@@ -18,6 +18,11 @@ class Client {
     return billingStatus
   }
 
+  async accountClients(nextToken=0) {
+    const rawResponse = await this.api.listClients(this._queenClient, nextToken)
+    return rawResponse
+  }
+
   serialize() {
     return {
       api: this.api.serialize(),

@@ -139,7 +139,19 @@ class API {
   async getBillingStatus(queenClient) {
     const response = await queenClient.authenticator.tokenFetch(
         this.apiUrl + '/v1/billing/subscription/status',
-        {}
+        {
+          method: 'GET'
+        }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  async listClients(queenClient, nextToken) {
+    const response = await queenClient.authenticator.tokenFetch(
+        this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
+        {
+          method: 'GET'
+        }
     )
     return validateRequestAsJSON(response)
   }
