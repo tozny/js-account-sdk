@@ -1,6 +1,6 @@
 const {validateStorageClient} = require('./utils')
 const API = require('./api')
-const { AccountBillingStatus } = require('./types')
+const {AccountBillingStatus} = require('./types')
 
 class Client {
   constructor (api, account, profile, queenClient) {
@@ -10,16 +10,20 @@ class Client {
     this.profile = profile
   }
 
+  get queenClient() {
+    return this._queenClient
+  }
+
   updatePassword(){}
 
   async billingStatus() {
     const rawResponse = await this.api.getBillingStatus(this._queenClient)
-    const billingStatus = AccountBillingStatus.decode(rawResponse)
-    return billingStatus
+    return AccountBillingStatus.decode(rawResponse)
   }
 
   async accountClients(nextToken=0) {
     const rawResponse = await this.api.listClients(this._queenClient, nextToken)
+    // TODO: add ClientList type and decode to that versus vanilla JS object
     return rawResponse
   }
 

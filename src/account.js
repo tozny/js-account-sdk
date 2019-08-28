@@ -24,10 +24,6 @@ class Account {
     return this._sdk.Identity
   }
 
-  get Billing() {
-    return this._sdk.Billing
-  }
-
   get toznyTypes() {
     return this._sdk.types
   }
