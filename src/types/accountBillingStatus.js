@@ -51,7 +51,7 @@ class AccountBillingStatus {
    *
    * @param {object} json
    *
-   * @return {Promise<AccountBillingStatus>}
+   * @return {<AccountBillingStatus>}
    */
   static decode(json) {
     return new AccountBillingStatus(

@@ -62,3 +62,40 @@ This caches the client connection in a scope variable so it doesn't need to log 
 ## Account Clients
 
 Account Clients provide managed access to account level operations. The actual HTTP request sequence, authentication method, etc. is hidden behind the higher level methods. This allows us to maintain a consistent API for use in account applications and change implementation details as needed (e.g. a new endpoint, a different auth method, etc.). These higher level methods should correspond with specific account actions (e.g. `createWebHook`, etc). The parameters will provide insight into what is required to perform those operations.
+
+## Publishing
+
+Checkout branch
+
+Write code
+
+Get code reviewed and approved
+
+Use the npm build tool to automatically update package.json to the new version
+
+```bash
+# mainline release
+npm version 1.0.1
+# preview release
+npm version 1.0.1-alpha.1
+```
+
+Use the npm build tool to make a new commit with the updated version, create a git tag to have as a github release, and push the package to npm for consumption
+
+```bash
+npm publish
+```
+
+If doing an alpha release,
+
+```bash
+npm publish --tag=alpa
+```
+
+Push the tag up to remote github repository
+
+```bash
+git push --tags --all
+```
+
+Lastly, merge and delete the branch
