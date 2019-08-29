@@ -37,6 +37,22 @@ class API {
     return new this.constructor(this.apiUrl)
   }
 
+  async withToken(headers = {}) {
+    const token = await this.token()
+    const bearer = await token.bearer
+    return Object.assign(headers, bearer)
+  }
+
+  serialize() {
+    const serialized = {
+      apiUrl: this.apiUrl
+    }
+    if (this._token) {
+      serialized.token = this._token.serialize()
+    }
+    return serialized
+  }
+
   async getChallenge(username) {
     const body = JSON.stringify({
       email: username
@@ -120,21 +136,26 @@ class API {
     return validateRequestAsJSON(request)
   }
 
-  async withToken(headers = {}) {
-    const token = await this.token()
-    const bearer = await token.bearer
-    return Object.assign(headers, bearer)
+  async getBillingStatus(queenClient) {
+    const response = await queenClient.authenticator.tokenFetch(
+        this.apiUrl + '/v1/billing/subscription/status',
+        {
+          method: 'GET'
+        }
+    )
+    return validateRequestAsJSON(response)
   }
 
-  serialize() {
-    const serialized = {
-      apiUrl: this.apiUrl
-    }
-    if (this._token) {
-      serialized.token = this._token.serialize()
-    }
-    return serialized
+  async listClients(queenClient, nextToken) {
+    const response = await queenClient.authenticator.tokenFetch(
+        this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
+        {
+          method: 'GET'
+        }
+    )
+    return validateRequestAsJSON(response)
   }
+
 }
 
 module.exports = API

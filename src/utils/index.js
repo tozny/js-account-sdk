@@ -2,7 +2,6 @@
 const Tozny = require('e3db-client-interface').default
 const { Storage } = require('e3db-client-interface')
 
-console.log(Tozny)
 
 // TODO: Use a more globally accessible version of this helper...
 function checkStatus (response) {
@@ -36,7 +35,7 @@ function validateEmail(inputEmail) {
   const acceptableEmail = /^[a-zA-Z0-9+_.,-]+@([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/
   const email = acceptableEmail.test(inputEmail.trim())
   if (!email) {
-    throw new Error(`${ipnutEmail} is not an acceptable email address`)
+    throw new Error(`${inputEmail} is not an acceptable email address`)
   }
   return email
 }
