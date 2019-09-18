@@ -4,12 +4,12 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
-  extends: ["eslint:recommended", "prettier"],
+  extends: ['eslint:recommended', 'prettier'],
   parserOptions: {
-    ecmaVersion: 2018
+    ecmaVersion: 2018,
   },
-  plugins: ["prettier"],
+  plugins: ['prettier'],
   rules: {
-    "prettier/prettier": ["error"]
-  }
-};
+    'prettier/prettier': ['error'],
+  },
+}
