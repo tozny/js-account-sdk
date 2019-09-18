@@ -6,7 +6,7 @@ const accountFactory = new Account(Tozny, process.env.API_URL)
 const tokenShape = expect.stringMatching(/[0-9a-fA-F]{64}/)
 let client = null
 
-beforeAll(async() => {
+beforeAll(async () => {
   const seed = uuidv4()
   const name = `Test Account ${seed}`
   const email = `test+${seed}@tozny.com`
@@ -44,7 +44,7 @@ describe('Account Client', () => {
   })
 
   test('can create a token with specific permissions', async () => {
-    const permissions = {one_time: true}
+    const permissions = { one_time: true }
     const token = await client.newRegistrationToken(undefined, permissions)
     expect(token.token).toEqual(tokenShape)
     expect(token.permissions).toMatchObject(permissions)

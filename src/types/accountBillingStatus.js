@@ -27,7 +27,13 @@
  * Billing status for a Tozny account
  */
 class AccountBillingStatus {
-  constructor(accountActive, isTrial, trialPeriodEnds, isLegacy, isGoodStanding = null) {
+  constructor(
+    accountActive,
+    isTrial,
+    trialPeriodEnds,
+    isLegacy,
+    isGoodStanding = null
+  ) {
     this.accountActive = accountActive
     this.isTrial = isTrial
     this.trialPeriodEnds = trialPeriodEnds
@@ -55,12 +61,12 @@ class AccountBillingStatus {
    */
   static decode(json) {
     return new AccountBillingStatus(
-        json.account_active,
-        json.is_trial,
-        json.trial_period_ends,
-        json.is_legacy,
-        json.is_good_standing
-      )
+      json.account_active,
+      json.is_trial,
+      json.trial_period_ends,
+      json.is_legacy,
+      json.is_good_standing
+    )
   }
 }
 

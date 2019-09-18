@@ -1,4 +1,4 @@
-const {TOKEN_LIFETIME_SECONDS} = require('../utils/constants')
+const { TOKEN_LIFETIME_SECONDS } = require('../utils/constants')
 
 class Token {
   constructor(token, created = Date.now()) {
@@ -11,11 +11,11 @@ class Token {
   }
 
   get bearer() {
-    return {Authorization: `Bearer ${this._token}`}
+    return { Authorization: `Bearer ${this._token}` }
   }
 
   get expired() {
-    return (Date.now() - this._created) > TOKEN_LIFETIME_SECONDS
+    return Date.now() - this._created > TOKEN_LIFETIME_SECONDS
   }
 
   get refresher() {
@@ -34,15 +34,13 @@ class Token {
       )
     }
     if (typeof refresher.refresh !== 'function') {
-      throw new Error(
-        'The refresher.serialize method must be function'
-      )
+      throw new Error('The refresher.serialize method must be function')
     }
-    this._refresher= refresher
+    this._refresher = refresher
   }
 
   async refresh() {
-    if (! this._refresher) {
+    if (!this._refresher) {
       throw new Error(
         'A refresher object must be set before the refresh method can be called.'
       )
@@ -55,9 +53,9 @@ class Token {
   serialize() {
     const serialized = {
       token: this._token,
-      created: this._created
+      created: this._created,
     }
-    if ( this._refresher ) {
+    if (this._refresher) {
       const refresher = this._refresher.serialize()
       if (refresher) {
         serialized.refresher = refresher

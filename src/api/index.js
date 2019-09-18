@@ -13,7 +13,7 @@ const { DEFAULT_API_URL } = require('../utils/constants')
  */
 class API {
   static validateInstance(api) {
-    if ( ! api instanceof API ) {
+    if (!(api instanceof API)) {
       throw new Error('the api sent is not an instance of the API class')
     }
     return api
@@ -24,7 +24,7 @@ class API {
   }
 
   async token() {
-    if(! this._token) {
+    if (!this._token) {
       throw new Error('No token has been set for the API')
     }
     if (this._token.expired) {
@@ -34,7 +34,7 @@ class API {
   }
 
   setToken(token) {
-    if (! token instanceof Token) {
+    if (!(token instanceof Token)) {
       throw new Error('Tokens must be an instance of the token helper class')
     }
     this._token = token
@@ -52,7 +52,7 @@ class API {
 
   serialize() {
     const serialized = {
-      apiUrl: this.apiUrl
+      apiUrl: this.apiUrl,
     }
     if (this._token) {
       serialized.token = this._token.serialize()
@@ -62,103 +62,88 @@ class API {
 
   async getChallenge(username) {
     const body = JSON.stringify({
-      email: username
+      email: username,
     })
-    const request = await fetch(
-      this.apiUrl + '/v1/account/challenge',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body
-      }
-    )
+    const request = await fetch(this.apiUrl + '/v1/account/challenge', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    })
     return utils.validateRequestAsJSON(request)
   }
 
   async completeChallenge(username, challenge, response, keyType) {
-    const request = await fetch(
-      this.apiUrl + '/v1/account/auth',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: username,
-          challenge: challenge,
-          response: response,
-          keyid: keyType
-        })
-      }
-    )
+    const request = await fetch(this.apiUrl + '/v1/account/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: username,
+        challenge: challenge,
+        response: response,
+        keyid: keyType,
+      }),
+    })
     return validateRequestAsJSON(request)
   }
 
   async getProfileMeta() {
     const headers = await this.withToken({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
-    const request = await fetch(
-      this.apiUrl + '/v1/account/profile/meta',
-      {
-        method: 'GET',
-        headers
-      }
-    )
+    const request = await fetch(this.apiUrl + '/v1/account/profile/meta', {
+      method: 'GET',
+      headers,
+    })
     return validateRequestAsJSON(request)
   }
 
   async updateProfileMeta(metaMap) {
     const headers = await this.withToken({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
-    const request = await fetch(
-      this.apiUrl + '/v1/account/profile/meta',
-      {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify(metaMap)
-      }
-    )
+    const request = await fetch(this.apiUrl + '/v1/account/profile/meta', {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(metaMap),
+    })
     return checkStatus(request)
   }
 
   async register(profile, account) {
     const body = JSON.stringify({
       profile: profile,
-      account: account
+      account: account,
     })
-    const request = await fetch(
-      this.apiUrl + '/v1/account/profile',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body
-      }
-    )
+    const request = await fetch(this.apiUrl + '/v1/account/profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    })
     return validateRequestAsJSON(request)
   }
 
   async getBillingStatus(queenClient) {
     const response = await queenClient.authenticator.tokenFetch(
-        this.apiUrl + '/v1/billing/subscription/status',
-        {
-          method: 'GET'
-        }
+      this.apiUrl + '/v1/billing/subscription/status',
+      {
+        method: 'GET',
+      }
     )
     return validateRequestAsJSON(response)
   }
 
   async listClients(queenClient, nextToken) {
     const response = await queenClient.authenticator.tokenFetch(
-        this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
-        {
-          method: 'GET'
-        }
+      this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
+      {
+        method: 'GET',
+      }
     )
     return validateRequestAsJSON(response)
   }
@@ -170,15 +155,12 @@ class API {
    */
   async listTokens() {
     const headers = await this.withToken({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
-    const response = await fetch(
-      this.apiUrl + `/v1/account/tokens`,
-      {
-        method: 'GET',
-        headers
-      }
-    )
+    const response = await fetch(this.apiUrl + `/v1/account/tokens`, {
+      method: 'GET',
+      headers,
+    })
     return validateRequestAsJSON(response)
   }
 
@@ -196,19 +178,16 @@ class API {
     const body = JSON.stringify({
       name,
       permissions,
-      total_uses_allowed: totalUsesAllowed
+      total_uses_allowed: totalUsesAllowed,
     })
     const headers = await this.withToken({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
-    const response = await fetch(
-      this.apiUrl + `/v1/account/tokens`,
-      {
-        method: 'POST',
-        headers,
-        body
-      }
-    )
+    const response = await fetch(this.apiUrl + `/v1/account/tokens`, {
+      method: 'POST',
+      headers,
+      body,
+    })
     return validateRequestAsJSON(response)
   }
 
@@ -221,19 +200,15 @@ class API {
    */
   async deleteToken(token) {
     const headers = await this.withToken({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
-    const response = await fetch(
-      `${this.apiUrl}/v1/account/tokens/${token}`,
-      {
-        method: 'DELETE',
-        headers
-      }
-    )
+    const response = await fetch(`${this.apiUrl}/v1/account/tokens/${token}`, {
+      method: 'DELETE',
+      headers,
+    })
     await checkStatus(response)
     return true
   }
-
 }
 
 module.exports = API
