@@ -2,7 +2,7 @@ const Client = require('./client')
 const API = require('./api')
 const Token = require('./api/token')
 const Refresher = require('./api/refresher')
-const {validatePlatformSDK, validateEmail} = require('./utils')
+const { validatePlatformSDK, validateEmail } = require('./utils')
 const { DEFAULT_API_URL, KEY_HASH_ROUNDS } = require('./utils/constants')
 const niceware = require('niceware')
 
@@ -60,7 +60,7 @@ class Account {
     const encSalt = await this.crypto.b64decode(b64EncSalt)
     const encKey = await this.crypto.deriveSymmetricKey(password, encSalt, KEY_HASH_ROUNDS)
     const clientCreds = await this.crypto.decryptString(encClient, encKey)
-    const storageClient =  new this.Storage.Client(this.Storage.Config.fromObject(clientCreds))
+    const storageClient = new this.Storage.Client(this.Storage.Config.fromObject(clientCreds))
     return new Client(clientApi, profile.account, profile.profile, storageClient)
   }
 
@@ -127,7 +127,7 @@ class Account {
     // Set up client API with token and refresh
     const clientToken = new Token(registration.token)
     const clientApi = this.api.clone()
-    clientToken.refresher = new Refresher(clientApi, this.crypto, authKeypair, name)
+    clientToken.refresher = new Refresher(clientApi, this.crypto, authKeypair, email)
     clientApi.setToken(clientToken)
 
     // Set up client config and client
@@ -161,16 +161,19 @@ class Account {
     }
   }
 
+
   fromObject(obj) {
     let token, api
-    if ( obj.api && typeof obj.api === 'object' ) {
-      if (obj.api.token && typeof obj.api.token === 'object' ) {
-        token = new Token(obj.api.token.token, obj.api.token.created )
-      }
+    if (obj.api && typeof obj.api === 'object') {
       api = new API(obj.api.apiUrl)
-      api.token = token
+      if (obj.api.token && typeof obj.api.token === 'object') {
+        token = new Token(obj.api.token.token, obj.api.token.created)
+        token.refresher = new Refresher(
+          api, this.crypto, obj.api.token.refresher.keys, obj.api.token.refresher.username)
+        api.setToken(token)
+      }
     }
-    const clientConfig = this.Storage.Config.fromObject( obj.storageClient )
+    const clientConfig = this.Storage.Config.fromObject(obj.storageClient)
     const queenClient = new this.Storage.Client(clientConfig)
     return new Client(api, obj.account, obj.profile, queenClient)
   }

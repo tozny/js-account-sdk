@@ -6,7 +6,7 @@ const { DEFAULT_API_URL } = require('../utils/constants')
 
 class API {
   static validateInstance(api) {
-    if ( ! api instanceof API ) {
+    if (!api instanceof API) {
       throw new Error('the api sent is not an instance of the API class')
     }
     return api
@@ -17,7 +17,7 @@ class API {
   }
 
   async token() {
-    if(! this._token) {
+    if (!this._token) {
       throw new Error('No token has been set for the API')
     }
     if (this._token.expired) {
@@ -27,7 +27,7 @@ class API {
   }
 
   setToken(token) {
-    if (! token instanceof Token) {
+    if (!token instanceof Token) {
       throw new Error('Tokens must be an instance of the token helper class')
     }
     this._token = token
@@ -138,23 +138,39 @@ class API {
 
   async getBillingStatus(queenClient) {
     const response = await queenClient.authenticator.tokenFetch(
-        this.apiUrl + '/v1/billing/subscription/status',
-        {
-          method: 'GET'
-        }
+      this.apiUrl + '/v1/billing/subscription/status',
+      {
+        method: 'GET'
+      }
     )
     return validateRequestAsJSON(response)
   }
 
   async listClients(queenClient, nextToken) {
     const response = await queenClient.authenticator.tokenFetch(
-        this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
-        {
-          method: 'GET'
-        }
+      this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
+      {
+        method: 'GET'
+      }
     )
     return validateRequestAsJSON(response)
   }
+
+  async updateProfile(profile) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json'
+    })
+    const request = await fetch(
+      this.apiUrl + '/v1/account/profile',
+      {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({ profile: profile })
+      }
+    )
+    return validateRequestAsJSON(request)
+  }
+
 
 }
 
