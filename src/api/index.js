@@ -1,9 +1,16 @@
+/**
+ * Account level API request definitions.
+ */
+
 const fetch = require('isomorphic-fetch')
 const Token = require('./token')
 const utils = require('../utils/index')
 const { validateRequestAsJSON, checkStatus } = require('../utils')
 const { DEFAULT_API_URL } = require('../utils/constants')
 
+/**
+ * API abstracts over the actual API calls made for various account-level operations.
+ */
 class API {
   static validateInstance(api) {
     if ( ! api instanceof API ) {
@@ -154,6 +161,77 @@ class API {
         }
     )
     return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Requests a list of tokens available for the account.
+   *
+   * @return {Array<object>} An array of token objects.
+   */
+  async listTokens() {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json'
+    })
+    const response = await fetch(
+      this.apiUrl + `/v1/account/tokens`,
+      {
+        method: 'GET',
+        headers
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Requests the creation of a new registration token.
+   *
+   * @param {string} name A user defined name for the token.
+   * @param {object} permissions A set of key-value permissions. Default: {}
+   * @param {number} totalUsesAllowed The number of uses to allow for the token.
+   *                                  If not defined, unlimited uses are allowed.
+   *
+   * @return {Promise<object>} The raw token object written
+   */
+  async writeToken(name, permissions = {}, totalUsesAllowed) {
+    const body = JSON.stringify({
+      name,
+      permissions,
+      total_uses_allowed: totalUsesAllowed
+    })
+    const headers = await this.withToken({
+      'Content-Type': 'application/json'
+    })
+    const response = await fetch(
+      this.apiUrl + `/v1/account/tokens`,
+      {
+        method: 'POST',
+        headers,
+        body
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Requests a specific token is removed from the account by token value.
+   *
+   * @param {string} token The token value to delete from the server
+   *
+   * @return {Promise<boolean>} True if the operation is successful.
+   */
+  async deleteToken(token) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json'
+    })
+    const response = await fetch(
+      `${this.apiUrl}/v1/account/tokens/${token}`,
+      {
+        method: 'DELETE',
+        headers
+      }
+    )
+    await checkStatus(response)
+    return true
   }
 
 }

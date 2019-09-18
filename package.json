@@ -8,7 +8,7 @@
     "tag": "alpha"
   },
   "scripts": {
-    "test": "echo \"No tests currently available. Please set them up!\" && exit 0"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -69,7 +69,12 @@
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
-    "niceware": "^1.0.7",
-    "uuid": "^3.3.2"
+    "niceware": "^1.0.7"
+  },
+  "devDependencies": {
+    "dotenv": "^8.1.0",
+    "jest": "^24.9.0",
+    "tozny-node-sdk": "^1.0.0-alpha.1",
+    "uuid": "^3.3.3"
   }
 }

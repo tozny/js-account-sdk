@@ -1,3 +1,7 @@
+/**
+ * Account connection operations, including setting up the SDK and API URL
+ */
+
 const Client = require('./client')
 const API = require('./api')
 const Token = require('./api/token')
@@ -6,28 +10,72 @@ const {validatePlatformSDK, validateEmail} = require('./utils')
 const { DEFAULT_API_URL, KEY_HASH_ROUNDS } = require('./utils/constants')
 const niceware = require('niceware')
 
+/**
+ * Account creates connections to a specific Tozny account
+ *
+ * Mixing together a Tozny client SDK and an API URL, various methods for creating
+ * an account level connection are made available. Each method returns an
+ * account Client, which represents an active connection to the API for a
+ * specific account. Actual account operations are performed using the returned
+ * account Client.
+ */
 class Account {
+  /**
+   * Creates an Account object mixing the SDK and API URL together.
+   *
+   * @param {Tozny} sdk An instance of a Tozny client SDK.
+   * @param {string} apiUrl The URL of the Tozny Platform instance to connect to.
+   */
   constructor(sdk, apiUrl = DEFAULT_API_URL) {
     this.api = new API(apiUrl)
     this._sdk = validatePlatformSDK(sdk)
   }
 
+  /**
+   * gets the current crypto implementation provided by the Tozny client SDK.
+   *
+   * @return {Crypto}
+   */
   get crypto() {
     return this._sdk.crypto
   }
 
+  /**
+   * Gets the Tozny Storage constructor provided by the Tozny client SDK.
+   *
+   * @return {Function} The Storage constructor
+   */
   get Storage() {
     return this._sdk.Storage
   }
 
+  /**
+   * Gets the Tozny Identity constructor provided by the Tozny client SDK.
+   *
+   * @return {Function}
+   */
   get Identity() {
     return this._sdk.Identity
   }
 
+  /**
+   * Gets the Tozny types defined in the Tozny client SDK.
+   *
+   * @return {Object} All of the Tozny client SDK defined types.
+   */
   get toznyTypes() {
     return this._sdk.types
   }
 
+  /**
+   * Use the normal login flow to create a connection to a Tozny account.
+   *
+   * @param {string} username The username for the account.
+   * @param {string} password The secrete password for the account.
+   * @param {string} type Either standard or paper depending on the password type.
+   *
+   * @return {Promise<Client>} The Client instance for the provided credentials.
+   */
   async login(username, password, type = 'standard') {
     const challenge = await this.api.getChallenge(username)
     const b64AuthSalt = type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt
@@ -64,6 +112,16 @@ class Account {
     return new Client(clientApi, profile.account, profile.profile, storageClient)
   }
 
+  /**
+   * Creates a new account using the credentials provided.
+   * @param {string} name The name to use for the account.
+   * @param {string} email The email address for the account.
+   * @param {string} password The secret password for the account.
+   *
+   * @return {Promise<Object>} An object containing the paper key generated at and
+   *                           `object[paperKey]` and the client instance associated
+   *                           with the new client at `object[client]`.
+   */
   async register(name, email, password) {
     validateEmail(email)
     const encSalt = await this.crypto.randomBytes(16)
@@ -161,17 +219,45 @@ class Account {
     }
   }
 
+  /**
+   * Recreate an account client from one that was serialized to JSON.
+   *
+   * After calling `Client.serialize()` plain javascript object is created with
+   * all of the values needed to recreated that client. This can be safely stored
+   * as JSON. This method is used to turn the object created by `Client.serialize()`
+   * back into a Client instance with all of the available methods.
+   *
+   * @param {object} obj The serialized object created from an existing account client.
+   *
+   * @return {Client} A new Client created with all provided values from the object.
+   */
   fromObject(obj) {
     let token, api
+    // If an API is available, create it.
     if ( obj.api && typeof obj.api === 'object' ) {
-      if (obj.api.token && typeof obj.api.token === 'object' ) {
-        token = new Token(obj.api.token.token, obj.api.token.created )
-      }
       api = new API(obj.api.apiUrl)
-      api.token = token
+      // If a token for the API is available, create it.
+      if (obj.api.token && typeof obj.api.token === 'object' ) {
+        token = new Token(obj.api.token.token, obj.api.token.created)
+        // If a refresher for the token is available, create it.
+        if(obj.api.token.refresher && obj.api.token.refresher === 'object') {
+          token.refresher = new Refresher(
+            api,
+            this.crypto,
+            obj.api.token.refresher.keys,
+            obj.api.token.refresher.username
+          )
+        }
+        api.setToken(token)
+      }
+    } else {
+      // fall back to using a clone of this API if not defined.
+      api = this.api.clone()
     }
+    // Create the queen client.
     const clientConfig = this.Storage.Config.fromObject( obj.storageClient )
     const queenClient = new this.Storage.Client(clientConfig)
+    // Create a new client object with the provided values.
     return new Client(api, obj.account, obj.profile, queenClient)
   }
 }
