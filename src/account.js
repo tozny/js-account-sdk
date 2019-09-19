@@ -210,7 +210,7 @@ class Account {
       clientApi,
       this.crypto,
       authKeypair,
-      name
+      email
     )
     clientApi.setToken(clientToken)
 
@@ -260,7 +260,7 @@ class Account {
    * Recreate an account client from one that was serialized to JSON.
    *
    * After calling `Client.serialize()` plain javascript object is created with
-   * all of the values needed to recreated that client. This can be safely stored
+   * all of the values needed to recreat that client. This can be safely stored
    * as JSON. This method is used to turn the object created by `Client.serialize()`
    * back into a Client instance with all of the available methods.
    *
@@ -277,7 +277,10 @@ class Account {
       if (obj.api.token && typeof obj.api.token === 'object') {
         token = new Token(obj.api.token.token, obj.api.token.created)
         // If a refresher for the token is available, create it.
-        if (obj.api.token.refresher && obj.api.token.refresher === 'object') {
+        if (
+          obj.api.token.refresher &&
+          typeof obj.api.token.refresher === 'object'
+        ) {
           token.refresher = new Refresher(
             api,
             this.crypto,
