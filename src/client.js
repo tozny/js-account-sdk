@@ -20,13 +20,13 @@ class Client {
     console.log(this._queenClient.crypto)
     const crypto = this._queenClient.crypto
     console.log(crypto)
-    const authSalt = crypto.b64decode(profile.auth_salt)
+    const authSalt = crypto.b64decode(this.profile.auth_salt)
     console.log('authSalt', authSalt)
     const keypair = crypto.deriveSigningKey(password, authSalt)
     console.log('keypair', keypair)
     const attempt = crypto.b64encode(keypair.publicKey)
     console.log('attempt', attempt)
-    const signingKey = profile.signing_key
+    const signingKey = this.profile.signing_key
     console.log('signingKey', signingKey)
     return 'THE RETURN STATEMENT'
     // verifyPassword(maybePassword) {
