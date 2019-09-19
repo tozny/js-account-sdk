@@ -1,8 +1,6 @@
-class SRPRefresher{
+class SRPRefresher {
   constructor(api, crypto, keys, username) {
-    this.api = api,
-    this.crypto = crypto,
-    this.keys = keys
+    ;(this.api = api), (this.crypto = crypto), (this.keys = keys)
     this.username = username
   }
 
@@ -24,7 +22,7 @@ class SRPRefresher{
   serialize() {
     return {
       username: this.username,
-      keys: this.keys
+      keys: this.keys,
     }
   }
 }
