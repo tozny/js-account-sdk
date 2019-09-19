@@ -14,7 +14,11 @@ class Client {
     return this._queenClient
   }
 
-  updatePassword() { }
+  async updatePassword(oldPassword, newPassword) { 
+    console.log("oldPassword", oldPassword)
+    console.log("newPassword", newPassword)
+    console.log(this._queenClient.crypto)
+  }
 
   async billingStatus() {
     const rawResponse = await this.api.getBillingStatus(this._queenClient)
