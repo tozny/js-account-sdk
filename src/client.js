@@ -24,11 +24,9 @@ class Client {
     const authSalt = await crypto.b64decode(this.profile.auth_salt)
     console.log('authSalt', authSalt)
     const keypair = await crypto.deriveSigningKey(password, authSalt, KEY_HASH_ROUNDS)
-    console.log('keypair', keypair)
-    const attempt = await crypto.b64encode(keypair.publicKey)
-    console.log('attempt', attempt)
+    console.log('keypair publicKey', keypair.publicKey)
     const signingKey = this.profile.signing_key
-    console.log('signingKey', signingKey)
+    console.log('signingKey', signingKey.ed25519)
     return 'THE RETURN STATEMENT'
     // verifyPassword(maybePassword) {
     //   return new Promise((resolve, reject) => {
