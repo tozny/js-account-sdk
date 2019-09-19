@@ -8,7 +8,8 @@
     "tag": "alpha"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prettier": "prettier --write src/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -32,49 +33,32 @@
     "url": "https://github.com/tozny/tozny-js-account-sdk/issues"
   },
   "homepage": "https://github.com/tozny/tozny-js-account-sdk#readme",
-  "eslintConfig": {
-    "extends": [
-      "xo",
-      "prettier"
-    ],
-    "env": {
-      "jest": true,
-      "node": true
-    },
-    "globals": {
-      "fetch": "readonly"
-    },
-    "rules": {
-      "max-params": [
-        "error",
-        9
-      ],
-      "no-prototype-builtins": [
-        "off"
-      ],
-      "no-await-in-loop": [
-        "off"
-      ],
-      "prettier/prettier": [
-        "error",
-        {
-          "singleQuote": true,
-          "printWidth": 90
-        }
-      ]
-    },
-    "plugins": [
-      "prettier"
-    ]
-  },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "niceware": "^1.0.7"
   },
   "devDependencies": {
     "dotenv": "^8.1.0",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.0.5",
     "jest": "^24.9.0",
+    "lint-staged": "^9.2.5",
+    "prettier": "^1.18.2",
     "tozny-node-sdk": "^1.0.0-alpha.1",
     "uuid": "^3.3.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }

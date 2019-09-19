@@ -1,10 +1,8 @@
-
 const Tozny = require('e3db-client-interface').default
 const { Storage } = require('e3db-client-interface')
 
-
 // TODO: Use a more globally accessible version of this helper...
-function checkStatus (response) {
+function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
   }
@@ -13,20 +11,24 @@ function checkStatus (response) {
   throw error
 }
 
-function validateRequestAsJSON (response) {
+function validateRequestAsJSON(response) {
   return checkStatus(response).json()
 }
 
 function validatePlatformSDK(sdk) {
-  if ( ! sdk instanceof Tozny ) {
-    throw new Error('sdk must be an instance of the Tozny class implementing the correct interface.')
+  if (!(sdk instanceof Tozny)) {
+    throw new Error(
+      'sdk must be an instance of the Tozny class implementing the correct interface.'
+    )
   }
   return sdk
 }
 
 function validateStorageClient(client) {
-  if ( ! client instanceof Storage.Client ) {
-    throw new Error('the storage client sent is not an instance of the Storage.Client class')
+  if (!(client instanceof Storage.Client)) {
+    throw new Error(
+      'the storage client sent is not an instance of the Storage.Client class'
+    )
   }
   return client
 }
@@ -45,5 +47,5 @@ module.exports = {
   validateRequestAsJSON,
   validatePlatformSDK,
   validateStorageClient,
-  validateEmail
+  validateEmail,
 }

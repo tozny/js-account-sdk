@@ -6,7 +6,7 @@ const Client = require('./client')
 const API = require('./api')
 const Token = require('./api/token')
 const Refresher = require('./api/refresher')
-const {validatePlatformSDK, validateEmail} = require('./utils')
+const { validatePlatformSDK, validateEmail } = require('./utils')
 const { DEFAULT_API_URL, KEY_HASH_ROUNDS } = require('./utils/constants')
 const niceware = require('niceware')
 
@@ -78,7 +78,8 @@ class Account {
    */
   async login(username, password, type = 'standard') {
     const challenge = await this.api.getChallenge(username)
-    const b64AuthSalt = type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt
+    const b64AuthSalt =
+      type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt
     const authSalt = await this.crypto.b64decode(b64AuthSalt)
     const sigKeys = await this.crypto.deriveSigningKey(
       password,
@@ -98,18 +99,37 @@ class Account {
     // Set up client API with token an refresh
     const clientToken = new Token(profile.token)
     const clientApi = this.api.clone()
-    clientToken.refresher = new Refresher(clientApi, this.crypto, sigKeys, username)
+    clientToken.refresher = new Refresher(
+      clientApi,
+      this.crypto,
+      sigKeys,
+      username
+    )
     clientApi.setToken(clientToken)
 
     // Set up queen client
     const meta = await clientApi.getProfileMeta()
     const encClient = type === 'paper' ? meta.paperBackup : meta.backupClient
-    const b64EncSalt = type === 'paper' ? profile.profile.paper_enc_salt : profile.profile.enc_salt
+    const b64EncSalt =
+      type === 'paper'
+        ? profile.profile.paper_enc_salt
+        : profile.profile.enc_salt
     const encSalt = await this.crypto.b64decode(b64EncSalt)
-    const encKey = await this.crypto.deriveSymmetricKey(password, encSalt, KEY_HASH_ROUNDS)
+    const encKey = await this.crypto.deriveSymmetricKey(
+      password,
+      encSalt,
+      KEY_HASH_ROUNDS
+    )
     const clientCreds = await this.crypto.decryptString(encClient, encKey)
-    const storageClient =  new this.Storage.Client(this.Storage.Config.fromObject(clientCreds))
-    return new Client(clientApi, profile.account, profile.profile, storageClient)
+    const storageClient = new this.Storage.Client(
+      this.Storage.Config.fromObject(clientCreds)
+    )
+    return new Client(
+      clientApi,
+      profile.account,
+      profile.profile,
+      storageClient
+    )
   }
 
   /**
@@ -133,7 +153,8 @@ class Account {
     const encKey = await this.crypto.deriveSymmetricKey(
       password,
       encSalt,
-      KEY_HASH_ROUNDS)
+      KEY_HASH_ROUNDS
+    )
     const authKeypair = await this.crypto.deriveSigningKey(
       password,
       authSalt,
@@ -159,11 +180,11 @@ class Account {
       paper_auth_salt: await this.crypto.b64encode(paperAuthSalt),
       paper_enc_salt: await this.crypto.b64encode(paperEncSalt),
       signing_key: {
-        ed25519: authKeypair.publicKey
+        ed25519: authKeypair.publicKey,
       },
       paper_signing_key: {
-        ed25519: paperAuthKeypair.publicKey
-      }
+        ed25519: paperAuthKeypair.publicKey,
+      },
     }
 
     // backup client
@@ -174,18 +195,23 @@ class Account {
       company: '',
       plan: 'free0',
       public_key: {
-        curve25519: clientEncKeys.publicKey
+        curve25519: clientEncKeys.publicKey,
       },
       signing_key: {
-        ed25519: clientSigKeys.publicKey
-      }
+        ed25519: clientSigKeys.publicKey,
+      },
     }
 
     const registration = await this.api.register(profile, account)
     // Set up client API with token and refresh
     const clientToken = new Token(registration.token)
     const clientApi = this.api.clone()
-    clientToken.refresher = new Refresher(clientApi, this.crypto, authKeypair, name)
+    clientToken.refresher = new Refresher(
+      clientApi,
+      this.crypto,
+      authKeypair,
+      email
+    )
     clientApi.setToken(clientToken)
 
     // Set up client config and client
@@ -203,19 +229,30 @@ class Account {
 
     // Back up queen client credentials to meta
     const serializedConfig = clientConfig.serialize()
-    const encQueenCreds = await this.crypto.encryptString(JSON.stringify(serializedConfig), encKey)
-    const paperEncQueenCreds = await this.crypto.encryptString(JSON.stringify(serializedConfig), paperEncKey)
+    const encQueenCreds = await this.crypto.encryptString(
+      JSON.stringify(serializedConfig),
+      encKey
+    )
+    const paperEncQueenCreds = await this.crypto.encryptString(
+      JSON.stringify(serializedConfig),
+      paperEncKey
+    )
     await clientApi.updateProfileMeta({
       backupEnabled: 'enabled',
       backupClient: encQueenCreds,
-      paperBackup: paperEncQueenCreds
+      paperBackup: paperEncQueenCreds,
     })
 
     // Return the client object and the paper key
-    const client = new Client(clientApi, registration.account, registration.profile, storageClient)
+    const client = new Client(
+      clientApi,
+      registration.account,
+      registration.profile,
+      storageClient
+    )
     return {
       paperKey,
-      client
+      client,
     }
   }
 
@@ -223,7 +260,7 @@ class Account {
    * Recreate an account client from one that was serialized to JSON.
    *
    * After calling `Client.serialize()` plain javascript object is created with
-   * all of the values needed to recreated that client. This can be safely stored
+   * all of the values needed to recreat that client. This can be safely stored
    * as JSON. This method is used to turn the object created by `Client.serialize()`
    * back into a Client instance with all of the available methods.
    *
@@ -234,13 +271,16 @@ class Account {
   fromObject(obj) {
     let token, api
     // If an API is available, create it.
-    if ( obj.api && typeof obj.api === 'object' ) {
+    if (obj.api && typeof obj.api === 'object') {
       api = new API(obj.api.apiUrl)
       // If a token for the API is available, create it.
-      if (obj.api.token && typeof obj.api.token === 'object' ) {
+      if (obj.api.token && typeof obj.api.token === 'object') {
         token = new Token(obj.api.token.token, obj.api.token.created)
         // If a refresher for the token is available, create it.
-        if(obj.api.token.refresher && obj.api.token.refresher === 'object') {
+        if (
+          obj.api.token.refresher &&
+          typeof obj.api.token.refresher === 'object'
+        ) {
           token.refresher = new Refresher(
             api,
             this.crypto,
@@ -255,7 +295,7 @@ class Account {
       api = this.api.clone()
     }
     // Create the queen client.
-    const clientConfig = this.Storage.Config.fromObject( obj.storageClient )
+    const clientConfig = this.Storage.Config.fromObject(obj.storageClient)
     const queenClient = new this.Storage.Client(clientConfig)
     // Create a new client object with the provided values.
     return new Client(api, obj.account, obj.profile, queenClient)

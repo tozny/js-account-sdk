@@ -9,5 +9,5 @@ const RegistrationToken = require('./registrationToken')
 
 module.exports = {
   AccountBillingStatus,
-  RegistrationToken
+  RegistrationToken,
 }
