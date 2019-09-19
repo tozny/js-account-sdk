@@ -14,8 +14,8 @@ class Client {
     return this._queenClient
   }
 
-  async updatePassword(oldPassword, newPassword) { 
-    console.log("oldPassword", oldPassword)
+  async changePassword(password, newPassword) { 
+    console.log("password", password)
     console.log("newPassword", newPassword)
     console.log(this._queenClient.crypto)
   }
