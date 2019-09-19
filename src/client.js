@@ -1,6 +1,7 @@
 const { validateStorageClient } = require('./utils')
 const API = require('./api')
 const { AccountBillingStatus } = require('./types')
+const { KEY_HASH_ROUNDS } = require('./utils/constants')
 
 class Client {
   constructor(api, account, profile, queenClient) {
@@ -22,7 +23,7 @@ class Client {
     console.log(crypto)
     const authSalt = await crypto.b64decode(this.profile.auth_salt)
     console.log('authSalt', authSalt)
-    const keypair = await crypto.deriveSigningKey(password, authSalt)
+    const keypair = await crypto.deriveSigningKey(password, authSalt, KEY_HASH_ROUNDS)
     console.log('keypair', keypair)
     const attempt = await crypto.b64encode(keypair.publicKey)
     console.log('attempt', attempt)
@@ -31,6 +32,9 @@ class Client {
     return 'THE RETURN STATEMENT'
     // verifyPassword(maybePassword) {
     //   return new Promise((resolve, reject) => {
+    //     let authSalt = helpers.b64decode(sessionStorage.getItem('salt.auth'))
+    //     let keypair = toznyCrypto.deriveSigningKey(maybePassword, authSalt)
+    //     let attempt = helpers.b64encode(keypair.publicKey)
     //     if (sessionStorage.getItem('key.signing') === attempt) resolve()
     //     else reject(new Error('Your password is incorrect.'))
     //   })
