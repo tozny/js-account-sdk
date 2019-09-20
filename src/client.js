@@ -58,7 +58,7 @@ class Client {
         }
       }
       const updateProfileResponse = await this.api.updateProfile(newProfileInfo)
-      console.log('updateProfileInfo', updateProfileInfo)
+      console.log('updateProfileResponse', updateProfileResponse)
       const updateProfileMetaResponse = await this.api.updateProfileMeta({
         backupEnabled: currentProfileMeta.backupEnabled,
         backupClient: encQueenCreds,
