@@ -32,7 +32,7 @@ class Client {
       // Generate new salts and keys
       const queenClientConfig = this._queenClient.config
       console.log(queenClientConfig)
-      console.log(queenClientConfig.json())
+      console.log(JSON.stringify(queenClientConfig))
       const encSalt = await crypto.randomBytes(16)
       console.log('encSalt', encSalt)
       const authSalt = await crypto.randomBytes(16)
