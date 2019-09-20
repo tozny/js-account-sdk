@@ -24,7 +24,7 @@ class Client {
   }
 
   async changePassword({ password, newPassword }) {
-    const currentProfileMeta = this.api.getProfileMeta()
+    const currentProfileMeta = await this.api.getProfileMeta()
     console.log('currentProfileMeta', currentProfileMeta)
     const passwordChecksOut = await this.validatePassword(password)
     const crypto = this._queenClient.crypto
@@ -55,7 +55,7 @@ class Client {
         backupClient: encQueenCreds,
         paperBackup: currentProfileMeta.paperBackup
       })
-      return updateProfileMetaResponse
+      return this.api.getProfileMeta()
       // console.log("Add call to change password")
       // console.log('encSalt', this.profile.enc_salt)
       // const encSalt = crypto.b64decode(this.profile.enc_salt)
