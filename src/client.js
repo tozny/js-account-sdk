@@ -24,9 +24,11 @@ class Client {
   }
 
   async changePassword({ password, newPassword }) {
+    const currentProfileMeta = this.api.getProfileMeta()
+    console.log('currentProfileMeta', currentProfileMeta)
     const passwordChecksOut = await this.validatePassword(password)
     const crypto = this._queenClient.crypto
-    const paperEncKey = await crypto.b64decode(this.profile.paper_enc_salt)
+    // const paperEncKey = await crypto.b64decode(this.profile.paper_enc_salt)
     console.log('crypto', crypto)
     if (passwordChecksOut) {
       console.log("in if statement")
@@ -46,14 +48,14 @@ class Client {
       const authKeypair = await crypto.deriveSigningKey(newPassword, authSalt)
       console.log('authKeyPair', authKeypair)
       const encQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), encKey)
-      const paperEncQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), paperEncKey)
+      // const paperEncQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), paperEncKey)
       console.log('encQueenCreds', encQueenCreds)
       const updateProfileMetaResponse = this.api.updateProfileMeta({
-        backupEnabled: 'enabled',
+        backupEnabled: currentProfileMeta.backupEnabled,
         backupClient: encQueenCreds,
-        paperBackup: paperEncQueenCreds
+        paperBackup: currentProfileMeta.paperBackup
       })
-      return this.api.getProfileMeta()
+      return 
       // console.log("Add call to change password")
       // console.log('encSalt', this.profile.enc_salt)
       // const encSalt = crypto.b64decode(this.profile.enc_salt)
