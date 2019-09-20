@@ -53,17 +53,14 @@ class Client {
       const b64AuthSalt = await crypto.b64encode(authSalt)
       const b64EncSalt = await crypto.b64encode(encSalt)
       const b64SignKey = await crypto.b64encode(authKeypair.publicKey)
-      // const newProfileInfo = {
-      //   auth_salt: b64AuthSalt,
-      //   enc_salt: b64EncSalt,
-      //   signing_key: {
-      //     ed25519: b64SignKey
-      //   }
-      // }
       const newProfileInfo = {
-        name: 'some new name',
-        email: 'jenna.tucker+9208@tozny.com'
+        auth_salt: b64AuthSalt,
+        enc_salt: b64EncSalt,
+        signing_key: {
+          ed25519: b64SignKey
+        }
       }
+
       const updateProfileResponse = await this.api.updateProfile(newProfileInfo)
       console.log('updateProfileResponse', updateProfileResponse)
       const updateProfileMetaResponse = await this.api.updateProfileMeta({
