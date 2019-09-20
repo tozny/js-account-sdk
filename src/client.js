@@ -47,7 +47,7 @@ class Client {
       const encQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), encKey)
       // const paperEncQueenCreds = await this.crypto.encryptString(JSON.stringify(serializedConfig), paperEncKey)
       console.log('encQueenCreds', encQueenCreds)
-      return this.updateProfileMeta({
+      return this.api.updateProfileMeta({
         backupClient: encQueenCreds
       })
       // console.log("Add call to change password")
