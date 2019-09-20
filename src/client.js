@@ -31,8 +31,8 @@ class Client {
       console.log("in if statement")
       // Generate new salts and keys
       const serializedQueenClientConfig = this._queenClient.config.serialize()
-      console.log(queenClientConfig)
-      console.log(JSON.stringify(queenClientConfig))
+      // console.log(queenClientConfig)
+      // console.log(JSON.stringify(queenClientConfig))
       const encSalt = await crypto.randomBytes(16)
       console.log('encSalt', encSalt)
       const authSalt = await crypto.randomBytes(16)
