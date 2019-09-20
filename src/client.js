@@ -30,7 +30,7 @@ class Client {
     if (passwordChecksOut) {
       console.log("in if statement")
       // Generate new salts and keys
-      const queenClientConfig = this._queenClient.config
+      const serializedQueenClientConfig = this._queenClient.config.serialize()
       console.log(queenClientConfig)
       console.log(JSON.stringify(queenClientConfig))
       const encSalt = await crypto.randomBytes(16)
@@ -40,7 +40,12 @@ class Client {
       const encKey = await crypto.deriveCryptoKey(newPassword, encSalt)
       console.log('encKey', encKey)
       const authKeypair = await crypto.deriveSigningKey(newPassword, authSalt)
-      console.log('authKeyPair', authKeyPair)
+      console.log('authKeyPair', authKeypair)
+      const encQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), encKey)
+      // const paperEncQueenCreds = await this.crypto.encryptString(JSON.stringify(serializedConfig), paperEncKey)
+      return this.updateProfileMeta({
+        backupClient: encQueenCreds
+      })
       // console.log("Add call to change password")
       // console.log('encSalt', this.profile.enc_salt)
       // const encSalt = crypto.b64decode(this.profile.enc_salt)
