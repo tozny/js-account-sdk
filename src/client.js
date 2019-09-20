@@ -37,12 +37,16 @@ class Client {
       console.log('encSalt', encSalt)
       const authSalt = await crypto.randomBytes(16)
       console.log('authSalt', authSalt)
-      const encKey = await crypto.deriveCryptoKey(newPassword, encSalt)
+      const encKey = await crypto.deriveSymmetricKey(
+        newPassword,
+        encSalt,
+        KEY_HASH_ROUNDS)
       console.log('encKey', encKey)
       const authKeypair = await crypto.deriveSigningKey(newPassword, authSalt)
       console.log('authKeyPair', authKeypair)
       const encQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), encKey)
       // const paperEncQueenCreds = await this.crypto.encryptString(JSON.stringify(serializedConfig), paperEncKey)
+      console.log('encQueenCreds', encQueenCreds)
       return this.updateProfileMeta({
         backupClient: encQueenCreds
       })
