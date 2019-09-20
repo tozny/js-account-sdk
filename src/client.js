@@ -45,7 +45,7 @@ class Client {
         encSalt,
         KEY_HASH_ROUNDS)
       console.log('encKey', encKey)
-      const authKeypair = await crypto.deriveSigningKey(newPassword, authSalt)
+      const authKeypair = await crypto.deriveSigningKey(newPassword, authSalt, KEY_HASH_ROUNDS)
       console.log('authKeyPair', authKeypair)
       const encQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), encKey)
       // const paperEncQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), paperEncKey)
