@@ -28,6 +28,7 @@ class Client {
     const crypto = this._queenClient.crypto
     console.log('crypto', crypto)
     if (passwordChecksOut) {
+      console.log("in if statement")
       // Generate new salts and keys
       const queenClientConfig = this._queenClient.config
       console.log(queenClientConfig)
@@ -65,6 +66,7 @@ class Client {
 
 
     } else {
+      console.log('in else statement')
       return new Error('Current password incorrect.')
     }
   }
