@@ -46,7 +46,7 @@ class Client {
       const authKeypair = await crypto.deriveSigningKey(newPassword, authSalt)
       console.log('authKeyPair', authKeypair)
       const encQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), encKey)
-      const paperEncQueenCreds = await crypto.encryptString(JSON.stringify(serializedConfig), paperEncKey)
+      const paperEncQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), paperEncKey)
       console.log('encQueenCreds', encQueenCreds)
       const updateProfileMetaResponse = this.api.updateProfileMeta({
         backupEnabled: 'enabled',
