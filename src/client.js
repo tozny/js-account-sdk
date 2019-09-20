@@ -28,7 +28,17 @@ class Client {
     const crypto = this._queenClient.crypto
     console.log('crypto', crypto)
     if (passwordChecksOut) {
-      
+      // Generate new salts and keys
+      const queenClientConfig = this._queenClient.config
+      console.log(queenClientConfig)
+      const encSalt = crypto.randomBytes(16)
+      console.log('encSalt', encSalt)
+      const authSalt = sodium.randomBytes(16)
+      console.log('authSalt', authSalt)
+      const encKey = crypto.deriveCryptoKey(newPassword, encSalt)
+      console.log('encKey', encKey)
+      const authKeypair = crypto.deriveSigningKey(newPassword, authSalt)
+      console.log('authKeyPair', authKeyPair)
       // console.log("Add call to change password")
       // console.log('encSalt', this.profile.enc_salt)
       // const encSalt = crypto.b64decode(this.profile.enc_salt)
