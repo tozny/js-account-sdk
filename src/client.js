@@ -34,7 +34,7 @@ class Client {
       console.log(queenClientConfig)
       const encSalt = crypto.randomBytes(16)
       console.log('encSalt', encSalt)
-      const authSalt = sodium.randomBytes(16)
+      const authSalt = crypto.randomBytes(16)
       console.log('authSalt', authSalt)
       const encKey = crypto.deriveCryptoKey(newPassword, encSalt)
       console.log('encKey', encKey)
