@@ -32,13 +32,14 @@ class Client {
       // Generate new salts and keys
       const queenClientConfig = this._queenClient.config
       console.log(queenClientConfig)
-      const encSalt = crypto.randomBytes(16)
+      console.log(queenClientConfig.json())
+      const encSalt = await crypto.randomBytes(16)
       console.log('encSalt', encSalt)
-      const authSalt = crypto.randomBytes(16)
+      const authSalt = await crypto.randomBytes(16)
       console.log('authSalt', authSalt)
-      const encKey = crypto.deriveCryptoKey(newPassword, encSalt)
+      const encKey = await crypto.deriveCryptoKey(newPassword, encSalt)
       console.log('encKey', encKey)
-      const authKeypair = crypto.deriveSigningKey(newPassword, authSalt)
+      const authKeypair = await crypto.deriveSigningKey(newPassword, authSalt)
       console.log('authKeyPair', authKeyPair)
       // console.log("Add call to change password")
       // console.log('encSalt', this.profile.enc_salt)
