@@ -15,15 +15,6 @@ class Client {
     return this._queenClient
   }
 
-  async changePassword({ password, newPassword }) {
-    const passwordChecksOut = await this.validatePassword(password)
-    if (passwordChecksOut) {
-      console.log("Add call to change password")
-    } else {
-      return new Error('Current password incorrect.')
-    }
-  }
-
   async validatePassword(password) {
     const crypto = this._queenClient.crypto
     const authSalt = await crypto.b64decode(this.profile.auth_salt)
@@ -31,6 +22,43 @@ class Client {
     const signingKey = this.profile.signing_key
     return keypair.publicKey === signingKey.ed25519
   }
+
+  async changePassword({ password, newPassword }) {
+    const passwordChecksOut = await this.validatePassword(password)
+    const crypto = this._queenClient.crypto
+    console.log('crypto', crypto)
+    if (passwordChecksOut) {
+      
+      // console.log("Add call to change password")
+      // console.log('encSalt', this.profile.enc_salt)
+      // const encSalt = crypto.b64decode(this.profile.enc_salt)
+      // console.log('encKeys', encKeys)
+      // const encKey = crypto.deriveCryptoKey(password, encSalt)
+      // console.log('')
+      // changePassword = (old, password) => {
+      //   // Derive the old keys
+      //   const oldEncSalt = helpers.b64decode(sessionStorage.getItem('salt.enc'))
+      //   const oldEncKey = toznyCrypto.deriveCryptoKey(old, oldEncSalt)
+
+      //   // Fetch and decrypt the user's backup credentials
+      //   const raw = sessionStorage.getItem('creds.backup')
+      //   const nonce = helpers.b64decode(raw.split(':')[0])
+      //   const cipher = helpers.b64decode(raw.split(':')[1])
+      //   const jsonConfig = sodium.crypto_secretbox_open_easy(
+      //     cipher,
+      //     nonce,
+      //     oldEncKey
+      //   )
+
+      //   return this.setNewPassword(password, jsonConfig)
+      // }
+
+
+    } else {
+      return new Error('Current password incorrect.')
+    }
+  }
+
 
   async billingStatus() {
     const rawResponse = await this.api.getBillingStatus(this._queenClient)
