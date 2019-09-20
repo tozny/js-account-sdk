@@ -26,7 +26,7 @@ class Client {
   async changePassword({ password, newPassword }) {
     const passwordChecksOut = await this.validatePassword(password)
     const crypto = this._queenClient.crypto
-    const paperEncKey = this.profile.paper_enc_salt
+    const paperEncKey = await crypto.b64decode(this.profile.paper_enc_salt)
     console.log('crypto', crypto)
     if (passwordChecksOut) {
       console.log("in if statement")
