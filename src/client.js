@@ -56,9 +56,9 @@ class Client {
       const newProfileInfo = {
         auth_salt: b64AuthSalt,
         enc_salt: b64EncSalt,
-        signing_key: {
-          ed25519: b64SignKey
-        }
+        // signing_key: {
+        //   ed25519: b64SignKey
+        // }
       }
 
       const updateProfileResponse = await this.api.updateProfile(newProfileInfo)
