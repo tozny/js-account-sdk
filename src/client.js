@@ -52,13 +52,12 @@ class Client {
       console.log('encQueenCreds', encQueenCreds)
       const b64AuthSalt = await crypto.b64encode(authSalt)
       const b64EncSalt = await crypto.b64encode(encSalt)
-      const b64SignKey = await crypto.b64encode(authKeypair.publicKey)
       const newProfileInfo = {
         auth_salt: b64AuthSalt,
         enc_salt: b64EncSalt,
-        // signing_key: {
-        //   ed25519: b64SignKey
-        // }
+        signing_key: {
+          ed25519: authKeypair.publicKey
+        },
       }
 
       const updateProfileResponse = await this.api.updateProfile(newProfileInfo)
