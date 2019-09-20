@@ -50,11 +50,14 @@ class Client {
       const encQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), encKey)
       // const paperEncQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), paperEncKey)
       console.log('encQueenCreds', encQueenCreds)
+      const b64AuthSalt = await crypto.b64encode(authSalt)
+      const b64EncSalt = await crypto.b64decode(encSalt)
+      const b64SignKey = await crypto.b64encode(authKeypair.publicKey)
       const newProfileInfo = {
-        auth_salt: crypto.b64encode(authSalt),
-        enc_salt: crypto.b64decode(encSalt),
+        auth_salt: b64AuthSalt,
+        enc_salt: b64EncSalt,
         signing_key: {
-          ed25519: crypto.b64encode(authKeypair.publicKey)
+          ed25519: b64SignKey
         }
       }
       const updateProfileResponse = await this.api.updateProfile(newProfileInfo)
