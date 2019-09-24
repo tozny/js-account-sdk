@@ -61,7 +61,6 @@ class Client {
     }
   }
 
-
   async billingStatus() {
     const rawResponse = await this.api.getBillingStatus(this._queenClient)
     return AccountBillingStatus.decode(rawResponse)
