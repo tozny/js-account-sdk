@@ -206,16 +206,12 @@ class Account {
     // Set up client API with token and refresh
     const clientToken = new Token(registration.token)
     const clientApi = this.api.clone()
-<<<<<<< HEAD
-    clientToken.refresher = new Refresher(clientApi, this.crypto, authKeypair, email)
-=======
     clientToken.refresher = new Refresher(
       clientApi,
       this.crypto,
       authKeypair,
       email
     )
->>>>>>> master
     clientApi.setToken(clientToken)
 
     // Set up client config and client
@@ -260,20 +256,6 @@ class Account {
     }
   }
 
-<<<<<<< HEAD
-
-  fromObject(obj) {
-    let token, api
-    if (obj.api && typeof obj.api === 'object') {
-      api = new API(obj.api.apiUrl)
-      if (obj.api.token && typeof obj.api.token === 'object') {
-        token = new Token(obj.api.token.token, obj.api.token.created)
-        token.refresher = new Refresher(
-          api, this.crypto, obj.api.token.refresher.keys, obj.api.token.refresher.username)
-        api.setToken(token)
-      }
-    }
-=======
   /**
    * Recreate an account client from one that was serialized to JSON.
    *
@@ -313,7 +295,6 @@ class Account {
       api = this.api.clone()
     }
     // Create the queen client.
->>>>>>> master
     const clientConfig = this.Storage.Config.fromObject(obj.storageClient)
     const queenClient = new this.Storage.Client(clientConfig)
     // Create a new client object with the provided values.
