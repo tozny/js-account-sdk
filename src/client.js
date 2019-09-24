@@ -1,7 +1,7 @@
 const { validateStorageClient } = require('./utils')
 const API = require('./api')
-const { AccountBillingStatus } = require('./types')
 const { KEY_HASH_ROUNDS } = require('./utils/constants')
+const { AccountBillingStatus, RegistrationToken } = require('./types')
 
 class Client {
   constructor(api, account, profile, queenClient) {
@@ -80,13 +80,48 @@ class Client {
     const response = await this.api.updateProfile(profile)
     return response
   }
+  
+  /**
+   * Get a list of the current registration tokens for an account.
+   *
+   * @return {Promise<Array.<RegistrationToken>>}
+   */
+
+  async registrationTokens() {
+    const tokens = await this.api.listTokens()
+    return tokens.map(RegistrationToken.decode)
+  }
+
+  /**
+   * Create a new registration token for the account.
+   * @param {string} name The user defined name for the new token. Not unique.
+   * @param {object} permissions A set of key-value pair of permissions for the token.
+   * @param {number} totalUsesAllowed The number of uses the token is allowed. If
+   *                                  not set, unlimited uses are allowed.
+   *
+   * @return {Promise<RegistrationToken>} The created registration token.
+   */
+  async newRegistrationToken(name, permissions = {}, totalUsesAllowed) {
+    const token = await this.api.writeToken(name, permissions, totalUsesAllowed)
+    return RegistrationToken.decode(token)
+  }
+
+  /**
+   * Removes a token object from the accounts available tokens.
+   * @param {Token} token The token to remove from the account.
+   *
+   * @returns {Promise<boolean>} True if the operation succeeds.
+   */
+  async deleteRegistrationToken(token) {
+    return this.api.deleteToken(token.token)
+  }
 
   serialize() {
     return {
       api: this.api.serialize(),
       account: this.account,
       profile: this.profile,
-      storageClient: this._queenClient.config
+      storageClient: this._queenClient.config,
     }
   }
 }

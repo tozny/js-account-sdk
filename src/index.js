@@ -4,5 +4,5 @@ const Client = require('./client')
 module.exports = {
   Account,
   Client,
-  default: Account
+  default: Account,
 }
