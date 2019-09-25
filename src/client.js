@@ -54,6 +54,7 @@ class Client {
         backupClient: encQueenCreds,
         paperBackup: currentProfileMeta.paperBackup
       })
+      
       return this.api.getProfileMeta()
 
     } else {
