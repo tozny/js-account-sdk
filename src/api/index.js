@@ -149,7 +149,8 @@ class API {
         account: account,
       }),
     })
-    console.log("RESPOSE AT API 152", response)
+    console.log('RESPONSE AT API 152', response)
+    console.log('NEW CODE ACTUALLY RAN')
     return validateRequestAsJSON(response)
   }
 
