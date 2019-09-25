@@ -149,7 +149,7 @@ class API {
         account: account,
       }),
     })
-    console.log("RESPOSE AT API 152")
+    console.log("RESPOSE AT API 152", response)
     return validateRequestAsJSON(response)
   }
 
