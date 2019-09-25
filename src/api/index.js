@@ -138,6 +138,20 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  async updateAccountBilling(account) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = fetch(this.apiUrl + '/v1/account/profile', {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({
+        account: account,
+      }),
+    })
+    return validateRequestAsJSON(response)
+  }
+
   async listClients(queenClient, nextToken) {
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,

@@ -21,6 +21,11 @@ class Client {
     return AccountBillingStatus.decode(rawResponse)
   }
 
+  async updateAccountBilling(stripeToken) {
+    const account = { cc_token: stripeToken.id }
+    return this.api.updateAccountBilling(account)
+  }
+
   async accountClients(nextToken = 0) {
     const rawResponse = await this.api.listClients(this._queenClient, nextToken)
     // TODO: add ClientList type and decode to that versus vanilla JS object
