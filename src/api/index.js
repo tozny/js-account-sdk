@@ -142,7 +142,7 @@ class API {
     const headers = await this.withToken({
       'Content-Type': 'application/json',
     })
-    const response = fetch(this.apiUrl + '/v1/account/profile', {
+    const response = await fetch(this.apiUrl + '/v1/account/profile', {
       method: 'PATCH',
       headers: headers,
       body: JSON.stringify({
