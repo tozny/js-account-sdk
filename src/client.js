@@ -28,6 +28,10 @@ class Client {
     return this.api.addBillingCoupon(this._queenClient, couponCode)
   }
 
+  async subscribe() {
+    return this.api.subscribe(this._queenClient)
+  }
+
   async unsubscribe() {
     return this.api.unsubscribe(this._queenClient)
   }

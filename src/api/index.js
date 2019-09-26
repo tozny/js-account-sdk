@@ -164,6 +164,16 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  async subscribe(queenClient) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + '/v1/billing/resubscribe',
+      {
+        method: 'GET',
+      }
+    )
+    return checkStatus(response)
+  }
+
   async unsubscribe(queenClient) {
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + '/v1/billing/unsubscribe',
