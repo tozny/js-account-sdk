@@ -164,6 +164,16 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  async unsubscribe(queenClient) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + '/v1/billing/unsubscribe',
+      {
+        method: 'GET',
+      }
+    )
+    return checkStatus(response)
+  }
+
   async listClients(queenClient, nextToken) {
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
