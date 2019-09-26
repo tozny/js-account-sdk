@@ -24,6 +24,10 @@ class Client {
     return this.api.updateAccountBilling(account)
   }
 
+  async addBillingCoupon(couponCode) {
+    return this.api.addBillingCoupon(this._queenClient, couponCode)
+  }
+
   async accountClients(nextToken = 0) {
     const rawResponse = await this.api.listClients(this._queenClient, nextToken)
     // TODO: add ClientList type and decode to that versus vanilla JS object

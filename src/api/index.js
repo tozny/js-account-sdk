@@ -138,6 +138,18 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  async addBillingCoupon(queenClient, couponCode) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + '/v1/billing/coupon',
+      {
+        method: 'POST',
+        'Content-Type': 'application/json',
+        body: JSON.stringify({ coupon_code: couponCode }),
+      }
+    )
+    return checkStatus(response)
+  }
+
   async updateAccountBilling(account) {
     const headers = await this.withToken({
       'Content-Type': 'application/json',
