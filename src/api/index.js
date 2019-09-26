@@ -149,9 +149,6 @@ class API {
         account: account,
       }),
     })
-    throw new Error('API THROWN ERROR')
-    console.log('RESPONSE AT API 152', response)
-    console.log('NEW CODE ACTUALLY RAN')
     return validateRequestAsJSON(response)
   }
 
