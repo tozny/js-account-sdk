@@ -68,7 +68,8 @@ class Client {
         backupClient: encQueenCreds,
         paperBackup: currentProfileMeta.paperBackup,
       })
-      const response = this.api.getProfileMeta()
+      const response = await this.api.getProfileMeta()
+      // updating the refresher with new signing keys
       const clientToken = new Token(this.profile.token)
       const clientApi = this.api.clone()
       const username = this.profile.email
