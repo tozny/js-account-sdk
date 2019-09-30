@@ -68,7 +68,7 @@ class Client {
         backupClient: encQueenCreds,
         paperBackup: currentProfileMeta.paperBackup,
       })
-
+      const response = this.api.getProfileMeta()
       const clientToken = new Token(this.profile.token)
       const clientApi = this.api.clone()
       const username = this.profile.email
@@ -80,7 +80,7 @@ class Client {
       )
       this.api.setToken(clientToken)
 
-      return this.api.getProfileMeta()
+      return response
     } else {
       throw new Error('Current password incorrect.')
     }
