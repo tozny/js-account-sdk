@@ -96,16 +96,19 @@ class Client {
     console.log(this)
     const clientToken = this.api._token
     const clientApi = this.api.clone()
+    const sigKeys = clientToken.keys
+    console.log('signKeys', signKeys)
     console.log('clientApi', clientApi)
     console.log('crypto', this._queenClient.crypto)
     console.log('response', response)
     // console.log('authKeyPair', authKeypair)
     console.log('newProfileInfo', newProfileInfo)
     console.log('email', newProfileInfo.email)
+    // New refresher instance.  All values the same except username.
     clientToken.refresher = new Refresher(
       clientApi,
       this._queenClient.crypto,
-      authKeypair,
+      sigKeys,
       newProfileInfo.email
     )
     console.log('currentToken', currentToken)
