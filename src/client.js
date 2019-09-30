@@ -3,6 +3,7 @@ const API = require('./api')
 const { KEY_HASH_ROUNDS } = require('./utils/constants')
 const { AccountBillingStatus, RegistrationToken } = require('./types')
 const Refresher = require('./api/refresher')
+const Token = require('./api/token')
 
 class Client {
   constructor(api, account, profile, queenClient) {
@@ -93,22 +94,20 @@ class Client {
     console.log('>> SDK update profile')
     const response = await this.api.updateProfile(profile)
 
-    // The instance of the acccount client's refresher needs to be updated.
-    console.log(this)
-    const clientToken = this.api._token
-    const clientApi = this.api.clone()
-    const sigKeys = clientToken.keys
-    console.log('before clientToken', clientToken)
-    // New refresher instance.  All values the same except username.
+    // Updates the username in the refresher.  
+
+    const clientToken = new Token(this.profile.token)
+    console.log('clientToken', clientToken)
+    console.log('before api', this.account.api)
     clientToken.refresher = new Refresher(
       clientApi,
       this._queenClient.crypto,
       sigKeys,
       newProfileInfo.email
     )
-    console.log('changed clientToken', clientToken)
-    const newToken = this.account.api.setToken(newToken)
-
+    console.log('after clientToken', clientToken)
+    this.account.api.setToken(clientToken)
+    console.log('after api', this.account.api)
     return response
   }
 
