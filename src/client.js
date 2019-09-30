@@ -60,32 +60,12 @@ class Client {
         },
       }
 
-      const updateProfileResponse = await this.api.updateProfile(newProfileInfo)
-      const updateProfileMetaResponse = await this.api.updateProfileMeta({
+      await this.api.updateProfile(newProfileInfo)
+      await this.api.updateProfileMeta({
         backupEnabled: currentProfileMeta.backupEnabled,
         backupClient: encQueenCreds,
         paperBackup: currentProfileMeta.paperBackup,
       })
-
-      // The instance of the acccount client's refresher needs to be updated.
-      console.log(this)
-      console.log(this.account)
-      console.log(this.account.profile)
-      const currentToken = this.account.profile.token
-      const clientApi = this.api.clone()
-      console.log('clientApi', clientApi)
-      console.log('crypto', this._queenClient.crypto)
-      console.log('authKeyPair', authKeypair)
-      console.log('newProfileInfo', newProfileInfo)
-      console.log('email', newProfileInfo.email)
-      clientToken.refresher = new Refresher(
-        clientApi,
-        this._queenClient.crypto,
-        authKeypair,
-        newProfileInfo.email
-      )
-      console.log('currentToken', currentToken)
-      const newToken = this.account.api.setToken(newToken)
 
       return this.api.getProfileMeta()
     } else {
@@ -109,7 +89,30 @@ class Client {
   Profile param contains a name and email for the user.
 */
   async updateProfile(profile) {
+    console.log('SDK update profile')
     const response = await this.api.updateProfile(profile)
+
+    // The instance of the acccount client's refresher needs to be updated.
+    console.log(this)
+    console.log(this.account)
+    console.log(this.account.profile)
+    const currentToken = this.account.profile.token
+    const clientApi = this.api.clone()
+    console.log('clientApi', clientApi)
+    console.log('crypto', this._queenClient.crypto)
+    console.log('response', response)
+    // console.log('authKeyPair', authKeypair)
+    console.log('newProfileInfo', newProfileInfo)
+    console.log('email', newProfileInfo.email)
+    clientToken.refresher = new Refresher(
+      clientApi,
+      this._queenClient.crypto,
+      authKeypair,
+      newProfileInfo.email
+    )
+    console.log('currentToken', currentToken)
+    const newToken = this.account.api.setToken(newToken)
+
     return response
   }
 
