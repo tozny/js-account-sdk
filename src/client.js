@@ -97,6 +97,7 @@ class Client {
     // Updates the username in the refresher.  
 
     const clientToken = new Token(this.profile.token)
+    console.log('account', this.account)
     console.log('clientToken', clientToken)
     console.log('before api', this.account.api)
     clientToken.refresher = new Refresher(
