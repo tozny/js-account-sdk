@@ -18,7 +18,11 @@ class Client {
   async validatePassword(password) {
     const crypto = this._queenClient.crypto
     const authSalt = await crypto.b64decode(this.profile.auth_salt)
-    const keypair = await crypto.deriveSigningKey(password, authSalt, KEY_HASH_ROUNDS)
+    const keypair = await crypto.deriveSigningKey(
+      password,
+      authSalt,
+      KEY_HASH_ROUNDS
+    )
     const signingKey = this.profile.signing_key
     return keypair.publicKey === signingKey.ed25519
   }
@@ -35,16 +39,24 @@ class Client {
       const encKey = await crypto.deriveSymmetricKey(
         newPassword,
         encSalt,
-        KEY_HASH_ROUNDS)
-      const authKeypair = await crypto.deriveSigningKey(newPassword, authSalt, KEY_HASH_ROUNDS)
-      const encQueenCreds = await crypto.encryptString(JSON.stringify(serializedQueenClientConfig), encKey)
+        KEY_HASH_ROUNDS
+      )
+      const authKeypair = await crypto.deriveSigningKey(
+        newPassword,
+        authSalt,
+        KEY_HASH_ROUNDS
+      )
+      const encQueenCreds = await crypto.encryptString(
+        JSON.stringify(serializedQueenClientConfig),
+        encKey
+      )
       const b64AuthSalt = await crypto.b64encode(authSalt)
       const b64EncSalt = await crypto.b64encode(encSalt)
       const newProfileInfo = {
         auth_salt: b64AuthSalt,
         enc_salt: b64EncSalt,
         signing_key: {
-          ed25519: authKeypair.publicKey
+          ed25519: authKeypair.publicKey,
         },
       }
 
@@ -52,11 +64,30 @@ class Client {
       const updateProfileMetaResponse = await this.api.updateProfileMeta({
         backupEnabled: currentProfileMeta.backupEnabled,
         backupClient: encQueenCreds,
-        paperBackup: currentProfileMeta.paperBackup
+        paperBackup: currentProfileMeta.paperBackup,
       })
-      
-      return this.api.getProfileMeta()
 
+      // The instance of the acccount client's refresher needs to be updated.
+      console.log(this)
+      console.log(this.account)
+      console.log(this.account.profile)
+      const currentToken = this.account.profile.token
+      const clientApi = this.api.clone()
+      console.log('clientApi', clientApi)
+      console.log('crypto', this._queenClient.crypto)
+      console.log('authKeyPair', authKeypair)
+      console.log('newProfileInfo', newProfileInfo)
+      console.log('email', newProfileInfo.email)
+      clientToken.refresher = new Refresher(
+        clientApi,
+        this._queenClient.crypto,
+        authKeypair,
+        newProfileInfo.email
+      )
+      console.log('currentToken', currentToken)
+      const newToken = this.account.api.setToken(newToken)
+
+      return this.api.getProfileMeta()
     } else {
       throw new Error('Current password incorrect.')
     }
@@ -81,7 +112,7 @@ class Client {
     const response = await this.api.updateProfile(profile)
     return response
   }
-  
+
   /**
    * Get a list of the current registration tokens for an account.
    *
