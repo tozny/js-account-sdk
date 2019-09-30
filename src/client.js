@@ -63,7 +63,7 @@ class Client {
       }
 
       await this.api.updateProfile(newProfileInfo)
-      const response = await this.api.updateProfileMeta({
+      await this.api.updateProfileMeta({
         backupEnabled: currentProfileMeta.backupEnabled,
         backupClient: encQueenCreds,
         paperBackup: currentProfileMeta.paperBackup,
@@ -79,7 +79,6 @@ class Client {
         username
       )
       this.api.setToken(clientToken)
-      return response
 
       return this.api.getProfileMeta()
     } else {
