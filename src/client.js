@@ -98,6 +98,10 @@ class Client {
 
     const clientToken = new Token(this.profile.token)
     const clientApi = this.api.clone()
+    console.log(this.api)
+    console.log(this.api._token)
+    console.log(this.api._token._refresher)
+    console.log(this.api._token._refresher.keys)
     const sigKeys = this.api._token_refresher.keys
     console.log('account', this.api)
     console.log('clientToken', clientToken)
