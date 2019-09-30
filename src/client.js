@@ -94,9 +94,7 @@ class Client {
 
     // The instance of the acccount client's refresher needs to be updated.
     console.log(this)
-    console.log(this.account)
-    console.log(this.account.profile)
-    const currentToken = this.account.profile.token
+    const clientToken = this.api._token
     const clientApi = this.api.clone()
     console.log('clientApi', clientApi)
     console.log('crypto', this._queenClient.crypto)
