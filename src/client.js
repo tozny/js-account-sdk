@@ -63,7 +63,7 @@ class Client {
       }
 
       await this.api.updateProfile(newProfileInfo)
-      await this.api.updateProfileMeta({
+      const response = await this.api.updateProfileMeta({
         backupEnabled: currentProfileMeta.backupEnabled,
         backupClient: encQueenCreds,
         paperBackup: currentProfileMeta.paperBackup,
@@ -103,7 +103,6 @@ class Client {
   Profile param contains a name and email for the user.
 */
   async updateProfile(profile) {
-    console.log('>> SDK update profile')
     const response = await this.api.updateProfile(profile)
 
     // Updates the username in the refresher.
