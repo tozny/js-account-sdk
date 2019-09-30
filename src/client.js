@@ -98,7 +98,7 @@ class Client {
 
     const clientToken = new Token(this.profile.token)
     const clientApi = this.api.clone()
-
+    const sigKeys = this.api._token_refresher.keys
     console.log('account', this.api)
     console.log('clientToken', clientToken)
     console.log('before api', this.api)
@@ -106,7 +106,7 @@ class Client {
       clientApi,
       this._queenClient.crypto,
       sigKeys,
-      newProfileInfo.email
+      profile.email
     )
     console.log('after clientToken', clientToken)
     this.api.setToken(clientToken)
