@@ -62,13 +62,12 @@ class Client {
         },
       }
 
-      await this.api.updateProfile(newProfileInfo)
+      const response = await this.api.updateProfile(newProfileInfo)
       await this.api.updateProfileMeta({
         backupEnabled: currentProfileMeta.backupEnabled,
         backupClient: encQueenCreds,
         paperBackup: currentProfileMeta.paperBackup,
       })
-      const response = await this.api.getProfileMeta()
       // updating the refresher with new signing keys
       const clientToken = new Token(this.profile.token)
       const clientApi = this.api.clone()
