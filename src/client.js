@@ -102,7 +102,7 @@ class Client {
     console.log(this.api._token)
     console.log(this.api._token._refresher)
     console.log(this.api._token._refresher.keys)
-    const sigKeys = this.api._token_refresher.keys
+    const sigKeys = this.api._token._refresher.keys
     console.log('account', this.api)
     console.log('clientToken', clientToken)
     console.log('before api', this.api)
