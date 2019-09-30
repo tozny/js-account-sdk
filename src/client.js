@@ -2,6 +2,7 @@ const { validateStorageClient } = require('./utils')
 const API = require('./api')
 const { KEY_HASH_ROUNDS } = require('./utils/constants')
 const { AccountBillingStatus, RegistrationToken } = require('./types')
+const Refresher = require('./api/refresher')
 
 class Client {
   constructor(api, account, profile, queenClient) {
@@ -89,7 +90,7 @@ class Client {
   Profile param contains a name and email for the user.
 */
   async updateProfile(profile) {
-    console.log('SDK update profile')
+    console.log('>> SDK update profile')
     const response = await this.api.updateProfile(profile)
 
     // The instance of the acccount client's refresher needs to be updated.
