@@ -69,6 +69,18 @@ class Client {
         paperBackup: currentProfileMeta.paperBackup,
       })
 
+      const clientToken = new Token(this.profile.token)
+      const clientApi = this.api.clone()
+      const username = this.profile.email
+      clientToken.refresher = new Refresher(
+        clientApi,
+        this._queenClient.crypto,
+        authKeypair,
+        username
+      )
+      this.api.setToken(clientToken)
+      return response
+
       return this.api.getProfileMeta()
     } else {
       throw new Error('Current password incorrect.')
@@ -94,27 +106,18 @@ class Client {
     console.log('>> SDK update profile')
     const response = await this.api.updateProfile(profile)
 
-    // Updates the username in the refresher.  
+    // Updates the username in the refresher.
 
     const clientToken = new Token(this.profile.token)
     const clientApi = this.api.clone()
-    console.log(this.api)
-    console.log(this.api._token)
-    console.log(this.api._token._refresher)
-    console.log(this.api._token._refresher.keys)
     const sigKeys = this.api._token._refresher.keys
-    console.log('account', this.api)
-    console.log('clientToken', clientToken)
-    console.log('before api', this.api)
     clientToken.refresher = new Refresher(
       clientApi,
       this._queenClient.crypto,
       sigKeys,
       profile.email
     )
-    console.log('after clientToken', clientToken)
     this.api.setToken(clientToken)
-    console.log('after api', this.api)
     return response
   }
 
