@@ -102,6 +102,7 @@ class API {
   }
 
   async updateProfileMeta(metaMap) {
+    console.log('updateProfileMEta')
     const headers = await this.withToken({
       'Content-Type': 'application/json',
     })
@@ -150,19 +151,15 @@ class API {
 
   async updateProfile(profile) {
     const headers = await this.withToken({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
-    const request = await fetch(
-      this.apiUrl + '/v1/account/profile',
-      {
-        method: 'PATCH',
-        headers,
-        body: JSON.stringify({ profile: profile })
-      }
-    )
+    const request = await fetch(this.apiUrl + '/v1/account/profile', {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ profile: profile }),
+    })
     return validateRequestAsJSON(request)
   }
-
 
   /**
    * Requests a list of tokens available for the account.
