@@ -30,12 +30,12 @@ class Client {
   }
 
   async changePassword({ password, newPassword }) {
-    const currentProfileMeta = await this.api.getProfileMeta()
     const passwordChecksOut = await this.validatePassword(password)
-    const crypto = this._queenClient.crypto
     if (passwordChecksOut) {
+      // The profile to be re-encrypted.
+      const crypto = this._queenClient.crypto
+
       // Generate new salts and keys
-      const serializedQueenClientConfig = this._queenClient.config.serialize()
       const encSalt = await crypto.randomBytes(16)
       const authSalt = await crypto.randomBytes(16)
       const encKey = await crypto.deriveSymmetricKey(
@@ -48,10 +48,8 @@ class Client {
         authSalt,
         KEY_HASH_ROUNDS
       )
-      const encQueenCreds = await crypto.encryptString(
-        JSON.stringify(serializedQueenClientConfig),
-        encKey
-      )
+
+      // Make new Profile and update existing profile.
       const b64AuthSalt = await crypto.b64encode(authSalt)
       const b64EncSalt = await crypto.b64encode(encSalt)
       const newProfileInfo = {
@@ -61,14 +59,22 @@ class Client {
           ed25519: authKeypair.publicKey,
         },
       }
-
       const response = await this.api.updateProfile(newProfileInfo)
+
+      // Re-encrypt the queen client's credentials and update profile meta.
+      const currentProfileMeta = await this.api.getProfileMeta()
+      const serializedQueenClientConfig = this._queenClient.config.serialize()
+      const encQueenCreds = await crypto.encryptString(
+        JSON.stringify(serializedQueenClientConfig),
+        encKey
+      )
       await this.api.updateProfileMeta({
         backupEnabled: currentProfileMeta.backupEnabled,
         backupClient: encQueenCreds,
         paperBackup: currentProfileMeta.paperBackup,
       })
-      // updating the refresher with new signing keys
+
+      // Update the refresher with new signing keys
       const clientToken = new Token(this.profile.token)
       const clientApi = this.api.clone()
       const username = this.profile.email
@@ -80,6 +86,7 @@ class Client {
       )
       this.api.setToken(clientToken)
 
+      // Return the updated profile.
       return response
     } else {
       throw new Error('Current password incorrect.')
