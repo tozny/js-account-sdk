@@ -103,19 +103,6 @@ class Client {
 */
   async updateProfile(profile) {
     const response = await this.api.updateProfile(profile)
-
-    // Updates the username in the refresher.
-
-    const clientToken = new Token(this.profile.token)
-    const clientApi = this.api.clone()
-    const sigKeys = this.api._token._refresher.keys
-    clientToken.refresher = new Refresher(
-      clientApi,
-      this._queenClient.crypto,
-      sigKeys,
-      profile.email
-    )
-    this.api.setToken(clientToken)
     return response
   }
 

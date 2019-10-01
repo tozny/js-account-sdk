@@ -102,7 +102,6 @@ class API {
   }
 
   async updateProfileMeta(metaMap) {
-    console.log('updateProfileMEta')
     const headers = await this.withToken({
       'Content-Type': 'application/json',
     })
