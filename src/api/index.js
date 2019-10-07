@@ -209,6 +209,22 @@ class API {
     await checkStatus(response)
     return true
   }
+
+  /**
+   * Requests a list of webhooks available for the account.
+   *
+   * @return {Array<object>} An array of webhook objects.
+   */
+  async listWebhooks() {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + `/v1/hook`, {
+      method: 'GET',
+      headers,
+    })
+    return validateRequestAsJSON(response)
+  }
 }
 
 module.exports = API

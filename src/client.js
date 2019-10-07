@@ -14,8 +14,6 @@ class Client {
     return this._queenClient
   }
 
-  updatePassword() {}
-
   async billingStatus() {
     const rawResponse = await this.api.getBillingStatus(this._queenClient)
     return AccountBillingStatus.decode(rawResponse)
@@ -59,6 +57,19 @@ class Client {
    */
   async deleteRegistrationToken(token) {
     return this.api.deleteToken(token.token)
+  }
+
+  /**
+   * Get a list of the current webhooks for an account.
+   *
+   * @return {Promise<Array.<Webhook>>}
+   */
+
+  async webhooks() {
+    const webhooks = await this.api.listWebhooks()
+    // Add Type and type checking
+    // return tokens.map(RegistrationToken.decode)
+    return webhooks
   }
 
   serialize() {
