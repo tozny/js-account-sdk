@@ -67,8 +67,7 @@ class Client {
 
   async webhooks() {
     const webhooks = await this.api.listWebhooks(this._queenClient)
-    // Add Type and type checking
-    // return tokens.map(RegistrationToken.decode)
+    // To Do: Add type and type checking
     return webhooks
   }
 
@@ -86,7 +85,7 @@ class Client {
       webhook_url,
       triggers
     )
-    // return webhook.decode(webhook)
+    // To Do: Add type and type checking
     return webhook
   }
 
@@ -97,7 +96,6 @@ class Client {
    * @returns {Promise<boolean>} True if the operation succeeds.
    */
   async deleteWebhook(webhookId) {
-    console.log('sdk client ', webhookId)
     return this.api.deleteWebhook(this._queenClient, webhookId)
   }
 

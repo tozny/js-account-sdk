@@ -235,7 +235,6 @@ class API {
    * @return {Promise<object>} The raw webhook object written
    */
   async createWebhook(queenClient, webhook_url, triggers) {
-    console.log('sdk api creatWebhook')
     const webhookTriggers = triggers.map(eventString => {
       return {
         enabled: true,
@@ -264,7 +263,6 @@ class API {
    * @return {Promise<boolean>} True if the operation is successful.
    */
   async deleteWebhook(queenClient, webhookId) {
-    console.log('sdk api ', webhookId)
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/hook/${webhookId}`,
       {
@@ -273,13 +271,6 @@ class API {
     )
     await checkStatus(response)
     return true
-    // return validateRequestAsJSON(response)
-    // const headers = await this.withToken({
-    //   'Content-Type': 'application/json',
-    // })
-    // const response = await fetch(`${this.apiUrl}/v1/hook/`, {
-    //   headers,
-    // })
   }
 }
 
