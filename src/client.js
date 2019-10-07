@@ -98,7 +98,7 @@ class Client {
    */
   async deleteWebhook(webhookId) {
     console.log('sdk client ', webhookId)
-    return this.api.deleteWebhook(webhookId)
+    return this.api.deleteWebhook(this._queenClient, webhookId)
   }
 
   serialize() {
