@@ -66,6 +66,7 @@ class Client {
    */
 
   async webhooks() {
+    console.log('client webhooks')
     const webhooks = await this.api.listWebhooks()
     // Add Type and type checking
     // return tokens.map(RegistrationToken.decode)

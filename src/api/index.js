@@ -139,6 +139,7 @@ class API {
   }
 
   async listClients(queenClient, nextToken) {
+    console.log('api listWebhooks')
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
       {
