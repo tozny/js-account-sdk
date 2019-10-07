@@ -242,10 +242,10 @@ class API {
         api_event: eventString,
       }
     })
-    const body = {
+    const body = JSON.stringify({
       webhook_url,
       triggers: webhookTriggers,
-    }
+    })
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/hook`,
       {
