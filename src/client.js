@@ -66,7 +66,7 @@ class Client {
    */
 
   async webhooks() {
-    const webhooks = await this.api.listWebhooks()
+    const webhooks = await this.api.listWebhooks(this._queenClient)
     // Add Type and type checking
     // return tokens.map(RegistrationToken.decode)
     return webhooks

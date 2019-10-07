@@ -215,16 +215,25 @@ class API {
    *
    * @return {Array<object>} An array of webhook objects.
    */
-  async listWebhooks() {
+
+  async listWebhooks(queenClient) {
     console.log('api listWebhooks')
-    const headers = await this.withToken({
-      'Content-Type': 'application/json',
-    })
-    const response = await fetch(this.apiUrl + `/v1/hook`, {
-      method: 'GET',
-      headers,
-    })
+
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/hook`,
+      {
+        method: 'GET',
+      }
+    )
     return validateRequestAsJSON(response)
+    // const headers = await this.withToken({
+    //   'Content-Type': 'application/json',
+    // })
+    // const response = await fetch(this.apiUrl + `/v1/hook`, {
+    //   method: 'GET',
+    //   headers,
+    // })
+    // return validateRequestAsJSON(response)
   }
 
   /**
