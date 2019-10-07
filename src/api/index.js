@@ -264,6 +264,7 @@ class API {
    * @return {Promise<boolean>} True if the operation is successful.
    */
   async deleteWebhook(queenClient, webhookId) {
+    console.log('sdk api ', webhookId)
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/hook/${webhookId}`,
       {

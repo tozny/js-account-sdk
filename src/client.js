@@ -97,6 +97,7 @@ class Client {
    * @returns {Promise<boolean>} True if the operation succeeds.
    */
   async deleteWebhook(webhookId) {
+    console.log('sdk client ', webhookId)
     return this.api.deleteWebhook(webhookId)
   }
 
