@@ -81,7 +81,11 @@ class Client {
    * @return {Promise<Webhook>} The created webhook.
    */
   async newWebhook(webhook_url, triggers) {
-    const webhook = await this.api.createWebhook(webhook_url, triggers)
+    const webhook = await this.api.createWebhook(
+      this._queenClient,
+      webhook_url,
+      triggers
+    )
     // return webhook.decode(webhook)
     return webhook
   }
