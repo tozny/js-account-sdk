@@ -66,11 +66,34 @@ class Client {
    */
 
   async webhooks() {
-    console.log('client webhooks')
     const webhooks = await this.api.listWebhooks()
     // Add Type and type checking
     // return tokens.map(RegistrationToken.decode)
     return webhooks
+  }
+
+  /**
+   * Create a new webhook for the account.
+   * @param {string} webhook_url The payload url
+   * @param {object} triggers A list of triggers to associate with the webhook
+   *                                  not set, unlimited uses are allowed.
+   *
+   * @return {Promise<Webhook>} The created webhook.
+   */
+  async newWebhook(webhook_url, triggers) {
+    const webhook = await this.api.createWebhook(webhook_url, triggers)
+    // return webhook.decode(webhook)
+    return webhook
+  }
+
+  /**
+   * Removes a webhook object from the accounts available webhooks.
+   * @param {Webhook} webhook The webhook to remove from the account.
+   *
+   * @returns {Promise<boolean>} True if the operation succeeds.
+   */
+  async deleteWebhook(webhookId) {
+    return this.api.deleteWebhook(webhookId)
   }
 
   serialize() {

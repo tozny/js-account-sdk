@@ -139,7 +139,6 @@ class API {
   }
 
   async listClients(queenClient, nextToken) {
-    console.log('api listWebhooks')
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
       {
@@ -217,6 +216,7 @@ class API {
    * @return {Array<object>} An array of webhook objects.
    */
   async listWebhooks() {
+    console.log('api listWebhooks')
     const headers = await this.withToken({
       'Content-Type': 'application/json',
     })
@@ -225,6 +225,55 @@ class API {
       headers,
     })
     return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Requests the creation of a new webhook.
+   *
+   * @param {string} webhook_url A user defined name for the token.
+   * @param {object} trigger A list of WebhookTrigger objects.
+   *
+   * @return {Promise<object>} The raw webhook object written
+   */
+  async createWebhook(webhook_url, triggers) {
+    const webhookTriggers = triggers.map(eventString => {
+      return {
+        enabled: true,
+        api_event: eventString,
+      }
+    })
+    const body = {
+      webhook_url,
+      triggers: webhookTriggers,
+    }
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + `/v1/hook`, {
+      method: 'POST',
+      headers,
+      body,
+    })
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Requests a specific webhook be removed from the account by webhook id.
+   *
+   * @param {string} webhook_id The webhook id to delete from the server
+   *
+   * @return {Promise<boolean>} True if the operation is successful.
+   */
+  async deleteWebhook(webhookId) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(`${this.apiUrl}/v1/hook/${webhookId}`, {
+      method: 'DELETE',
+      headers,
+    })
+    await checkStatus(response)
+    return true
   }
 }
 
