@@ -236,6 +236,7 @@ class API {
    * @return {Promise<object>} The raw webhook object written
    */
   async createWebhook(webhook_url, triggers) {
+    console.log('sdk api creatWebhook')
     const webhookTriggers = triggers.map(eventString => {
       return {
         enabled: true,
