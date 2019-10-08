@@ -1,6 +1,9 @@
 const { validateStorageClient } = require('./utils')
 const API = require('./api')
+const { KEY_HASH_ROUNDS } = require('./utils/constants')
 const { AccountBillingStatus, RegistrationToken } = require('./types')
+const Refresher = require('./api/refresher')
+const Token = require('./api/token')
 
 class Client {
   constructor(api, account, profile, queenClient) {
@@ -14,7 +17,81 @@ class Client {
     return this._queenClient
   }
 
-  updatePassword() {}
+  async validatePassword(password) {
+    const crypto = this._queenClient.crypto
+    const authSalt = await crypto.b64decode(this.profile.auth_salt)
+    const keypair = await crypto.deriveSigningKey(
+      password,
+      authSalt,
+      KEY_HASH_ROUNDS
+    )
+    const signingKey = this.profile.signing_key
+    return keypair.publicKey === signingKey.ed25519
+  }
+
+  async changePassword({ password, newPassword }) {
+    const passwordChecksOut = await this.validatePassword(password)
+    if (passwordChecksOut) {
+      // The profile to be re-encrypted.
+      const crypto = this._queenClient.crypto
+
+      // Generate new salts and keys
+      const encSalt = await crypto.randomBytes(16)
+      const authSalt = await crypto.randomBytes(16)
+      const encKey = await crypto.deriveSymmetricKey(
+        newPassword,
+        encSalt,
+        KEY_HASH_ROUNDS
+      )
+      const authKeypair = await crypto.deriveSigningKey(
+        newPassword,
+        authSalt,
+        KEY_HASH_ROUNDS
+      )
+
+      // Make new Profile and update existing profile.
+      const b64AuthSalt = await crypto.b64encode(authSalt)
+      const b64EncSalt = await crypto.b64encode(encSalt)
+      const newProfileInfo = {
+        auth_salt: b64AuthSalt,
+        enc_salt: b64EncSalt,
+        signing_key: {
+          ed25519: authKeypair.publicKey,
+        },
+      }
+      const response = await this.api.updateProfile(newProfileInfo)
+
+      // Re-encrypt the queen client's credentials and update profile meta.
+      const currentProfileMeta = await this.api.getProfileMeta()
+      const serializedQueenClientConfig = this._queenClient.config.serialize()
+      const encQueenCreds = await crypto.encryptString(
+        JSON.stringify(serializedQueenClientConfig),
+        encKey
+      )
+      await this.api.updateProfileMeta({
+        backupEnabled: currentProfileMeta.backupEnabled,
+        backupClient: encQueenCreds,
+        paperBackup: currentProfileMeta.paperBackup,
+      })
+
+      // Update the refresher with new signing keys
+      const clientToken = new Token(this.profile.token)
+      const clientApi = this.api.clone()
+      const username = this.profile.email
+      clientToken.refresher = new Refresher(
+        clientApi,
+        this._queenClient.crypto,
+        authKeypair,
+        username
+      )
+      this.api.setToken(clientToken)
+
+      // Return the updated profile.
+      return response
+    } else {
+      throw new Error('Current password incorrect.')
+    }
+  }
 
   async billingStatus() {
     const rawResponse = await this.api.getBillingStatus(this._queenClient)
@@ -27,11 +104,21 @@ class Client {
     return rawResponse
   }
 
+  /* 
+  Allows user to update the name and email on their account.
+  Profile param contains a name and email for the user.
+*/
+  async updateProfile(profile) {
+    const response = await this.api.updateProfile(profile)
+    return response
+  }
+
   /**
    * Get a list of the current registration tokens for an account.
    *
    * @return {Promise<Array.<RegistrationToken>>}
    */
+
   async registrationTokens() {
     const tokens = await this.api.listTokens()
     return tokens.map(RegistrationToken.decode)
