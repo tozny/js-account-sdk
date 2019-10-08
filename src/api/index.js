@@ -148,6 +148,18 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  async updateProfile(profile) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const request = await fetch(this.apiUrl + '/v1/account/profile', {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ profile: profile }),
+    })
+    return validateRequestAsJSON(request)
+  }
+
   /**
    * Requests a list of tokens available for the account.
    *
