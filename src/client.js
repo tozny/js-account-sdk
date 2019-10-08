@@ -156,7 +156,7 @@ class Client {
 
   async webhooks() {
     const webhooks = await this.api.listWebhooks(this._queenClient)
-    // To Do: Add type and type checking
+    // TODO: Add type and type checking
     return webhooks
   }
 
