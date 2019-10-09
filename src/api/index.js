@@ -138,6 +138,52 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  async addBillingCoupon(queenClient, couponCode) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + '/v1/billing/coupon',
+      {
+        method: 'POST',
+        'Content-Type': 'application/json',
+        body: JSON.stringify({ coupon_code: couponCode }),
+      }
+    )
+    return checkStatus(response)
+  }
+
+  async updateAccountBilling(account) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + '/v1/account/profile', {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({
+        account: account,
+      }),
+    })
+    return validateRequestAsJSON(response)
+  }
+
+  async subscribe(queenClient) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + '/v1/billing/resubscribe',
+      {
+        method: 'GET',
+      }
+    )
+    return checkStatus(response)
+  }
+
+  async unsubscribe(queenClient) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + '/v1/billing/unsubscribe',
+      {
+        method: 'GET',
+      }
+    )
+    return checkStatus(response)
+  }
+
   async listClients(queenClient, nextToken) {
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
