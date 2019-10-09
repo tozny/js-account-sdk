@@ -138,6 +138,52 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  async addBillingCoupon(queenClient, couponCode) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + '/v1/billing/coupon',
+      {
+        method: 'POST',
+        'Content-Type': 'application/json',
+        body: JSON.stringify({ coupon_code: couponCode }),
+      }
+    )
+    return checkStatus(response)
+  }
+
+  async updateAccountBilling(account) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + '/v1/account/profile', {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({
+        account: account,
+      }),
+    })
+    return validateRequestAsJSON(response)
+  }
+
+  async subscribe(queenClient) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + '/v1/billing/resubscribe',
+      {
+        method: 'GET',
+      }
+    )
+    return checkStatus(response)
+  }
+
+  async unsubscribe(queenClient) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + '/v1/billing/unsubscribe',
+      {
+        method: 'GET',
+      }
+    )
+    return checkStatus(response)
+  }
+
   async listClients(queenClient, nextToken) {
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
@@ -218,6 +264,69 @@ class API {
       method: 'DELETE',
       headers,
     })
+    await checkStatus(response)
+    return true
+  }
+
+  /**
+   * Requests a list of webhooks available for the account.
+   *
+   * @return {Array<object>} An array of webhook objects.
+   */
+
+  async listWebhooks(queenClient) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/hook`,
+      {
+        method: 'GET',
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Requests the creation of a new webhook.
+   *
+   * @param {string} webhook_url A user defined name for the token.
+   * @param {object} trigger A list of WebhookTrigger objects.
+   *
+   * @return {Promise<object>} The raw webhook object written
+   */
+  async createWebhook(queenClient, webhook_url, triggers) {
+    const webhookTriggers = triggers.map(eventString => {
+      return {
+        enabled: true,
+        api_event: eventString,
+      }
+    })
+    const body = JSON.stringify({
+      webhook_url,
+      triggers: webhookTriggers,
+    })
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/hook`,
+      {
+        method: 'POST',
+        body,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Requests a specific webhook be removed from the account by webhook id.
+   *
+   * @param {string} webhook_id The webhook id to delete from the server
+   *
+   * @return {Promise<boolean>} True if the operation is successful.
+   */
+  async deleteWebhook(queenClient, webhookId) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/hook/${webhookId}`,
+      {
+        method: 'DELETE',
+      }
+    )
     await checkStatus(response)
     return true
   }
