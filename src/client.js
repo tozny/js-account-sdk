@@ -165,6 +165,46 @@ class Client {
     return this.api.deleteToken(token.token)
   }
 
+  /**
+   * Get a list of the current webhooks for an account.
+   *
+   * @return {Promise<Array.<Webhook>>}
+   */
+
+  async webhooks() {
+    const webhooks = await this.api.listWebhooks(this._queenClient)
+    // TODO: Add type and type checking
+    return webhooks
+  }
+
+  /**
+   * Create a new webhook for the account.
+   * @param {string} webhook_url The payload url
+   * @param {object} triggers A list of triggers to associate with the webhook
+   *                                  not set, unlimited uses are allowed.
+   *
+   * @return {Promise<Webhook>} The created webhook.
+   */
+  async newWebhook(webhook_url, triggers) {
+    const webhook = await this.api.createWebhook(
+      this._queenClient,
+      webhook_url,
+      triggers
+    )
+    // To Do: Add type and type checking
+    return webhook
+  }
+
+  /**
+   * Removes a webhook object from the accounts available webhooks.
+   * @param {Webhook} webhook The webhook to remove from the account.
+   *
+   * @returns {Promise<boolean>} True if the operation succeeds.
+   */
+  async deleteWebhook(webhookId) {
+    return this.api.deleteWebhook(this._queenClient, webhookId)
+  }
+
   serialize() {
     return {
       api: this.api.serialize(),
