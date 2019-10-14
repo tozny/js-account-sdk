@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "jest",
-    "prettier": "prettier --write src/**/*.js"
+    "prettier": "prettier --write src/**/*.js",
+    "tp": "./scripts/tozny_platform.sh"
   },
   "repository": {
     "type": "git",
