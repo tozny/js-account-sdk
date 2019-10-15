@@ -6,8 +6,14 @@
 
 const AccountBillingStatus = require('./accountBillingStatus')
 const RegistrationToken = require('./registrationToken')
+const Realm = require('./realm')
+const Sovereign = require('./sovereign')
+const Realms = require('./realms')
 
 module.exports = {
   AccountBillingStatus,
   RegistrationToken,
+  Realm,
+  Sovereign,
+  Realms,
 }

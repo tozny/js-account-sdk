@@ -1,7 +1,12 @@
 const { validateStorageClient } = require('./utils')
 const API = require('./api')
 const { KEY_HASH_ROUNDS } = require('./utils/constants')
-const { AccountBillingStatus, RegistrationToken } = require('./types')
+const {
+  AccountBillingStatus,
+  RegistrationToken,
+  Realm,
+  Realms,
+} = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
 
@@ -121,7 +126,7 @@ class Client {
     return rawResponse
   }
 
-  /* 
+  /*
   Allows user to update the name and email on their account.
   Profile param contains a name and email for the user.
 */
@@ -203,6 +208,44 @@ class Client {
    */
   async deleteWebhook(webhookId) {
     return this.api.deleteWebhook(this._queenClient, webhookId)
+  }
+
+  /**
+   * Requests the creation of a new TozID Realm.
+   *
+   * @param {string} realmName The user defined name for the realm to create.
+   * @param {string} sovereignName The user defined name for the ruler of the realm to create.
+   *
+   * @returns {Promise<Realm>} The representation of the created realm returned by the server.
+   */
+  async createRealm(realmName, sovereignName) {
+    const rawResponse = await this.api.createRealm(
+      this._queenClient,
+      realmName,
+      sovereignName
+    )
+    return Realm.decode(rawResponse)
+  }
+
+  /**
+   * Lists all Realms belonging to the account.
+   *
+   * @returns {Promise<Realms>} The listed realm representations returned by the server.
+   */
+  async listRealms() {
+    const rawResponse = await this.api.listRealms(this._queenClient)
+    return Realms.decode(rawResponse)
+  }
+
+  /**
+   * Requests the deletion of a named TozID Realm belonging to the account.
+   *
+   * @param {string} realmName The name for the realm to delete.
+   *
+   * @returns {Promise<Object>} Empty object.
+   */
+  async deleteRealm(realmName) {
+    return this.api.deleteRealm(this._queenClient, realmName)
   }
 
   serialize() {
