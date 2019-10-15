@@ -6,6 +6,7 @@ const {
   RegistrationToken,
   Realm,
   Realms,
+  Identity,
 } = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
@@ -246,6 +247,40 @@ class Client {
    */
   async deleteRealm(realmName) {
     return this.api.deleteRealm(this._queenClient, realmName)
+  }
+
+  /**
+   * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
+   * @param  {string} realmName         The name of the realm to register the broker identity with.
+   * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.
+   * @return {Promise<Identity>} The broker identity for the realm.
+   */
+  async registerRealmBrokerIdentity(realmName, registrationToken) {
+    // Generate key material for the broker Identity
+    const crypto = this._queenClient.crypto
+    const encryptionKeyPair = await crypto.generateKeypair()
+    const signingKeyPair = await crypto.generateSigningKeypair()
+    const brokerIdentity = {
+      name: `realm_${realmName}_broker_tozny_client`,
+      public_key: { curve25519: encryptionKeyPair.publicKey },
+      signing_key: { ed25519: signingKeyPair.publicKey },
+    }
+    // register the broker for the realm
+    const rawResponse = await this.api.registerRealmBrokerIdentity(
+      this._queenClient,
+      realmName,
+      registrationToken,
+      brokerIdentity
+    )
+    // populate the client side held key material so the
+    // full broker configuration can be persisted and reused
+    rawResponse.identity.private_key = {
+      curve25519: encryptionKeyPair.privateKey,
+    }
+    rawResponse.identity.private_signing_key = {
+      ed25519: signingKeyPair.privateKey,
+    }
+    return Identity.decode(rawResponse)
   }
 
   serialize() {

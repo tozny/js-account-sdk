@@ -389,6 +389,34 @@ class API {
     )
     return validateRequestAsJSON(response)
   }
+
+  /**
+   * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
+   * @param  {object} queenClient       The queen client for the account.
+   * @param  {string} realmName         The name of the realm to register the broker identity with.
+   * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.
+   * @param  {Identity} brokerIdentity   Params for an identity to register as the realm's broker.
+   * @return {Promise<Identity>} The broker identity for the realm.
+   */
+  async registerRealmBrokerIdentity(
+    queenClient,
+    realmName,
+    registrationToken,
+    brokerIdentity
+  ) {
+    const registerRealmBrokerRequest = {
+      realm_registration_token: registrationToken,
+      identity: brokerIdentity,
+    }
+    const response = await queenClient.authenticator.tsv1Fetch(
+      this.apiUrl + `/v1/identity/realm/${realmName}/broker/identity`,
+      {
+        method: 'POST',
+        body: JSON.stringify(registerRealmBrokerRequest),
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
 }
 
 module.exports = API
