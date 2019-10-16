@@ -216,6 +216,7 @@ class Client {
    */
 
   async getRequests(startTime, endTime, includeAdminRequests, nextToken) {
+    console.log('calls sdk getRequests')
     const accountId = this._profile.id
     console.log(startTime, endTime, includeAdminRequests, nextToken, accountId)
     return this.api.getRequests(
