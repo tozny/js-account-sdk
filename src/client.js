@@ -216,10 +216,7 @@ class Client {
    */
 
   async getRequests(startTime, endTime, includeAdminRequests, nextToken) {
-    console.log('calls sdk getRequests')
-    console.log(this._profile)
-    console.log(this._profile.id)
-    const accountId = this._profile.id
+    const accountId = this.profile.id
     console.log(startTime, endTime, includeAdminRequests, nextToken, accountId)
     return this.api.getRequests(
       this._queenClient,
