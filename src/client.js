@@ -205,6 +205,29 @@ class Client {
     return this.api.deleteWebhook(this._queenClient, webhookId)
   }
 
+  /**
+   * Gets the api request history using provided params.
+   * @param {String} startTime Start time for range of requests
+   *  @param {String} endTime End time for range of requests
+   * @param {Boolean} includeAdminRequests Indicates whether to exclude admin requests
+   * @param {Number} nextToken allows backend to paginate requests
+   *
+   * @returns {Object} request response object
+   */
+
+  async getRequests(startTime, endTime, includeAdminRequests, nextToken) {
+    const accountId = this._profile.id
+    console.log(startTime, endTime, includeAdminRequests, nextToken, accountId)
+    return this.api.getRequests(
+      this._queenClient,
+      accountId,
+      startTime,
+      endTime,
+      includeAdminRequests,
+      nextToken
+    )
+  }
+
   serialize() {
     return {
       api: this.api.serialize(),

@@ -330,6 +330,54 @@ class API {
     await checkStatus(response)
     return true
   }
+
+  async getRequests(
+    queenClient,
+    accountId,
+    startTime,
+    endTime,
+    includeAdminRequests,
+    nextToken
+  ) {
+    let adminRequests = []
+    if (typeof includeAdminRequests === 'undefined') {
+      includeAdminRequests = true
+    }
+    if (!includeAdminRequests) {
+      adminRequests = [
+        { path: '/v1/account/tokens' },
+        { path: '/v1/account/profile' },
+        { path: '/v1/account/profile/stats' },
+        { path: '/v1/metric/requests' },
+        { path: '/v1/account/e3db/clients' },
+        { path: '/v1/account/profile/meta' },
+        { path: '/v1/metric/aggregations' },
+        { path: '/v1/account/auth' },
+        { path: '/v1/metric/requests/aggregations' },
+        { path: '/v1/metric/' },
+      ]
+    }
+    const body = JSON.stringify({
+      account_id: accountId,
+      range: {
+        start_time: startTime,
+        end_time: endTime,
+      },
+      exclude: {
+        api_endpoints: adminRequests,
+      },
+      next_token: nextToken,
+    })
+    console.log('body >>', body)
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/metric/requests`,
+      {
+        method: 'POST',
+        body: body,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
 }
 
 module.exports = API
