@@ -238,7 +238,7 @@ class Client {
   async getAggregations(startTime, endTime) {
     console.log('client getAggregations', startTime, endTime)
     const accountId = this.profile.id
-    return this.api.getRequests(
+    return this.api.getAggregations(
       this._queenClient,
       accountId,
       startTime,
