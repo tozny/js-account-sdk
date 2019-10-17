@@ -217,7 +217,6 @@ class Client {
 
   async getRequests(startTime, endTime, includeAdminRequests, nextToken) {
     const accountId = this.profile.id
-    console.log(startTime, endTime, includeAdminRequests, nextToken, accountId)
     return this.api.getRequests(
       this._queenClient,
       accountId,
@@ -225,6 +224,25 @@ class Client {
       endTime,
       includeAdminRequests,
       nextToken
+    )
+  }
+
+  /**
+   * Gets aggregations for the api calls made in a given timeframe.
+   * @param {String} startTime Start time for range of requests
+   *  @param {String} endTime End time for range of requests
+   *
+   * @returns {Object} aggregations response object
+   */
+
+  async getAggregations(startTime, endTime) {
+    console.log('client getAggregations', startTime, endTime)
+    const accountId = this.profile.id
+    return this.api.getRequests(
+      this._queenClient,
+      accountId,
+      startTime,
+      endTime
     )
   }
 

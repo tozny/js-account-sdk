@@ -368,9 +368,27 @@ class API {
       },
       next_token: nextToken,
     })
-    console.log('body >>', body)
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + `/v1/metric/requests`,
+      {
+        method: 'POST',
+        body: body,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  async getAggregation(queenClient, accountId, startTime, endTime) {
+    console.log('sdk api', accountId, startTime, endTime)
+    const body = JSON.stringify({
+      account_id: accountId,
+      range: {
+        start_time: startTime,
+        end_time: endTime,
+      },
+    })
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/metric/requests/aggregations`,
       {
         method: 'POST',
         body: body,
