@@ -379,7 +379,6 @@ class API {
   }
 
   async getAggregations(queenClient, accountId, startTime, endTime) {
-    console.log('sdk api', accountId, startTime, endTime)
     const body = JSON.stringify({
       account_id: accountId,
       range: {
