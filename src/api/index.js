@@ -355,6 +355,7 @@ class API {
         { path: '/v1/account/auth' },
         { path: '/v1/metric/requests/aggregations' },
         { path: '/v1/metric/' },
+        { path: '/v1/billing/subscription/status' },
       ]
     }
     const body = JSON.stringify({
