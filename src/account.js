@@ -77,8 +77,6 @@ class Account {
    * @return {Promise<Client>} The Client instance for the provided credentials.
    */
   async login(username, password, type = 'standard') {
-    console.log('sdk login called with')
-    console.log(username, password, type)
     const challenge = await this.api.getChallenge(username)
     const b64AuthSalt =
       type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt
