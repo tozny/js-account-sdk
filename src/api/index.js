@@ -378,6 +378,46 @@ class API {
     )
     return validateRequestAsJSON(response)
   }
+  /**
+   * Requests the creation of a new TozID Realm.
+   *
+   * @param {object} queenClient The queen client for the account to create the realm for.
+   * @param {string} realmName The user defined name for the realm to create.
+   * @param {string} sovereignName The user defined name for the ruler of the realm to create.
+   *
+   * @return {Promise<Realm>} The decoded create realm response returned by the server.
+   */
+  async createRealm(queenClient, realmName, sovereignName) {
+    const createRealmRequest = {
+      realm_name: realmName,
+      sovereign_name: sovereignName,
+    }
+    const response = await queenClient.authenticator.tsv1Fetch(
+      this.apiUrl + '/v1/identity/realm',
+      {
+        method: 'POST',
+        body: JSON.stringify(createRealmRequest),
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Lists all Realms belonging to the account.
+   *
+   * @param {object} queenClient The queen client for the account to list the realms of.
+   *
+   * @return {Promise<ListedRealms>} The decoded listed realm representations returned by the server.
+   */
+  async listRealms(queenClient) {
+    const response = await queenClient.authenticator.tsv1Fetch(
+      this.apiUrl + '/v1/identity/realm',
+      {
+        method: 'GET',
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
 
   async getAggregations(queenClient, accountId, startTime, endTime) {
     const body = JSON.stringify({
@@ -392,6 +432,51 @@ class API {
       {
         method: 'POST',
         body: body,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+  /**
+   * Requests the creation of a new TozID Realm.
+   *
+   * @param {object} queenClient The queen client for the account to delete the realm from.
+   * @param {string} realmName The name of the realm to delete.
+   *
+   * @return {Promise<object>} Empty object.
+   */
+  async deleteRealm(queenClient, realmName) {
+    const response = await queenClient.authenticator.tsv1Fetch(
+      this.apiUrl + `/v1/identity/realm/${realmName}`,
+      {
+        method: 'DELETE',
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
+   * @param  {object} queenClient       The queen client for the account.
+   * @param  {string} realmName         The name of the realm to register the broker identity with.
+   * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.
+   * @param  {Identity} brokerIdentity   Params for an identity to register as the realm's broker.
+   * @return {Promise<Identity>} The broker identity for the realm.
+   */
+  async registerRealmBrokerIdentity(
+    queenClient,
+    realmName,
+    registrationToken,
+    brokerIdentity
+  ) {
+    const registerRealmBrokerRequest = {
+      realm_registration_token: registrationToken,
+      identity: brokerIdentity,
+    }
+    const response = await queenClient.authenticator.tsv1Fetch(
+      this.apiUrl + `/v1/identity/realm/${realmName}/broker/identity`,
+      {
+        method: 'POST',
+        body: JSON.stringify(registerRealmBrokerRequest),
       }
     )
     return validateRequestAsJSON(response)

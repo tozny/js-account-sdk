@@ -1,7 +1,13 @@
 const { validateStorageClient } = require('./utils')
 const API = require('./api')
 const { KEY_HASH_ROUNDS } = require('./utils/constants')
-const { AccountBillingStatus, RegistrationToken } = require('./types')
+const {
+  AccountBillingStatus,
+  RegistrationToken,
+  Realm,
+  Realms,
+  Identity,
+} = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
 
@@ -121,7 +127,7 @@ class Client {
     return rawResponse
   }
 
-  /* 
+  /*
   Allows user to update the name and email on their account.
   Profile param contains a name and email for the user.
 */
@@ -243,6 +249,77 @@ class Client {
       startTime,
       endTime
     )
+  }
+  /*
+   * Requests the creation of a new TozID Realm.
+   *
+   * @param {string} realmName The user defined name for the realm to create.
+   * @param {string} sovereignName The user defined name for the ruler of the realm to create.
+   *
+   * @returns {Promise<Realm>} The representation of the created realm returned by the server.
+   */
+  async createRealm(realmName, sovereignName) {
+    const rawResponse = await this.api.createRealm(
+      this._queenClient,
+      realmName,
+      sovereignName
+    )
+    return Realm.decode(rawResponse)
+  }
+
+  /**
+   * Lists all Realms belonging to the account.
+   *
+   * @returns {Promise<Realms>} The listed realm representations returned by the server.
+   */
+  async listRealms() {
+    const rawResponse = await this.api.listRealms(this._queenClient)
+    return Realms.decode(rawResponse)
+  }
+
+  /**
+   * Requests the deletion of a named TozID Realm belonging to the account.
+   *
+   * @param {string} realmName The name for the realm to delete.
+   *
+   * @returns {Promise<Object>} Empty object.
+   */
+  async deleteRealm(realmName) {
+    return this.api.deleteRealm(this._queenClient, realmName)
+  }
+
+  /**
+   * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
+   * @param  {string} realmName         The name of the realm to register the broker identity with.
+   * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.
+   * @return {Promise<Identity>} The broker identity for the realm.
+   */
+  async registerRealmBrokerIdentity(realmName, registrationToken) {
+    // Generate key material for the broker Identity
+    const crypto = this._queenClient.crypto
+    const encryptionKeyPair = await crypto.generateKeypair()
+    const signingKeyPair = await crypto.generateSigningKeypair()
+    const brokerIdentity = {
+      name: `realm_${realmName}_broker_tozny_client`,
+      public_key: { curve25519: encryptionKeyPair.publicKey },
+      signing_key: { ed25519: signingKeyPair.publicKey },
+    }
+    // register the broker for the realm
+    const rawResponse = await this.api.registerRealmBrokerIdentity(
+      this._queenClient,
+      realmName,
+      registrationToken,
+      brokerIdentity
+    )
+    // populate the client side held key material so the
+    // full broker configuration can be persisted and reused
+    rawResponse.identity.private_key = {
+      curve25519: encryptionKeyPair.privateKey,
+    }
+    rawResponse.identity.private_signing_key = {
+      ed25519: signingKeyPair.privateKey,
+    }
+    return Identity.decode(rawResponse)
   }
 
   serialize() {

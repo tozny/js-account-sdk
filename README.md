@@ -63,6 +63,60 @@ This caches the client connection in a scope variable so it doesn't need to log 
 
 Account Clients provide managed access to account level operations. The actual HTTP request sequence, authentication method, etc. is hidden behind the higher level methods. This allows us to maintain a consistent API for use in account applications and change implementation details as needed (e.g. a new endpoint, a different auth method, etc.). These higher level methods should correspond with specific account actions (e.g. `createWebHook`, etc). The parameters will provide insight into what is required to perform those operations.
 
+## Tests
+
+### Test Integration environment
+
+Test run against an instance of the Tozny API located at the value of the [env variable `API_URL`](./.env). By default this is set to run against a local instance of Tozny platform, but can be pointed at any deployed Tozny environment (i.e. `https://dev.e3db.com` for the dev environment).
+
+To spin up Tozny platform locally, run
+
+```bash
+npm run tp up
+```
+
+To stop Tozny platform, run
+
+```bash
+npm run tp down
+```
+
+To pull the latest version of Tozny platform images
+
+```bash
+npm run tp update
+```
+
+_NOTE_ In order to run Tozny platform `TOZNY_PLATFORM_DIR` must be set in your shell and should put to the local directory where the [Tozny platform repository](https://github.com/tozny/tozny-platform) is checked out. You will also have to have access to the Docker registry to pull the images needed to run Tozny platform.
+
+### Test Commands
+
+Test are constructed using the [Jest test framework](https://jestjs.io) and run via npm script commands.
+
+To run all tests
+
+```bash
+npm run test
+```
+
+Run a specific test file
+
+```bash
+npm test -i realm.test.js
+```
+
+Run a specific test in a specific file
+
+```bash
+npm test -- -i realm.test.js -t 'can create a realm'
+```
+
+Run any tests containing a phrase in any file
+
+```bash
+npm test -- -t 'realm'
+```
+
 ## Publishing
 
 Checkout branch
