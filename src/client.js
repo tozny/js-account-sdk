@@ -35,11 +35,15 @@ class Client {
     return keypair.publicKey === signingKey.ed25519
   }
 
-  async changePassword({ passwordOrPaperKey, newPassword, type = 'standard' }) {
+  async changePassword({ password, newPassword, type = 'standard' }) {
     console.log('calls sdk changePassword in client')
-    console.log(passwordOrPaperKey, newPassword, type)
+    /* 
+     *  If the type is paper, the password is the user's backup paperkey.
+     *  In this case, the paperkey has already been validated.
+     */
+    console.log(password, newPassword, type)
     const passwordChecksOut =
-      type === 'paper' ? true : await this.validatePassword(passwordOrPaperKey)
+      type === 'paper' ? true : await this.validatePassword(password)
     if (passwordChecksOut) {
       // The profile to be re-encrypted.
       const crypto = this._queenClient.crypto
