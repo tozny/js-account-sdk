@@ -15,6 +15,10 @@ class Token {
   }
 
   get expired() {
+    console.log('expired getter')
+    console.log(Date.now() - this._created)
+    console.log(TOKEN_LIFETIME_SECONDS)
+    console.log(Date.now() - this._created > TOKEN_LIFETIME_SECONDS)
     return Date.now() - this._created > TOKEN_LIFETIME_SECONDS
   }
 
