@@ -45,6 +45,7 @@ class Token {
         'A refresher object must be set before the refresh method can be called.'
       )
     }
+    console.log('ABOUT TO REFRESH')
     const newToken = await this.refresher.refresh()
     this._token = newToken
     this._created = Date.now()
