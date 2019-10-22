@@ -336,28 +336,9 @@ class API {
     accountId,
     startTime,
     endTime,
-    includeAdminRequests,
-    nextToken
+    nextToken,
+    endpointsToExclude
   ) {
-    let adminRequests = []
-    if (typeof includeAdminRequests === 'undefined') {
-      includeAdminRequests = true
-    }
-    if (!includeAdminRequests) {
-      adminRequests = [
-        { path: '/v1/account/tokens' },
-        { path: '/v1/account/profile' },
-        { path: '/v1/account/profile/stats' },
-        { path: '/v1/metric/requests' },
-        { path: '/v1/account/e3db/clients' },
-        { path: '/v1/account/profile/meta' },
-        { path: '/v1/metric/aggregations' },
-        { path: '/v1/account/auth' },
-        { path: '/v1/metric/requests/aggregations' },
-        { path: '/v1/metric/' },
-        { path: '/v1/billing/subscription/status' },
-      ]
-    }
     const body = JSON.stringify({
       account_id: accountId,
       range: {
@@ -365,7 +346,7 @@ class API {
         end_time: endTime,
       },
       exclude: {
-        api_endpoints: adminRequests,
+        api_endpoints: endpointsToExclude,
       },
       next_token: nextToken,
     })

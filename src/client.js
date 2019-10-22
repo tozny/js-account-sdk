@@ -221,15 +221,15 @@ class Client {
    * @returns {Object} request response object
    */
 
-  async getRequests(startTime, endTime, includeAdminRequests, nextToken) {
+  async getRequests(startTime, endTime, nextToken, endpointsToExclude) {
     const accountId = this.profile.id
     return this.api.getRequests(
       this._queenClient,
       accountId,
       startTime,
       endTime,
-      includeAdminRequests,
-      nextToken
+      nextToken,
+      endpointsToExclude
     )
   }
 
