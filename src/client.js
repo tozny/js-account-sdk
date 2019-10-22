@@ -37,7 +37,7 @@ class Client {
 
   async changePassword({ password, newPassword, type = 'standard' }) {
     console.log('calls sdk changePassword in client')
-    /* 
+    /*
      *  If the type is paper, the password is the user's backup paperkey.
      *  In this case, the paperkey has already been validated.
      */
