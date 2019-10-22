@@ -1,7 +1,7 @@
 class SRPRefresher {
   constructor(api, crypto, keys, username, type) {
     ;(this.api = api), (this.crypto = crypto), (this.keys = keys)
-    this.username = username
+    ;(this.username = username), (this.type = type)
   }
 
   async refresh() {
@@ -10,7 +10,7 @@ class SRPRefresher {
       challenge.challenge,
       this.keys.privateKey
     )
-    const type = type === 'paper' ? 'paper' : 'password'
+    const type = this.type === 'paper' ? 'paper' : 'password'
     const profile = await this.api.completeChallenge(
       this.username,
       challenge.challenge,
