@@ -36,6 +36,8 @@ class Client {
   }
 
   async changePassword({ passwordOrPaperKey, newPassword, type = 'standard' }) {
+    console.log('calls sdk changePassword in client')
+    console.log(passwordOrPaperKey, newPassword, type)
     const passwordChecksOut =
       type === 'paper' ? true : await this.validatePassword(passwordOrPaperKey)
     if (passwordChecksOut) {
