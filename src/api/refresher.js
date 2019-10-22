@@ -1,5 +1,5 @@
 class SRPRefresher {
-  constructor(api, crypto, keys, username) {
+  constructor(api, crypto, keys, username, type) {
     ;(this.api = api), (this.crypto = crypto), (this.keys = keys)
     this.username = username
   }
@@ -10,11 +10,12 @@ class SRPRefresher {
       challenge.challenge,
       this.keys.privateKey
     )
+    const type = type === 'paper' ? 'paper' : 'password'
     const profile = await this.api.completeChallenge(
       this.username,
       challenge.challenge,
       signature,
-      'password'
+      type
     )
     return profile.token
   }
