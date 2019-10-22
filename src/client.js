@@ -35,8 +35,9 @@ class Client {
     return keypair.publicKey === signingKey.ed25519
   }
 
-  async changePassword({ password, newPassword }) {
-    const passwordChecksOut = await this.validatePassword(password)
+  async changePassword({ passwordOrPaperKey, newPassword, type = 'standard' }) {
+    const passwordChecksOut =
+      type === 'paper' ? true : await this.validatePassword(passwordOrPaperKey)
     if (passwordChecksOut) {
       // The profile to be re-encrypted.
       const crypto = this._queenClient.crypto
