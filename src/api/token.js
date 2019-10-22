@@ -15,10 +15,6 @@ class Token {
   }
 
   get expired() {
-    console.log('expired getter')
-    console.log(Date.now() - this._created)
-    console.log(TOKEN_LIFETIME_SECONDS)
-    console.log(Date.now() - this._created > TOKEN_LIFETIME_SECONDS)
     return Date.now() - this._created > TOKEN_LIFETIME_SECONDS
   }
 
@@ -49,7 +45,6 @@ class Token {
         'A refresher object must be set before the refresh method can be called.'
       )
     }
-    console.log('ABOUT TO REFRESH')
     const newToken = await this.refresher.refresh()
     this._token = newToken
     this._created = Date.now()
