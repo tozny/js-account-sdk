@@ -1,4 +1,4 @@
-const { TOKEN_LIFETIME_SECONDS } = require('../utils/constants')
+const { TOKEN_LIFETIME_MILLISECONDS } = require('../utils/constants')
 
 class Token {
   constructor(token, created = Date.now()) {
@@ -18,9 +18,9 @@ class Token {
     console.log('date created >>>', this._created)
     console.log('date now >>>>', Date.now())
     console.log('time passed', Date.now() - this._created)
-    console.log(TOKEN_LIFETIME_SECONDS)
-    console.log(Date.now() - this._created > TOKEN_LIFETIME_SECONDS)
-    return Date.now() - this._created > TOKEN_LIFETIME_SECONDS
+    console.log(TOKEN_LIFETIME_MILLISECONDS)
+    console.log(Date.now() - this._created > TOKEN_LIFETIME_MILLISECONDS)
+    return Date.now() - this._created > TOKEN_LIFETIME_MILLISECONDS
   }
 
   get refresher() {
