@@ -79,8 +79,6 @@ class Client {
         JSON.stringify(serializedQueenClientConfig),
         encKey
       )
-      // THIS CALL FAILS WHEN LOGGED IN WITH PAPERKEY
-      // THE AUTH CALL HAS THE KEYID 'password' instead of 'paper'
       await this.api.updateProfileMeta({
         backupEnabled: currentProfileMeta.backupEnabled,
         backupClient: encQueenCreds,
