@@ -24,10 +24,12 @@ class API {
   }
 
   async token() {
+    console.log('expired --->', this._token.expired)
     if (!this._token) {
       throw new Error('No token has been set for the API')
     }
     if (this._token.expired) {
+      console.log('running if >>>>> ')
       await this._token.refresh()
     }
     return this._token
