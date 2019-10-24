@@ -1,7 +1,7 @@
 class SRPRefresher {
-  constructor(api, crypto, keys, username, type) {
+  constructor(api, crypto, keys, username) {
     ;(this.api = api), (this.crypto = crypto), (this.keys = keys)
-    ;(this.username = username), (this.type = type)
+    this.username = username
   }
 
   async refresh() {
