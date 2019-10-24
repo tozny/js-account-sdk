@@ -331,6 +331,34 @@ class API {
     return true
   }
 
+  async getRequests(
+    queenClient,
+    accountId,
+    startTime,
+    endTime,
+    nextToken,
+    endpointsToExclude
+  ) {
+    const body = JSON.stringify({
+      account_id: accountId,
+      range: {
+        start_time: startTime,
+        end_time: endTime,
+      },
+      exclude: {
+        api_endpoints: endpointsToExclude,
+      },
+      next_token: nextToken,
+    })
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/metric/requests`,
+      {
+        method: 'POST',
+        body: body,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
   /**
    * Requests the creation of a new TozID Realm.
    *
@@ -372,6 +400,23 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  async getAggregations(queenClient, accountId, startTime, endTime) {
+    const body = JSON.stringify({
+      account_id: accountId,
+      range: {
+        start_time: startTime,
+        end_time: endTime,
+      },
+    })
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/metric/requests/aggregations`,
+      {
+        method: 'POST',
+        body: body,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
   /**
    * Requests the creation of a new TozID Realm.
    *

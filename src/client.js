@@ -217,6 +217,45 @@ class Client {
   }
 
   /**
+   * Gets the api request history using provided params.
+   * @param {String} startTime Start time for range of requests
+   *  @param {String} endTime End time for range of requests
+   * @param {Boolean} includeAdminRequests Indicates whether to exclude admin requests
+   * @param {Number} nextToken allows backend to paginate requests
+   *
+   * @returns {Object} request response object
+   */
+
+  async getRequests(startTime, endTime, nextToken, endpointsToExclude) {
+    const accountId = this.profile.id
+    return this.api.getRequests(
+      this._queenClient,
+      accountId,
+      startTime,
+      endTime,
+      nextToken,
+      endpointsToExclude
+    )
+  }
+
+  /**
+   * Gets aggregations for the api calls made in a given timeframe.
+   * @param {String} startTime Start time for range of requests
+   *  @param {String} endTime End time for range of requests
+   *
+   * @returns {Object} aggregations response object
+   */
+
+  async getAggregations(startTime, endTime) {
+    const accountId = this.profile.id
+    return this.api.getAggregations(
+      this._queenClient,
+      accountId,
+      startTime,
+      endTime
+    )
+  }
+  /*
    * Requests the creation of a new TozID Realm.
    *
    * @param {string} realmName The user defined name for the realm to create.
