@@ -1,4 +1,4 @@
-const { TOKEN_LIFETIME_SECONDS } = require('../utils/constants')
+const { TOKEN_LIFETIME_MILLISECONDS } = require('../utils/constants')
 
 class Token {
   constructor(token, created = Date.now()) {
@@ -15,7 +15,7 @@ class Token {
   }
 
   get expired() {
-    return Date.now() - this._created > TOKEN_LIFETIME_SECONDS
+    return Date.now() - this._created > TOKEN_LIFETIME_MILLISECONDS
   }
 
   get refresher() {
