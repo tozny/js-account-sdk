@@ -10,12 +10,11 @@ class SRPRefresher {
       challenge.challenge,
       this.keys.privateKey
     )
-    const type = 'password'
     const profile = await this.api.completeChallenge(
       this.username,
       challenge.challenge,
       signature,
-      type
+      'password'
     )
     return profile.token
   }
