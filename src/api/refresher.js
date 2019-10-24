@@ -10,7 +10,7 @@ class SRPRefresher {
       challenge.challenge,
       this.keys.privateKey
     )
-    const type = this.type === 'paper' ? 'paper' : 'password'
+    const type = 'password'
     const profile = await this.api.completeChallenge(
       this.username,
       challenge.challenge,
