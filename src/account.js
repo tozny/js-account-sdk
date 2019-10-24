@@ -103,8 +103,7 @@ class Account {
       clientApi,
       this.crypto,
       sigKeys,
-      username,
-      type
+      username
     )
     clientApi.setToken(clientToken)
 
