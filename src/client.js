@@ -335,8 +335,8 @@ class Client {
    *
    * @returns
    */
-  async verifyEmail(realmName) {
-    return this.api.deleteRealm(this._queenClient, realmName)
+  async verifyEmail(toznyo, toznyr) {
+    return this.api.emailVerify(this._queenClient, toznyo, toznyr)
   }
 
   serialize() {
