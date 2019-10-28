@@ -336,7 +336,7 @@ class Client {
    * @returns
    */
   async verifyEmail(toznyo, toznyr) {
-    return this.api.verifyEmail(this._queenClient, toznyo, toznyr)
+    return this.api.verifyEmail(toznyo, toznyr)
   }
 
   serialize() {
