@@ -184,14 +184,35 @@ class API {
     return checkStatus(response)
   }
 
-  async listClients(queenClient, nextToken) {
+  async listClients(queenClient, nextToken, perPage = 50) {
     const response = await queenClient.authenticator.tokenFetch(
-      this.apiUrl + `/v1/client/admin?next=${nextToken}&limit=50`,
+      `${this.apiUrl}/v1/client/admin?next=${nextToken}&limit=${perPage}`,
       {
         method: 'GET',
       }
     )
     return validateRequestAsJSON(response)
+  }
+
+  async getClient(queenClient, clientId) {
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/client/admin/${clientId}`,
+      {
+        method: 'GET',
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  async setClientEnabled(queenClient, clientId, enabled) {
+    const request = await queenClient.authenticator.tokenFetch(
+      `${this.apiUrl}/v1/client/admin/${clientId}/enable`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ enabled }),
+      }
+    )
+    return checkStatus(request)
   }
 
   async updateProfile(profile) {
