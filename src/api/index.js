@@ -128,6 +128,28 @@ class API {
     return validateRequestAsJSON(request)
   }
 
+  async verifyEmail(toznyo, toznyr) {
+    const request = await fetch(
+      this.apiUrl +
+        `account/v1/profile/verified?toznyo=${toznyo}&toznyr=${toznyr}`,
+      {
+        method: 'GET',
+      }
+    )
+    console.log(await validateRequestAsJSON(request))
+    console.log(await checkStatus(request))
+    return validateRequestAsJSON(request)
+  }
+
+  // verifyEmail = (toznyo, toznyr) => {
+  //   return fetch(
+  //     `${accountUrl}/profile/verified?toznyo=${toznyo}&toznyr=${toznyr}`,
+  //     {
+  //       method: 'GET'
+  //     }
+  //   )
+  // }
+
   async getBillingStatus(queenClient) {
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + '/v1/billing/subscription/status',

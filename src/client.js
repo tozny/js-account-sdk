@@ -327,6 +327,18 @@ class Client {
     return Identity.decode(rawResponse)
   }
 
+  /**
+   * Requests email verification for a Tozny account.
+   *
+   * @param {string} toznyo
+   * @param {string} toznyr
+   *
+   * @returns
+   */
+  async verifyEmail(realmName) {
+    return this.api.deleteRealm(this._queenClient, realmName)
+  }
+
   serialize() {
     return {
       api: this.api.serialize(),
