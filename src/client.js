@@ -346,7 +346,7 @@ class Client {
 
   async resendVerificationEmail() {
     console.log('profile', this.profile)
-    const email = this.profile.username
+    const email = this.profile.email
     return this.api.resendVerificationEmail(email)
   }
 
