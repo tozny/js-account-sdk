@@ -131,7 +131,7 @@ class API {
   async verifyEmail(toznyo, toznyr) {
     const request = await fetch(
       this.apiUrl +
-        `account/v1/profile/verified?toznyo=${toznyo}&toznyr=${toznyr}`,
+        `/account/v1/profile/verified?toznyo=${toznyo}&toznyr=${toznyr}`,
       {
         method: 'GET',
       }
