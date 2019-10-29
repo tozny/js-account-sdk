@@ -8,6 +8,9 @@ let registrationToken = null
 let registeredClients = []
 
 /*
+After the `beforeAll()` method runs, the registered client array is full of objects in this shape:
+Basically information from the registration just stored in this module variable for testing reference.
+
 {
   cryptoKeys: KeyPair {
     publicKey: 'ySi_1oTeTsap2UYIKv8tjC3L78CcsPICbWSECpsLvSU',
