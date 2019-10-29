@@ -7,6 +7,8 @@ const {
   Realm,
   Realms,
   Identity,
+  ClientInfo,
+  ClientInfoList,
 } = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
@@ -115,21 +117,34 @@ class Client {
   }
 
   async addBillingCoupon(couponCode) {
-    return this.api.addBillingCoupon(this._queenClient, couponCode)
+    return this.api.addBillingCoupon(this.queenClient, couponCode)
   }
 
   async subscribe() {
-    return this.api.subscribe(this._queenClient)
+    return this.api.subscribe(this.queenClient)
   }
 
   async unsubscribe() {
-    return this.api.unsubscribe(this._queenClient)
+    return this.api.unsubscribe(this.queenClient)
   }
 
-  async accountClients(nextToken = 0) {
-    const rawResponse = await this.api.listClients(this._queenClient, nextToken)
-    // TODO: add ClientList type and decode to that versus vanilla JS object
-    return rawResponse
+  async listClientInfo(nextToken = 0, perPage = 50) {
+    const rawResponse = await this.api.listClients(
+      this.queenClient,
+      nextToken,
+      perPage
+    )
+    return ClientInfoList.decode(rawResponse)
+  }
+
+  async getClientInfo(clientId) {
+    const rawResponse = await this.api.getClient(this.queenClient, clientId)
+    return ClientInfo.decode(rawResponse)
+  }
+
+  async setClientEnabled(clientId, enabled) {
+    await this.api.setClientEnabled(this.queenClient, clientId, enabled)
+    return enabled
   }
 
   /*
@@ -183,7 +198,7 @@ class Client {
    */
 
   async webhooks() {
-    const webhooks = await this.api.listWebhooks(this._queenClient)
+    const webhooks = await this.api.listWebhooks(this.queenClient)
     // TODO: Add type and type checking
     return webhooks
   }
@@ -198,7 +213,7 @@ class Client {
    */
   async newWebhook(webhook_url, triggers) {
     const webhook = await this.api.createWebhook(
-      this._queenClient,
+      this.queenClient,
       webhook_url,
       triggers
     )
@@ -213,7 +228,7 @@ class Client {
    * @returns {Promise<boolean>} True if the operation succeeds.
    */
   async deleteWebhook(webhookId) {
-    return this.api.deleteWebhook(this._queenClient, webhookId)
+    return this.api.deleteWebhook(this.queenClient, webhookId)
   }
 
   /**
@@ -229,7 +244,7 @@ class Client {
   async getRequests(startTime, endTime, nextToken, endpointsToExclude) {
     const accountId = this.profile.id
     return this.api.getRequests(
-      this._queenClient,
+      this.queenClient,
       accountId,
       startTime,
       endTime,
@@ -249,7 +264,7 @@ class Client {
   async getAggregations(startTime, endTime) {
     const accountId = this.profile.id
     return this.api.getAggregations(
-      this._queenClient,
+      this.queenClient,
       accountId,
       startTime,
       endTime
@@ -265,7 +280,7 @@ class Client {
    */
   async createRealm(realmName, sovereignName) {
     const rawResponse = await this.api.createRealm(
-      this._queenClient,
+      this.queenClient,
       realmName,
       sovereignName
     )
@@ -278,7 +293,7 @@ class Client {
    * @returns {Promise<Realms>} The listed realm representations returned by the server.
    */
   async listRealms() {
-    const rawResponse = await this.api.listRealms(this._queenClient)
+    const rawResponse = await this.api.listRealms(this.queenClient)
     return Realms.decode(rawResponse)
   }
 
@@ -290,7 +305,7 @@ class Client {
    * @returns {Promise<Object>} Empty object.
    */
   async deleteRealm(realmName) {
-    return this.api.deleteRealm(this._queenClient, realmName)
+    return this.api.deleteRealm(this.queenClient, realmName)
   }
 
   /**
@@ -301,7 +316,7 @@ class Client {
    */
   async registerRealmBrokerIdentity(realmName, registrationToken) {
     // Generate key material for the broker Identity
-    const crypto = this._queenClient.crypto
+    const crypto = this.queenClient.crypto
     const encryptionKeyPair = await crypto.generateKeypair()
     const signingKeyPair = await crypto.generateSigningKeypair()
     const brokerIdentity = {
@@ -311,7 +326,7 @@ class Client {
     }
     // register the broker for the realm
     const rawResponse = await this.api.registerRealmBrokerIdentity(
-      this._queenClient,
+      this.queenClient,
       realmName,
       registrationToken,
       brokerIdentity
