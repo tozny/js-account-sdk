@@ -342,6 +342,12 @@ class Client {
     return Identity.decode(rawResponse)
   }
 
+  async refreshProfile() {
+    const fetched = await this.api.refresher.profile()
+    this.account = fetched.account
+    this.profile = fetched.profile
+  }
+
   serialize() {
     return {
       api: this.api.serialize(),
