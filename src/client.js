@@ -358,6 +358,15 @@ class Client {
     this.profile = fetched.profile
   }
 
+  /**
+   * Requests Tozny account email verification be resent.
+   */
+
+  async resendVerificationEmail() {
+    const email = this.profile.email
+    return this.api.resendVerificationEmail(email)
+  }
+
   serialize() {
     return {
       api: this.api.serialize(),
