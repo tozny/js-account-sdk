@@ -343,7 +343,9 @@ class Client {
   }
 
   async refreshProfile() {
-    const fetched = await this.api.refresher.profile()
+    console.log(this.api)
+
+    const fetched = await this.api.token.refresher.profile()
     this.account = fetched.account
     this.profile = fetched.profile
   }
