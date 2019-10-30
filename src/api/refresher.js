@@ -5,6 +5,11 @@ class SRPRefresher {
   }
 
   async refresh() {
+    const profile = await this.profile()
+    return profile.token
+  }
+
+  async profile() {
     const challenge = await this.api.getChallenge(this.username)
     const signature = await this.crypto.signDetached(
       challenge.challenge,
@@ -16,7 +21,7 @@ class SRPRefresher {
       signature,
       'password'
     )
-    return profile.token
+    return profile
   }
 
   serialize() {

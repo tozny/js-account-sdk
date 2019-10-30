@@ -342,6 +342,22 @@ class Client {
     return Identity.decode(rawResponse)
   }
 
+  /*
+    refreshProfile users internal logic in the api token refresher
+    to update the user's profile info from the backend. 
+    Currently, this is used to allow a user to verify their email,
+    hit refresh in an already open window, and continue with an
+    updated accountClient on the frontend.  
+
+    This will likely be replaced by a call to GET the account profile.
+  */
+
+  async refreshProfile() {
+    const fetched = await this.api._token._refresher.profile()
+    this.account = fetched.account
+    this.profile = fetched.profile
+  }
+
   /**
    * Requests Tozny account email verification be resent.
    */
