@@ -88,7 +88,8 @@ class Client {
       })
 
       // Update the refresher with new signing keys
-      const clientToken = new Token(this.profile.token)
+      console.log(this.profile.token)
+      const clientToken = new Token(this.api._token._token)
       const clientApi = this.api.clone()
       const username = this.profile.email
       clientToken.refresher = new Refresher(
