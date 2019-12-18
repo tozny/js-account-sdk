@@ -434,10 +434,16 @@ class API {
    *
    * @return {Promise<Realm>} The decoded create realm response returned by the server.
    */
-  async createRealm(queenClient, realmName, sovereignName) {
+  async createRealm(
+    queenClient,
+    realmName,
+    sovereignName,
+    realmRegistrationToken
+  ) {
     const createRealmRequest = {
       realm_name: realmName,
       sovereign_name: sovereignName,
+      registration_token: realmRegistrationToken,
     }
     const response = await queenClient.authenticator.tsv1Fetch(
       this.apiUrl + '/v1/identity/realm',

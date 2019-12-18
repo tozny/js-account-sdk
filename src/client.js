@@ -278,11 +278,12 @@ class Client {
    *
    * @returns {Promise<Realm>} The representation of the created realm returned by the server.
    */
-  async createRealm(realmName, sovereignName) {
+  async createRealm(realmName, sovereignName, realmRegistrationToken = '') {
     const rawResponse = await this.api.createRealm(
       this.queenClient,
       realmName,
-      sovereignName
+      sovereignName,
+      realmRegistrationToken
     )
     return Realm.decode(rawResponse)
   }
