@@ -1,5 +1,5 @@
-const Tozny = require('e3db-client-interface').default
-const { Storage } = require('e3db-client-interface')
+const Tozny = require('@toznysecure/sdk/lib/tozny')
+const StorageClient = require('@toznysecure/sdk/lib/storage/client')
 
 // TODO: Use a more globally accessible version of this helper...
 function checkStatus(response) {
@@ -25,7 +25,7 @@ function validatePlatformSDK(sdk) {
 }
 
 function validateStorageClient(client) {
-  if (!(client instanceof Storage.Client)) {
+  if (!(client instanceof StorageClient)) {
     throw new Error(
       'the storage client sent is not an instance of the Storage.Client class'
     )

@@ -11,7 +11,7 @@ class SRPRefresher {
 
   async profile() {
     const challenge = await this.api.getChallenge(this.username)
-    const signature = await this.crypto.signDetached(
+    const signature = await this.crypto.sign(
       challenge.challenge,
       this.keys.privateKey
     )

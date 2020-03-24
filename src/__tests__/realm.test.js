@@ -1,6 +1,8 @@
 const Account = require('../account')
-const Tozny = require('tozny-node-sdk').default
-const uuidv4 = require('uuid/v4')
+const Tozny = require('@toznysecure/sdk/node')
+const { v4: uuidv4 } = require('uuid')
+
+jest.setTimeout(30000)
 
 const accountFactory = new Account(Tozny, process.env.API_URL)
 let client = null
