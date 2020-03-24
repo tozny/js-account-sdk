@@ -46,7 +46,7 @@ class Account {
    * @return {Function} The Storage constructor
    */
   get Storage() {
-    return this._sdk.Storage
+    return this._sdk.storage
   }
 
   /**
@@ -55,7 +55,7 @@ class Account {
    * @return {Function}
    */
   get Identity() {
-    return this._sdk.Identity
+    return this._sdk.identity
   }
 
   /**
@@ -80,13 +80,13 @@ class Account {
     const challenge = await this.api.getChallenge(username)
     const b64AuthSalt =
       type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt
-    const authSalt = await this.crypto.b64decode(b64AuthSalt)
+    const authSalt = await this.crypto.platform.b64URLDecode(b64AuthSalt)
     const sigKeys = await this.crypto.deriveSigningKey(
       password,
       authSalt,
       KEY_HASH_ROUNDS
     )
-    const signature = await this.crypto.signDetached(
+    const signature = await this.crypto.sign(
       challenge.challenge,
       sigKeys.privateKey
     )
@@ -114,13 +114,22 @@ class Account {
       type === 'paper'
         ? profile.profile.paper_enc_salt
         : profile.profile.enc_salt
-    const encSalt = await this.crypto.b64decode(b64EncSalt)
+    const encSalt = await this.crypto.platform.b64URLDecode(b64EncSalt)
     const encKey = await this.crypto.deriveSymmetricKey(
       password,
       encSalt,
       KEY_HASH_ROUNDS
     )
-    const clientCreds = await this.crypto.decryptString(encClient, encKey)
+    let clientCreds
+    try {
+      clientCreds = await this.crypto.decryptString(encClient, encKey)
+    } catch (e) {
+      //eslint-disable-next-line
+      console.error(e)
+      throw e
+    }
+    // eslint-disable-next-line
+    console.log(clientCreds)
     const storageClient = new this.Storage.Client(
       this.Storage.Config.fromObject(clientCreds)
     )
@@ -175,10 +184,10 @@ class Account {
     let profile = {
       name,
       email,
-      auth_salt: await this.crypto.b64encode(authSalt),
-      enc_salt: await this.crypto.b64encode(encSalt),
-      paper_auth_salt: await this.crypto.b64encode(paperAuthSalt),
-      paper_enc_salt: await this.crypto.b64encode(paperEncSalt),
+      auth_salt: await this.crypto.platform.b64URLEncode(authSalt),
+      enc_salt: await this.crypto.platform.b64URLEncode(encSalt),
+      paper_auth_salt: await this.crypto.platform.b64URLEncode(paperAuthSalt),
+      paper_enc_salt: await this.crypto.platform.b64URLEncode(paperEncSalt),
       signing_key: {
         ed25519: authKeypair.publicKey,
       },
@@ -221,9 +230,9 @@ class Account {
       registration.account.client.api_secret,
       clientEncKeys.publicKey,
       clientEncKeys.privateKey,
-      this.api.apiUrl,
       clientSigKeys.publicKey,
-      clientSigKeys.privateKey
+      clientSigKeys.privateKey,
+      this.api.apiUrl
     )
     const storageClient = new this.Storage.Client(clientConfig)
 

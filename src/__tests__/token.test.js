@@ -1,6 +1,6 @@
 const Account = require('../account')
-const Tozny = require('tozny-node-sdk').default
-const uuidv4 = require('uuid/v4')
+const Tozny = require('@toznysecure/sdk/node')
+const { v4: uuidv4 } = require('uuid')
 
 const accountFactory = new Account(Tozny, process.env.API_URL)
 const tokenShape = expect.stringMatching(/[0-9a-fA-F]{64}/)
