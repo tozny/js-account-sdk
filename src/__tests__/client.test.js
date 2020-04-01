@@ -1,11 +1,13 @@
 const Account = require('../account')
-const Tozny = require('tozny-node-sdk').default
-const uuidv4 = require('uuid/v4')
+const Tozny = require('@toznysecure/sdk/node')
+const { v4: uuidv4 } = require('uuid')
 
 const accountFactory = new Account(Tozny, process.env.API_URL)
 let accountClient = null
 let registrationToken = null
 let registeredClients = []
+
+jest.setTimeout(30000)
 
 /*
 After the `beforeAll()` method runs, the registered client array is full of objects in this shape:
@@ -44,10 +46,10 @@ beforeAll(async () => {
   })
   for (let i = 0; i < 3; i++) {
     const clientName = `TestClient${i}`
-    const cryptoKeys = await Tozny.Storage.Client.generateKeypair()
-    const signingKeys = await Tozny.Storage.Client.generateSigningKeypair()
+    const cryptoKeys = await Tozny.storage.generateKeypair()
+    const signingKeys = await Tozny.storage.generateSigningKeypair()
     const hasBackup = i % 2 === 0
-    const info = await Tozny.Storage.Client.register(
+    const info = await Tozny.storage.register(
       registrationToken.token,
       clientName,
       cryptoKeys,
