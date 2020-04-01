@@ -27,7 +27,7 @@ class Client {
 
   async validatePassword(password) {
     const crypto = this._queenClient.crypto
-    const authSalt = await crypto.b64decode(this.profile.auth_salt)
+    const authSalt = await crypto.platform.b64URLDecode(this.profile.auth_salt)
     const keypair = await crypto.deriveSigningKey(
       password,
       authSalt,
@@ -63,8 +63,8 @@ class Client {
       )
 
       // Make new Profile and update existing profile.
-      const b64AuthSalt = await crypto.b64encode(authSalt)
-      const b64EncSalt = await crypto.b64encode(encSalt)
+      const b64AuthSalt = await crypto.platform.b64URLEncode(authSalt)
+      const b64EncSalt = await crypto.platform.b64URLEncode(encSalt)
       const newProfileInfo = {
         auth_salt: b64AuthSalt,
         enc_salt: b64EncSalt,
@@ -345,10 +345,10 @@ class Client {
 
   /*
     refreshProfile users internal logic in the api token refresher
-    to update the user's profile info from the backend. 
+    to update the user's profile info from the backend.
     Currently, this is used to allow a user to verify their email,
     hit refresh in an already open window, and continue with an
-    updated accountClient on the frontend.  
+    updated accountClient on the frontend.
 
     This will likely be replaced by a call to GET the account profile.
   */
