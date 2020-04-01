@@ -120,16 +120,7 @@ class Account {
       encSalt,
       KEY_HASH_ROUNDS
     )
-    let clientCreds
-    try {
-      clientCreds = await this.crypto.decryptString(encClient, encKey)
-    } catch (e) {
-      //eslint-disable-next-line
-      console.error(e)
-      throw e
-    }
-    // eslint-disable-next-line
-    console.log(clientCreds)
+    const clientCreds = await this.crypto.decryptString(encClient, encKey)
     const storageClient = new this.Storage.Client(
       this.Storage.Config.fromObject(clientCreds)
     )
