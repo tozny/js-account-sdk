@@ -172,6 +172,45 @@ class API {
     return checkStatus(request)
   }
 
+  async initiateRecoverAccount(email) {
+    const response = await fetch(
+      this.apiUrl + '/v1/account/challenge/email/reset',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+        }),
+      }
+    )
+    return checkStatus(response)
+  }
+
+  async verifyRecoverAccountChallenge(id, otp) {
+    const response = await fetch(
+      this.apiUrl + `/v1/account/profile/authenticate?id=${id}&otp=${otp}`,
+      {
+        method: 'GET',
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  async rollQueen(client) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(
+      this.apiUrl + `/v1/account/e3db/clients/queen`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ client }),
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
   async getBillingStatus(queenClient) {
     const response = await queenClient.authenticator.tokenFetch(
       this.apiUrl + '/v1/billing/subscription/status',
