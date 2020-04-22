@@ -256,6 +256,128 @@ class Account {
     }
   }
 
+  async initiateRecoverAccount(email) {
+    return this.api.initiateRecoverAccount(email)
+  }
+
+  async verifyRecoverAccountChallenge(id, otp) {
+    return this.api.verifyRecoverAccountChallenge(id, otp)
+  }
+
+  async changeAccountPassword(password, accountToken) {
+    const tok = new Token(accountToken)
+
+    const clientApi = this.api.clone()
+    clientApi.setToken(tok)
+
+    const encSalt = await this.crypto.randomBytes(16)
+    const authSalt = await this.crypto.randomBytes(16)
+    const paperEncSalt = await this.crypto.randomBytes(16)
+    const paperAuthSalt = await this.crypto.randomBytes(16)
+
+    const paperKey = niceware.generatePassphrase(12).join('-')
+    const encKey = await this.crypto.deriveSymmetricKey(
+      password,
+      encSalt,
+      KEY_HASH_ROUNDS
+    )
+    const authKeypair = await this.crypto.deriveSigningKey(
+      password,
+      authSalt,
+      KEY_HASH_ROUNDS
+    )
+    const paperEncKey = await this.crypto.deriveSymmetricKey(
+      paperKey,
+      paperEncSalt,
+      KEY_HASH_ROUNDS
+    )
+    const paperAuthKeypair = await this.crypto.deriveSigningKey(
+      paperKey,
+      paperAuthSalt,
+      KEY_HASH_ROUNDS
+    )
+
+    // Set up user profile
+    let profile = {
+      auth_salt: await this.crypto.platform.b64URLEncode(authSalt),
+      enc_salt: await this.crypto.platform.b64URLEncode(encSalt),
+      paper_auth_salt: await this.crypto.platform.b64URLEncode(paperAuthSalt),
+      paper_enc_salt: await this.crypto.platform.b64URLEncode(paperEncSalt),
+      signing_key: {
+        ed25519: authKeypair.publicKey,
+      },
+      paper_signing_key: {
+        ed25519: paperAuthKeypair.publicKey,
+      },
+    }
+
+    const updatedProfile = await clientApi.updateProfile(profile)
+
+    tok.refresher = new Refresher(
+      clientApi,
+      this.crypto,
+      authKeypair,
+      updatedProfile.profile.email
+    )
+    clientApi.setToken(tok)
+
+    // backup client
+    const clientEncKeys = await this.crypto.generateKeypair()
+    const clientSigKeys = await this.crypto.generateSigningKeypair()
+
+    let client = {
+      name: 'Backup Client',
+      public_key: {
+        curve25519: clientEncKeys.publicKey,
+      },
+      signing_key: {
+        ed25519: clientSigKeys.publicKey,
+      },
+    }
+
+    let newQueen = await clientApi.rollQueen(client)
+
+    const backupConfig = new this.Storage.Config(
+      newQueen.client_id,
+      newQueen.api_key_id,
+      newQueen.api_secret,
+      clientEncKeys.publicKey,
+      clientEncKeys.privateKey,
+      clientSigKeys.publicKey,
+      clientSigKeys.privateKey,
+      this.api.apiUrl
+    )
+    const storageClient = new this.Storage.Client(backupConfig)
+
+    const serializedConfig = backupConfig.serialize()
+    const encQueenCreds = await this.crypto.encryptString(
+      JSON.stringify(serializedConfig),
+      encKey
+    )
+    const paperEncQueenCreds = await this.crypto.encryptString(
+      JSON.stringify(serializedConfig),
+      paperEncKey
+    )
+
+    await clientApi.updateProfileMeta({
+      backupEnabled: 'enabled',
+      backupClient: encQueenCreds,
+      paperBackup: paperEncQueenCreds,
+    })
+
+    const newQueenClient = new Client(
+      clientApi,
+      updatedProfile.account,
+      updatedProfile.profile,
+      storageClient
+    )
+
+    return {
+      paperKey,
+      newQueenClient,
+    }
+  }
+
   /**
    * Requests email verification for a Tozny account.
    *

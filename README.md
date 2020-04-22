@@ -63,6 +63,45 @@ This caches the client connection in a scope variable so it doesn't need to log 
 
 Account Clients provide managed access to account level operations. The actual HTTP request sequence, authentication method, etc. is hidden behind the higher level methods. This allows us to maintain a consistent API for use in account applications and change implementation details as needed (e.g. a new endpoint, a different auth method, etc.). These higher level methods should correspond with specific account actions (e.g. `createWebHook`, etc). The parameters will provide insight into what is required to perform those operations.
 
+
+## Development
+
+### NPM Link
+
+To use this repo with npm link, for faster development interations, do the npm link operations as normal
+
+```
+// within this locally checked out repo
+$ npm link
+
+// where you want to link the package
+$ npm link @toznysecure/account-sdk
+```
+
+then the easiest way to proceed if you run into validation errors is to comment out these validation functions from src/utils/index.js
+```
+function validatePlatformSDK(sdk) {
+  //   console.log('this si the sdk', sdk)
+  //   if (!(sdk instanceof Tozny)) {
+  //     throw new Error(
+  //       'sdk must be an instance of the Tozny class implementing the correct interface.'
+  //     )
+  //   }
+  return sdk
+}
+
+function validateStorageClient(client) {
+  if (!(client instanceof StorageClient)) {
+    // throw new Error(
+    //   'the storage client sent is not an instance of the Storage.Client class'
+    // )
+  }
+  return client
+}
+```
+
+they will likely fail the equality check because they're seen as 'from two different packages', but shouldn't affect the sdk as long as the the implementor satisfies the proper interface (make sure the js-sdk is at the right version).
+
 ## Tests
 
 ### Test Integration environment
