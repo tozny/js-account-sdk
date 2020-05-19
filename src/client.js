@@ -343,6 +343,15 @@ class Client {
     return Identity.decode(rawResponse)
   }
 
+  /**
+   * Gets the public info about the Tozny hosted broker
+   *
+   * @return {Promise<object>} The hosted broker public info.
+   */
+  async hostedBrokerInfo() {
+    return this.api.getHostedBrokerInfo()
+  }
+
   /*
     refreshProfile users internal logic in the api token refresher
     to update the user's profile info from the backend.
