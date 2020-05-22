@@ -546,6 +546,16 @@ class API {
   }
 
   /**
+   * Gets the public info about the Tozny hosted broker
+   *
+   * @return {Promise<object>} The hosted broker public info.
+   */
+  async getHostedBrokerInfo() {
+    const response = await fetch(`${this.apiUrl}/v1/identity/broker/info`)
+    return validateRequestAsJSON(response)
+  }
+
+  /**
    * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
    * @param  {object} queenClient       The queen client for the account.
    * @param  {string} realmName         The name of the realm to register the broker identity with.
