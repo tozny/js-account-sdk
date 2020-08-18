@@ -7,6 +7,7 @@ class Realm {
   constructor(
     id,
     name,
+    domain,
     adminURL,
     active,
     sovereign,
@@ -14,6 +15,7 @@ class Realm {
   ) {
     this.id = id
     this.name = name
+    this.domain = domain
     this.adminURL = adminURL
     this.active = active
     this.sovereign = sovereign
@@ -47,6 +49,7 @@ class Realm {
     return new Realm(
       json.id,
       json.name,
+      json.domain,
       json.admin_url,
       json.active,
       Sovereign.decode(json.sovereign),
