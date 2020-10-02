@@ -257,7 +257,7 @@ class Client {
   }
 
   /**
-   * Gets aggregations for the api calls made in a given timeframe.
+   * Gets aggregations for the api calls made in a given time frame.
    * @param {String} startTime Start time for range of requests
    *  @param {String} endTime End time for range of requests
    *

@@ -256,14 +256,33 @@ class Account {
     }
   }
 
+  /**
+   * Begin to recover lost account access.
+   *
+   * @param {string} email The email address associate with the account.
+   */
   async initiateRecoverAccount(email) {
     return this.api.initiateRecoverAccount(email)
   }
 
+  /**
+   * Verify the recovery challenge information.
+   *
+   * @param {string} id The recovery challenge ID
+   * @param {string} otp The recovery one time password for recovery
+   * @return The recovery object for the account
+   */
   async verifyRecoverAccountChallenge(id, otp) {
     return this.api.verifyRecoverAccountChallenge(id, otp)
   }
 
+  /**
+   * Chance the account password to a new one with an account token.
+   *
+   * @param {string} password The new password to set for the account.
+   * @param {string} accountToken The token for making account requests.
+   * @return {Promise<object>} An object with the new queen client and paper key.
+   */
   async changeAccountPassword(password, accountToken) {
     const tok = new Token(accountToken)
 
@@ -386,7 +405,6 @@ class Account {
    *
    * @returns response
    */
-
   async verifyEmail(id, otp) {
     return this.api.verifyEmail(id, otp)
   }
@@ -395,7 +413,7 @@ class Account {
    * Recreate an account client from one that was serialized to JSON.
    *
    * After calling `Client.serialize()` plain javascript object is created with
-   * all of the values needed to recreat that client. This can be safely stored
+   * all of the values needed to recreate that client. This can be safely stored
    * as JSON. This method is used to turn the object created by `Client.serialize()`
    * back into a Client instance with all of the available methods.
    *
