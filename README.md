@@ -42,19 +42,17 @@ async getClient() {
   if(!accountClient) {
     const email = process.env.ACCOUNT_EMAIL
     const password = process.env.ACCOUNT_PASSWORD
-    const client = await account.login(email, password)
-    accountClient = client
+    accountClient = await account.login(email, password)
   }
   return accountClient
 }
 
-async doAccountActions() {
-  const client = await getClient()
-  const first = await client.doSomeAction()
-  return client.doSomeOtherAction(first)
+async getRealms() {
+  const accountClient = await getClient()
+   return accountClient.listRealms()
 }
 
-doAccountActions()
+getRealms().then(console.log)
 ```
 
 This caches the client connection in a scope variable so it doesn't need to log in each time. Application methods can then use the client whenever they need to run account-level transactions. This would typically be done as a state value, or stored in an object as a larger part of an application.
@@ -187,7 +185,7 @@ const registrationToken = tokenInfo.token // Must have permissions to register '
 const realmName = 'westeros'
 const sovereignName = 'cersei'
 const createdRealm = await accountClient.createRealm(realmName, sovereignName)
-const realmBrokerIdentity = await client.registerRealmBrokerIdentity(
+const realmBrokerIdentity = await accountClient.registerRealmBrokerIdentity(
   createdRealm.name,
   registrationToken
 )
@@ -197,7 +195,7 @@ const realmBrokerIdentity = await client.registerRealmBrokerIdentity(
 
 ```js
 const realmName = 'westeros'
-await client.deleteRealm(realmName)
+await accountClient.deleteRealm(realmName)
 ```
 
 **List identities in a realm**
