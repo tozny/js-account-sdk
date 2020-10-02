@@ -582,6 +582,49 @@ class API {
     )
     return validateRequestAsJSON(response)
   }
+
+  /**
+   * listIdentities queries the API to fetch a list of basic identity information
+   * @param  {object} queenClient The queen client for the account.
+   * @param  {string} realmName   The name of the realm to register the broker identity with.
+   * @param  {number} max         The maximum number of identities to fetch at once, min 1, max 1000. Default 100.
+   * @param  {number} first       The first (0-indexed) identity to fetch after offset. Default 0.
+   * @return {Promise<Array<object>>} The list of basic identity information.
+   */
+  async listIdentities(queenClient, realmName, max, first) {
+    const url = [`${this.apiUrl}/v1/identity/realm/${realmName}/identity`]
+    const query = { first, max }
+    const queryString = Object.keys(query)
+      .filter(k => !!query[k])
+      .map(k => `${k}=${encodeURIComponent(query[k])}`)
+      .join('&')
+    if (queryString) {
+      url.push(queryString)
+    }
+    const fullUrl = url.join('?')
+    const response = await queenClient.authenticator.tsv1Fetch(fullUrl, {
+      method: 'GET',
+    })
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Fetches detailed identity information given a realm name and username
+   * @param  {object} queenClient The queen client for the account.
+   * @param  {string} realmName   The name of the realm to register the broker identity with.
+   * @param  {string} username    The username to fetch details for.
+   * @return {Promise<IdentityDetails>} The detailed information about the identity.
+   */
+  async identityDetails(queenClient, realmName, username) {
+    const encUsername = encodeURIComponent(username)
+    const response = await queenClient.authenticator.tsv1Fetch(
+      `${this.apiUrl}/v1/identity/realm/${realmName}/identity/${encUsername}`,
+      {
+        method: 'GET',
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
 }
 
 module.exports = API
