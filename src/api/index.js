@@ -1,7 +1,6 @@
 /**
  * Account level API request definitions.
  */
-
 const fetch = require('isomorphic-fetch')
 const Token = require('./token')
 const utils = require('../utils/index')

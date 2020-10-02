@@ -1,10 +1,4 @@
 /**
- * A tozny type, used to represent a Tozny Storage registration token.
- */
-
-'use strict'
-
-/**
  * A Tozny Storage registration token with name and permissions.
  */
 class RegistrationToken {
