@@ -4,7 +4,7 @@
   "description": "Javascript SDK for performing Tozny platform account level operations",
   "main": "src/index.js",
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "scripts": {
     "test": "jest",
