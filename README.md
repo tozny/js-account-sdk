@@ -63,7 +63,7 @@ Account clients provide managed access to account level operations. The actual H
 
 ## Usage Examples
 
-This is a limited set of operations that may be useful. Additional methods are available, review the [account object]('./src/account.js) and [client object source](./src/client.js) to see the full list of methods available.
+This is a limited set of operations that may be useful. Additional methods are available, review the [account object](./src/account.js) and [client object source](./src/client.js) to see the full list of methods available.
 
 **Register a new account**
 
