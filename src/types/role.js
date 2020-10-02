@@ -31,8 +31,6 @@ class Role {
    * @return {<Role>}
    */
   static decode(json) {
-    // eslint-disable-next-line
-    console.log(json) // flag if seen in CR
     return new Role(
       json.id,
       json.name,

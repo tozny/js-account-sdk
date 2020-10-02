@@ -4,7 +4,8 @@ const { v4: uuidv4 } = require('uuid')
 const BasicIdentity = require('../types/basicIdentity')
 const DetailedIdentity = require('../types/detailedIdentity')
 
-jest.setTimeout(30000)
+// Set really high for slower APIs.
+jest.setTimeout(100000)
 
 const accountFactory = new Account(Tozny, process.env.API_URL)
 let client = null
@@ -181,8 +182,6 @@ describe('Account Client', () => {
       const seen = []
       identities.forEach(i => {
         expect(i).toBeInstanceOf(BasicIdentity)
-        // eslint-disable-next-line
-        console.log(i) // flag if seen in CR
         expect(usernames).toContain(i.username)
         expect(seen).toEqual(expect.not.arrayContaining([i.id]))
         seen.push(i.id)
