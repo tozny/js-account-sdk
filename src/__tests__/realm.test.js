@@ -1,12 +1,14 @@
 const Account = require('../account')
 const Tozny = require('@toznysecure/sdk/node')
 const { v4: uuidv4 } = require('uuid')
+const BasicIdentity = require('../types/basicIdentity')
+const DetailedIdentity = require('../types/detailedIdentity')
 
 jest.setTimeout(30000)
 
 const accountFactory = new Account(Tozny, process.env.API_URL)
 let client = null
-let brokerRegistrationToken = null
+let registrationToken = null
 
 beforeAll(async () => {
   // Create an account to re-use across test cases
@@ -16,10 +18,13 @@ beforeAll(async () => {
   const password = uuidv4()
   const registration = await accountFactory.register(name, email, password)
   client = registration.client
-  // Create a registration token for broker client types
-  const permissions = { allowed_types: ['broker'] }
-  brokerRegistrationToken = await client.newRegistrationToken(
-    undefined,
+  // Create a registration token
+  const permissions = {
+    enabled: true,
+    allowed_types: ['general', 'identity', 'broker'],
+  }
+  registrationToken = await client.newRegistrationToken(
+    'it-test-token',
     permissions
   )
 })
@@ -111,7 +116,7 @@ describe('Account Client', () => {
       const createdRealm = await client.createRealm(realmName, sovereignName)
       const realmBrokerIdentity = await client.registerRealmBrokerIdentity(
         createdRealm.name,
-        brokerRegistrationToken.token
+        registrationToken.token
       )
       let realmBrokerIdentityToznyClientID = ''
       // find the realm we created
@@ -131,6 +136,139 @@ describe('Account Client', () => {
     } catch (error) {
       await cleanup(client)
       throw error
+    } finally {
+      await cleanup(client)
+    }
+  })
+
+  test('can list identities in a realm', async () => {
+    try {
+      // set up
+      // create a realm
+      const realmName = uuidv4().split('-')[0]
+      const sovereignName = 'YassQueen'
+      const createdRealm = await client.createRealm(realmName, sovereignName)
+      await client.registerRealmBrokerIdentity(
+        createdRealm.name,
+        registrationToken.token
+      )
+      // Register set up normal SDK realm to register identities
+      const realm = new Tozny.identity.Realm(
+        realmName,
+        'account',
+        `http://localhost:8081/${realmName}/recover`,
+        process.env.API_URL
+      )
+      // Register identities so there are several to test with
+      const usernames = await Promise.all(
+        [0, 1].map(async i => {
+          const username = `testuser${i}`
+          await realm.register(
+            username,
+            'password',
+            registrationToken.token,
+            `testuser${i}@example.com`
+          )
+          return username
+        })
+      )
+      usernames.push(sovereignName.toLowerCase())
+      // Test
+      const idList = client.listIdentities(realmName)
+      const identities = await idList.next()
+      // Validate
+      expect(identities.length).toEqual(usernames.length)
+      const seen = []
+      identities.forEach(i => {
+        expect(i).toBeInstanceOf(BasicIdentity)
+        // eslint-disable-next-line
+        console.log(i) // flag if seen in CR
+        expect(usernames).toContain(i.username)
+        expect(seen).toEqual(expect.not.arrayContaining([i.id]))
+        seen.push(i.id)
+      })
+    } finally {
+      await cleanup(client)
+    }
+  })
+  test('can paginate identities', async () => {
+    try {
+      // set up
+      // create a realm
+      const realmName = uuidv4().split('-')[0]
+      const sovereignName = 'YassQueen'
+      const createdRealm = await client.createRealm(realmName, sovereignName)
+      await client.registerRealmBrokerIdentity(
+        createdRealm.name,
+        registrationToken.token
+      )
+      // Set up normal SDK realm to register identities
+      const realm = new Tozny.identity.Realm(
+        realmName,
+        'account',
+        `http://localhost:8081/${realmName}/recover`,
+        process.env.API_URL
+      )
+      // Register identities so there are several to test with
+      await Promise.all(
+        [0, 1].map(async i => {
+          const username = `testuser${i}`
+          await realm.register(
+            username,
+            'password',
+            registrationToken.token,
+            `testuser${i}@example.com`
+          )
+          return username
+        })
+      )
+      // Test
+      let pages = 0
+      let seen = []
+      const idList = client.listIdentities(realmName, 2)
+      // more iterations than we actually need, but with a sane stop instead
+      // of a while loop for now.
+      for (let i = 0; i < 3; i++) {
+        const identities = await idList.next()
+        seen = seen.concat(
+          identities.map(i => i.id).filter(i => !seen.includes(i))
+        )
+        pages++
+        // if the list report it is done iterating, break the loop.
+        if (idList.done) {
+          break
+        }
+      }
+      // Validate
+      expect(pages).toBe(2)
+      expect(seen.length).toEqual(3)
+    } finally {
+      await cleanup(client)
+    }
+  })
+  test('can get identity details', async () => {
+    try {
+      // set up
+      // create a realm
+      const realmName = uuidv4().split('-')[0]
+      const sovereignName = 'YassQueen'
+      const createdRealm = await client.createRealm(realmName, sovereignName)
+      await client.registerRealmBrokerIdentity(
+        createdRealm.name,
+        registrationToken.token
+      )
+      // Test
+      const idDetails = await client.identityDetails(
+        realmName,
+        sovereignName.toLowerCase()
+      )
+      expect(idDetails).toBeInstanceOf(DetailedIdentity)
+      expect(idDetails.username).toBe(sovereignName.toLowerCase())
+      // eslint-disable-next-line
+      console.log(idDetails) // flag if seen in CR
+      expect(
+        idDetails.roles.clients['realm-management'].map(r => r.name)
+      ).toContain('realm-admin')
     } finally {
       await cleanup(client)
     }

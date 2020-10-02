@@ -12,6 +12,9 @@ const {
 } = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
+const BasicIdentity = require('./types/basicIdentity')
+const ListIdentitiesResult = require('./types/listIdentitiesResult')
+const DetailedIdentity = require('./types/detailedIdentity')
 
 class Client {
   constructor(api, account, profile, queenClient) {
@@ -350,6 +353,52 @@ class Client {
    */
   async hostedBrokerInfo() {
     return this.api.getHostedBrokerInfo()
+  }
+
+  /**
+   * Set up the pagination result for listing identities
+   *
+   * @return {ListIdentitiesResult} A object usable for making paginated queries.
+   */
+  listIdentities(realmName, max, next) {
+    return new ListIdentitiesResult(this, realmName, max, next)
+  }
+
+  /**
+   * Internal method which queries to get a specific page of basic identities
+   *
+   * @return {Promise<Array<BasicIdentity>>} A list of basic identity info.
+   */
+  async _listIdentities(realmName, max, next) {
+    const response = await this.api.listIdentities(
+      this.queenClient,
+      realmName,
+      max,
+      next
+    )
+    // Make sure that identities has come back as an array
+    if (!Array.isArray(response.identities)) {
+      response.identities = []
+    }
+    // Do this async to speed it up just slightly.
+    response.identities = await Promise.all(
+      response.identities.map(async i => BasicIdentity.decode(i))
+    )
+    return response
+  }
+
+  /**
+   * Set up the pagination result for listing identities
+   *
+   * @return {ListIdentitiesResult} A object usable for making paginated queries.
+   */
+  async identityDetails(realmName, username) {
+    const response = await this.api.identityDetails(
+      this.queenClient,
+      realmName,
+      username
+    )
+    return DetailedIdentity.decode(response)
   }
 
   /*
