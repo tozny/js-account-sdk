@@ -1,0 +1,8 @@
+# all dotfiles
+.*
+# Development information and scripts
+DEVELOPMENT.md
+scripts
+# Testing files
+jes.config.js
+src/__tests__
