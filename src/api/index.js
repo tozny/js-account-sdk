@@ -12,7 +12,7 @@ const { DEFAULT_API_URL } = require('../utils/constants')
  */
 class API {
   /**
-   * Validates and suspected instance of the API is actually an instance.
+   * Validates a suspected instance of the API is actually an instance.
    *
    * @param {API} api The value to check type of
    * @return {API} the passed instance, only if it is valid.
