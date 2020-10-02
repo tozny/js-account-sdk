@@ -100,7 +100,7 @@ const newPassword = 'hide this safely'
 await accountClient.changePassword({ password, newPassword })
 ```
 
-\*\*Gather account billing information
+**Gather account billing information**
 
 ```js
 const billingInfo = await accountClient.billingStatus()
