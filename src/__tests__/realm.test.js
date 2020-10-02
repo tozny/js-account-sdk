@@ -264,8 +264,6 @@ describe('Account Client', () => {
       )
       expect(idDetails).toBeInstanceOf(DetailedIdentity)
       expect(idDetails.username).toBe(sovereignName.toLowerCase())
-      // eslint-disable-next-line
-      console.log(idDetails) // flag if seen in CR
       expect(
         idDetails.roles.clients['realm-management'].map(r => r.name)
       ).toContain('realm-admin')

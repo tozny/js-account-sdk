@@ -8,26 +8,26 @@ The Tozny platform client SDKs abstract over working with the Tozny platform as 
 
 ### ES6
 
-To avoid the complexity of babel, and the need to 'build' the code with each change, this repository is built using only the ES6 features that are natively available in Node 6+. This means that you will not find `import` syntax in the source files, but as of yet ES6 modules is the only ES6 feature that has been noticeably missing. Debugging the SDK is significantly easier when not transpiling the code using Babel. It als means we don't use generators for things like async/await, meaning the overall source package size is smaller.
+To avoid the complexity of babel, and the need to 'build' the code with each change, this repository is built using only the ES6 features that are natively available in Node 6+. This means that you will not find `import` syntax in the source files, but as of yet ES6 modules is the only ES6 feature that has been noticeably missing. Debugging the SDK is significantly easier when not transpiling the code using something like Babel. It also means we don't use generators for things like async/await, meaning the overall source package size is smaller.
 
-When a consumer adds the package to a web application, the application will make use of something like babel and webpack to prepare the application. It is better to allow the application to manage the build settings. Otherwise Babel is running over code that has already run through babel, which then runs through Webpack. Using natively available node features only we avoid the headache.
+Generally when a consuming application adds this package, the application will make use of something like babel and webpack to prepare the application. It is better to allow the application to manage the build settings. Otherwise the transpiler is running over code that has already been transpiled, which then typically runs through something like Webpack. Using natively available node features only we avoid the headache and make resulting sourcemaps far more useful.
 
 ## Getting Started
 
-To use the SDK, first require it as well as a tozny client SDK pacakge.
+To use the SDK, first require it as well as the Tozny client SDK package.
 
 ```bash
-npm install @tozny/account-sdk@alpha
-npm install tozny-node-sdk@alpha
+npm install @toznysecure/sdk
+npm install @toznysecure/account-sdk
 ```
 
 Create a new Account connection object -- this defines the API and specific client SDK in use.
 
 ```
-const const { Account } = require('./src')
-const Tozny = require('tozny-node-sdk').default
+const { Account } = require('@toznysecure/account-sdk')
+const Tozny = require('@toznysecure/sdk/node')
 
-const account = new Account(Sodium, 'http://platform.local.tozny.com:8000')
+const account = new Account(Tozny, 'http://platform.local.tozny.com:8000') // where the second parameter is the API url for the Tozny platform instance
 ```
 
 The `Account` instance provides methods for creating a account client in various ways. The client object returned from each is identical in use and operation, but the method matches a context specific means of creating the client. See the [`Account` class definition](src/account.js) for the full list of available methods and return values.
@@ -57,138 +57,182 @@ async doAccountActions() {
 doAccountActions()
 ```
 
-This caches the client connection in a scope variable so it doesn't need to log in each time. Application methods can then use the client whenever they need to run account-level transactions.
+This caches the client connection in a scope variable so it doesn't need to log in each time. Application methods can then use the client whenever they need to run account-level transactions. This would typically be done as a state value, or stored in an object as a larger part of an application.
 
 ## Account Clients
 
-Account Clients provide managed access to account level operations. The actual HTTP request sequence, authentication method, etc. is hidden behind the higher level methods. This allows us to maintain a consistent API for use in account applications and change implementation details as needed (e.g. a new endpoint, a different auth method, etc.). These higher level methods should correspond with specific account actions (e.g. `createWebHook`, etc). The parameters will provide insight into what is required to perform those operations.
+Account clients provide managed access to account level operations. The actual HTTP request sequence, authentication method, etc. is hidden behind the higher level methods. This allows us to maintain a consistent API for use in account applications and change implementation details as needed (e.g. a new endpoint, a different auth method, etc.). These higher level methods should correspond with specific account actions (e.g. `createWebHook`, etc). The parameters will provide insight into what is required to perform those operations.
 
+## Usage Examples
 
-## Development
+This is a limited set of operations that may be useful. Additional methods are available, review the [account object]('./src/account.js) and [client object source](./src/client.js) to see the full list of methods available.
 
-### NPM Link
+**Register a new account**
 
-To use this repo with npm link, for faster development interations, do the npm link operations as normal
-
-```
-// within this locally checked out repo
-$ npm link
-
-// where you want to link the package
-$ npm link @toznysecure/account-sdk
+```js
+const name = 'Jon Snow'
+const email = 'jsnow@example.com'
+const password = 'keep this secret'
+const accountClient = await account.register(name, email, password)
 ```
 
-then the easiest way to proceed if you run into validation errors is to comment out these validation functions from src/utils/index.js
+**Log in to an existing account**
+
+```js
+const email = 'jsnow@example.com'
+const password = 'keep this secret'
+const accountClient = await account.login(email, password)
 ```
-function validatePlatformSDK(sdk) {
-  //   console.log('this si the sdk', sdk)
-  //   if (!(sdk instanceof Tozny)) {
-  //     throw new Error(
-  //       'sdk must be an instance of the Tozny class implementing the correct interface.'
-  //     )
-  //   }
-  return sdk
+
+**Serialize account for string-based storage and recreate it from the serialization**
+
+```js
+const serializedString = JSON.stringify(accountClient.serialize())
+accountClient = account.fromObject(JSON.parse(serializedString))
+await accountClient.refreshProfile()
+```
+
+**Change the password for an account**
+
+```js
+const password = 'keep this secret'
+const newPassword = 'hide this safely'
+await accountClient.changePassword({ password, newPassword })
+```
+
+\*\*Gather account billing information
+
+```js
+const billingInfo = await accountClient.billingStatus()
+console.log(billingInfo.accountActive)
+console.log(billingInfo.isGoodStanding)
+```
+
+**List Registration tokens in the account**
+
+```js
+const tokens = await accountClient.registrationTokens()
+for (let token of tokens) {
+  console.log(token.name)
+  console.log(token.token)
 }
+```
 
-function validateStorageClient(client) {
-  if (!(client instanceof StorageClient)) {
-    // throw new Error(
-    //   'the storage client sent is not an instance of the Storage.Client class'
-    // )
+**Create a registration token**
+
+```js
+const name = 'example token'
+const permissions = {
+  enabled: true,
+  allowed_types: ['general', 'identity'],
+}
+const token = await accountClient.newRegistrationToken(name, permissions)
+```
+
+**Delete a registration token**
+
+```js
+const tokenString = fetchedToken.token
+await accountClient.deleteRegistrationToken(tokenString)
+```
+
+**List TozStore clients in the account**
+
+```js
+let clientList = await accountClient.listClientInfo()
+for (let clientInfo of clientList.clients) {
+  console.log(clientInfo.clientId)
+}
+// next page
+clientList = await accountClient.listClientInfo(clientList.nextToken)
+for (let clientInfo of clientList.clients) {
+  console.log(clientInfo.clientId)
+}
+```
+
+**Fetch an individual TozStore client's info**
+
+```js
+const clientId = '000000000000-0000-0000-0000-00000000'
+const clientInfo = accountClient.getClientInfo(clientId)
+console.log(clientInfo.publicKey)
+console.log(clientInfo.enabled)
+console.log(clientInfo.hasBackup)
+```
+
+**Disable/Enable a TozStore client**
+
+```js
+const clientId = '000000000000-0000-0000-0000-00000000'
+// disable
+accountClient.setClientEnabled(clientId, false)
+// enable
+accountClient.setClientEnabled(clientId, true)
+```
+
+**List Identity Realms**
+
+```js
+const realmList = await accountClient.listRealms()
+for (let realm of realmList.realms) {
+  console.log(realm.name)
+}
+```
+
+**Create and Identity Realm and Realm Broker**
+
+```js
+// create a realm
+const registrationToken = tokenInfo.token // Must have permissions to register 'broker' clients
+const realmName = 'westeros'
+const sovereignName = 'cersei'
+const createdRealm = await accountClient.createRealm(realmName, sovereignName)
+const realmBrokerIdentity = await client.registerRealmBrokerIdentity(
+  createdRealm.name,
+  registrationToken
+)
+```
+
+**Delete a realm**
+
+```js
+const realmName = 'westeros'
+await client.deleteRealm(realmName)
+```
+
+**List identities in a realm**
+
+```js
+const realmName = 'westeros'
+// list identities in westeros 10 at a time
+const idList = accountClient.listIdentities(realmName, 10)
+while (!idList.done) {
+  const identities = await idList.next()
+  for (let identity of identities) {
+    console.log(identity.username)
   }
-  return client
 }
 ```
 
-they will likely fail the equality check because they're seen as 'from two different packages', but shouldn't affect the sdk as long as the the implementor satisfies the proper interface (make sure the js-sdk is at the right version).
+**Get details about an identity in a realm**
 
-## Tests
-
-### Test Integration environment
-
-Test run against an instance of the Tozny API located at the value of the [env variable `API_URL`](./.env). By default this is set to run against a local instance of Tozny platform, but can be pointed at any deployed Tozny environment (i.e. `https://dev.e3db.com` for the dev environment).
-
-To spin up Tozny platform locally, run
-
-```bash
-npm run tp up
+```js
+const realmName = 'westeros'
+const username = 'jaime'
+// get details about jaime, including roles and groups
+const details = accountClient.identityDetails(realmName, username)
+for (let group in details.groups) {
+  console.log(group.name)
+}
+for (let realmRole in details.roles.realm) {
+  console.log(realmRole.name)
+}
+// where 'kingGuard' is the name of a client application in the realm
+for (let clientRole in details.roles.clients.kindsGuard) {
+  console.log(clientRole.name)
+}
 ```
 
-To stop Tozny platform, run
+## Terms of Service
 
-```bash
-npm run tp down
-```
-
-To pull the latest version of Tozny platform images
-
-```bash
-npm run tp update
-```
-
-_NOTE_ In order to run Tozny platform `TOZNY_PLATFORM_DIR` must be set in your shell and should put to the local directory where the [Tozny platform repository](https://github.com/tozny/tozny-platform) is checked out. You will also have to have access to the Docker registry to pull the images needed to run Tozny platform.
-
-### Test Commands
-
-Test are constructed using the [Jest test framework](https://jestjs.io) and run via npm script commands.
-
-To run all tests
-
-```bash
-npm run test
-```
-
-Run a specific test file
-
-```bash
-npm test -i realm.test.js
-```
-
-Run a specific test in a specific file
-
-```bash
-npm test -- -i realm.test.js -t 'can create a realm'
-```
-
-Run any tests containing a phrase in any file
-
-```bash
-npm test -- -t 'realm'
-```
-
-## Publishing
-
-Checkout branch
-
-Write code
-
-Get code reviewed and approved
-
-Use the npm build tool to automatically update package.json to the new version
-
-```bash
-# mainline release
-npm version 1.0.1
-# preview release
-npm version 1.0.1-alpha.1
-```
-
-Use the npm build tool to make a new commit with the updated version, create a git tag to have as a github release, and push the package to npm for consumption
-
-```bash
-npm publish
-```
-
-If doing an alpha release,
-
-```bash
-npm publish --tag=alpha
-```
-
-Push the tag up to remote github repository
-
-```bash
-git push --tags --all
-```
-
-Lastly, merge and delete the branch
+Your use of the Tozny JavaScript SDK must abide by our [Terms of Service](https://github.com/tozny/e3db-java/blob/master/terms.pdf), as detailed in the linked document.
