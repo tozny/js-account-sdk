@@ -74,7 +74,6 @@ then the easiest way to proceed if you run into validation errors is to comment 
 
 ```
 function validatePlatformSDK(sdk) {
-  //   console.log('this si the sdk', sdk)
   //   if (!(sdk instanceof Tozny)) {
   //     throw new Error(
   //       'sdk must be an instance of the Tozny class implementing the correct interface.'
