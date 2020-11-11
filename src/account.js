@@ -121,9 +121,9 @@ class Account {
       KEY_HASH_ROUNDS
     )
     const clientCreds = await this.crypto.decryptString(encClient, encKey)
-    const storageClient = new this.Storage.Client(
-      this.Storage.Config.fromObject(clientCreds)
-    )
+    const storageConfig = this.Storage.Config.fromObject(clientCreds)
+    storageConfig.apiUrl = this.api.apiUrl
+    const storageClient = new this.Storage.Client(storageConfig)
     return new Client(
       clientApi,
       profile.account,
