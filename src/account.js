@@ -124,6 +124,31 @@ class Account {
     const storageConfig = this.Storage.Config.fromObject(clientCreds)
     storageConfig.apiUrl = this.api.apiUrl
     const storageClient = new this.Storage.Client(storageConfig)
+
+    // Admin Client Migration for Version 1 Clients
+    if (storageConfig.version == 1) { 
+      // If they are a version 1 client, then we need to generate a signing key pair and store the public key
+      const paperAuthSalt = await this.crypto.randomBytes(16)
+      const paperKey = niceware.generatePassphrase(12).join('-')
+      const authKeypair = await this.crypto.deriveSigningKey(
+        password,
+        authSalt,
+        KEY_HASH_ROUNDS
+      )
+      const paperAuthKeypair = await this.crypto.deriveSigningKey(
+        paperKey,
+        paperAuthSalt,
+        KEY_HASH_ROUNDS
+      )
+      // Backfill to Client services 
+      const publicSigningKey = [{ ed25519: authKeypair.publicKey }]
+      await clientApi.backfillSigningKeys(storageClient, publicSigningKey, storageConfig.clientId)
+      // Update profile meta for an account 
+      await clientApi.updateProfileMeta({
+        signing_key: authKeypair.publicKey,
+        paper_signing_key: paperAuthKeypair.publicKey, 
+      })
+    }
     return new Client(
       clientApi,
       profile.account,

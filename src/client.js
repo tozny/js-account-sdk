@@ -382,7 +382,7 @@ class Client {
     }
     // Do this async to speed it up just slightly.
     response.identities = await Promise.all(
-      response.identities.map(async i => BasicIdentity.decode(i))
+      response.identities.map(async (i) => BasicIdentity.decode(i))
     )
     return response
   }

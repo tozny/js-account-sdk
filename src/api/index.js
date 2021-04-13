@@ -188,7 +188,29 @@ class API {
     })
     return validateRequestAsJSON(request)
   }
-
+  /**
+   * backfillSigningKeys updates the existing v1 client credentials to include a 
+   * signing key
+   * 
+   * @param {object} queenClient the client to be migrated from v1 to v2 
+   * @param {string} publicSigningKey the public signing key generated
+   * @param {string} clientID the Tozny Client ID for the client 
+   *
+   * @return {Promise<object>} The Client Object
+   */
+  async backfillSigningKeys(queenClient, publicSigningKey, clientID) {
+    const body = JSON.stringify({
+      signing_keys: publicSigningKey,
+    })
+    const request =  await queenClient.authenticator.tokenFetch(this.apiUrl + '/v1/client/' + clientID +'/keys', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    })
+    return validateRequestAsJSON(request)
+  }
   /** requests email verification for a tozny account
    *
    *  Displays error to user if
@@ -455,7 +477,7 @@ class API {
    * @return {Promise<object>} The raw webhook object written
    */
   async createWebhook(queenClient, webhook_url, triggers) {
-    const webhookTriggers = triggers.map(eventString => {
+    const webhookTriggers = triggers.map((eventString) => {
       return {
         enabled: true,
         api_event: eventString,
@@ -653,8 +675,8 @@ class API {
     const url = [`${this.apiUrl}/v1/identity/realm/${realmName}/identity`]
     const query = { first, max }
     const queryString = Object.keys(query)
-      .filter(k => !!query[k])
-      .map(k => `${k}=${encodeURIComponent(query[k])}`)
+      .filter((k) => !!query[k])
+      .map((k) => `${k}=${encodeURIComponent(query[k])}`)
       .join('&')
     if (queryString) {
       url.push(queryString)
