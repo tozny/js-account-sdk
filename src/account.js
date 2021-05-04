@@ -123,37 +123,37 @@ class Account {
     const clientCreds = await this.crypto.decryptString(encClient, encKey)
     let storageConfig = this.Storage.Config.fromObject(clientCreds)
     storageConfig.apiUrl = this.api.apiUrl
-
+    let storageClient = new this.Storage.Client(storageConfig)
     // Admin Client Migration for Version 1 Clients
     if (!storageConfig.publicSigningKey) {
-      // If they are a version 1 client, then we need to generate a signing key pair and store the public key
+      // If they dont have a public signing key, then we need to generate a signing key pair and store the public key
       const signingKeypair = await this.crypto.generateSigningKeypair()
-      // Backfill to Client services
-      const publicSigningKey = [{ ed25519: signingKeypair.publicKey }]
+      // Backfill to Client service
+      const publicSigningKey = { ed25519: signingKeypair.publicKey }
       await clientApi.backfillSigningKeys(
         storageClient,
         publicSigningKey,
         storageConfig.clientId
       )
-      const serializedQueenClientConfig = storageConfig.serialize()
-      serializedQueenClientConfig.public_signing_key = signingKeypair.publicKey
-      serializedQueenClientConfig.private_signing_key =
-        signingKeypair.privateKey
-      storageConfig = this.Storage.Config.fromObject(
-        serializedQueenClientConfig
-      )
+      // Update the storage config
+      const serializedV1QueenClient = storageConfig.serialize()
+      serializedV1QueenClient.public_signing_key = signingKeypair.publicKey
+      serializedV1QueenClient.private_signing_key = signingKeypair.privateKey
+      storageConfig = this.Storage.Config.fromObject(serializedV1QueenClient)
+      // Create an encrypted back up client with new signing key pair
       const encQueenCreds = await this.crypto.encryptString(
-        JSON.stringify(serializedQueenClientConfig),
+        JSON.stringify(serializedV1QueenClient),
         encKey
       )
+      // Replace V1 Profile Meta
       await clientApi.updateProfileMeta({
         backupEnabled: meta.backupEnabled,
         backupClient: encQueenCreds,
         paperBackup: meta.paperBackup,
       })
+      // If we updated the storage config, update the storage client
+      storageClient = new this.Storage.Client(storageConfig)
     }
-
-    const storageClient = new this.Storage.Client(storageConfig)
     return new Client(
       clientApi,
       profile.account,
@@ -219,7 +219,7 @@ class Account {
 
     // backup client
     const clientEncKeys = await this.crypto.generateKeypair()
-    //const clientSigKeys = await this.crypto.generateSigningKeypair()
+    const clientSigKeys = await this.crypto.generateSigningKeypair()
     // Set up the user account
     let account = {
       company: '',
@@ -227,9 +227,9 @@ class Account {
       public_key: {
         curve25519: clientEncKeys.publicKey,
       },
-      // signing_key: {
-      //   ed25519: clientSigKeys.publicKey,
-      // },
+      signing_key: {
+        ed25519: clientSigKeys.publicKey,
+      },
     }
 
     const registration = await this.api.register(profile, account)
@@ -251,8 +251,8 @@ class Account {
       registration.account.client.api_secret,
       clientEncKeys.publicKey,
       clientEncKeys.privateKey,
-      undefined, // clientSigKeys.publicKey,
-      undefined, // clientSigKeys.privateKey,
+      clientSigKeys.publicKey,
+      clientSigKeys.privateKey,
       this.api.apiUrl
     )
     const storageClient = new this.Storage.Client(clientConfig)
