@@ -23,7 +23,7 @@ npm install @toznysecure/account-sdk
 
 Create a new Account connection object -- this defines the API and specific client SDK in use.
 
-```
+```js
 const { Account } = require('@toznysecure/account-sdk')
 const Tozny = require('@toznysecure/sdk/node')
 
