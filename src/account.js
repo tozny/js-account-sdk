@@ -121,33 +121,38 @@ class Account {
       KEY_HASH_ROUNDS
     )
     const clientCreds = await this.crypto.decryptString(encClient, encKey)
-    const storageConfig = this.Storage.Config.fromObject(clientCreds)
+    let storageConfig = this.Storage.Config.fromObject(clientCreds)
     storageConfig.apiUrl = this.api.apiUrl
-    const storageClient = new this.Storage.Client(storageConfig)
-
+    let storageClient = new this.Storage.Client(storageConfig)
     // Admin Client Migration for Version 1 Clients
-    if (storageConfig.version == 1) { 
-      // If they are a version 1 client, then we need to generate a signing key pair and store the public key
-      const paperAuthSalt = await this.crypto.randomBytes(16)
-      const paperKey = niceware.generatePassphrase(12).join('-')
-      const authKeypair = await this.crypto.deriveSigningKey(
-        password,
-        authSalt,
-        KEY_HASH_ROUNDS
+    if (!storageConfig.publicSigningKey) {
+      // If they dont have a public signing key, then we need to generate a signing key pair and store the public key
+      const signingKeypair = await this.crypto.generateSigningKeypair()
+      // Backfill to Client service
+      const publicSigningKey = { ed25519: signingKeypair.publicKey }
+      await clientApi.backfillSigningKeys(
+        storageClient,
+        publicSigningKey,
+        storageConfig.clientId
       )
-      const paperAuthKeypair = await this.crypto.deriveSigningKey(
-        paperKey,
-        paperAuthSalt,
-        KEY_HASH_ROUNDS
+      // Update the storage config
+      const serializedV1QueenClient = storageConfig.serialize()
+      serializedV1QueenClient.public_signing_key = signingKeypair.publicKey
+      serializedV1QueenClient.private_signing_key = signingKeypair.privateKey
+      storageConfig = this.Storage.Config.fromObject(serializedV1QueenClient)
+      // Create an encrypted back up client with new signing key pair
+      const encQueenCreds = await this.crypto.encryptString(
+        JSON.stringify(serializedV1QueenClient),
+        encKey
       )
-      // Backfill to Client services 
-      const publicSigningKey = [{ ed25519: authKeypair.publicKey }]
-      await clientApi.backfillSigningKeys(storageClient, publicSigningKey, storageConfig.clientId)
-      // Update profile meta for an account 
+      // Replace V1 Profile Meta
       await clientApi.updateProfileMeta({
-        signing_key: authKeypair.publicKey,
-        paper_signing_key: paperAuthKeypair.publicKey, 
+        backupEnabled: meta.backupEnabled,
+        backupClient: encQueenCreds,
+        paperBackup: meta.paperBackup,
       })
+      // If we updated the storage config, update the storage client
+      storageClient = new this.Storage.Client(storageConfig)
     }
     return new Client(
       clientApi,
