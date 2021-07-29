@@ -47,7 +47,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "glob-parent": ">=5.1.2",
     "husky": "^4.2.3",
-    "jest": "^25.0.0",
+    "jest": "^27.0.6",
     "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
     "uuid": "^7.0.2"
