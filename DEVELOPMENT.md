@@ -92,7 +92,7 @@ function validateStorageClient(client) {
 }
 ```
 
-they will likely fail the equality check because they're seen as 'from two different packages', but shouldn't affect the sdk as long as the the implementor satisfies the proper interface (make sure the js-sdk is at the right version).
+if these checks fail it is likely because you have installed node_modules in this repository. due to node package resolution, `Tozny` & `StorageClient` are loaded from this internal node_modules folder but the instances being passed in are coming from the parent project's `sdk`. they are thus 'two different packages' despite likely being the same. this shouldn't affect the sdk as long as the the implementor satisfies the proper interface (make sure the js-sdk is at the right version).
 
 ## Publishing
 
