@@ -16,11 +16,30 @@ In general, new types need to be added for any API return values. The exception 
 
 Internal documentation makes for a significantly superior developer experience when consuming the SDK. Most decent code editors will parse documentation comments and show hints to developers when they use the SDK methods. Newly added code to the SDK must have internal doc comments on all functions and files following the [JS Doc 3 style](https://devdocs.io/jsdoc/). If you work on another function that is missing inline documentation, add it the help out future users of the SDK.
 
-### CommonJS
+### Migration to Typescript
 
-This SDK is written using CommonJS modules. The source code is the same code that is ultimately consumed via NPM. This is significantly cleaner for consuming libraries than code that goes through transpiling before use. If a consumer needs to compile the code for platforms that do not have the full ES6 feature set used, it can be run through something like webpack, babel, etc. by the consumer.
+Originally, this project used vanilla ES6 javascript that is natively available in Node 6+. Beginning in July 2021, we started a process of migrating to typescript for the added type safety and error checking. Transition to to typescript is a work in progress. All new code added to this library should be written in typescript. Existing modules are converted as needed.
 
-Most ES6 features are natively supported by the targeted Node versions, but ES6 module support is not generally available yet. Use the [node.green](https://node.green/) table to check if you are unsure if a feature is natively supported, and [CanIUse](https://caniuse.com/) to check for native browser support.
+Source code in `src/` is compiled from ts/js to ES6 js in `dist/`. The compiled files are committed into source control in an effort to allow consumers to install only production dependencies. The `package.json` points to `dist/index.js`, so no build/compilation on install is required. Eventually this might not be the case (see below), but for now **you must compile the code & commit the compiled code in `dist`.
+
+To compile updated or altered code from js/ts to the build directory, ensure all build dependencies are installed:
+```sh
+npm i
+```
+and compile code with
+```sh
+npm run build
+```
+
+The javascript target of our typescript compilation is ES6 for backwards compatibility. Most ES6 features are natively supported by the targeted Node versions, but ES6 module support is not generally available yet. Use the [node.green](https://node.green/) table to check if you are unsure if a feature is natively supported, and [CanIUse](https://caniuse.com/) to check for native browser support.
+
+
+#### TS Migration Path
+The migration is an iterative process of betterment! Here's a rough sketch of the goal of migration:
+
+* **Version 0** (You are here) - we as a team can develop in typescript. New code can be written in ts & be imported into existing js files. Code gets compiled and the compiled files are committed to source control for outside consumption.
+* **Verison 0.5** - migration of existing js is completed. most of this work can be accomplished with automated code tools: a combination of [`5to6`](https://github.com/5to6/5to6-codemod) (for migrating `require`/`module` -> `import`/`export`) & [`ts-migrate`](https://github.com/airbnb/ts-migrate). if not this, simply creating `*.d.ts` declarations for our js code would go a long way for external consumption.
+* **Version 1** - typescript files are built on install & `dist` is removed from source code tracking. this allows external applications written in typescript to have the type safety guaranteed by our library being in ts.
 
 ## Testing
 
@@ -99,6 +118,8 @@ if these checks fail it is likely because you have installed node_modules in thi
 Checkout branch
 
 Write code
+
+Ensure you have compiles source code into `dist`
 
 Get code reviewed and approved
 
