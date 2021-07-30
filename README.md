@@ -15,7 +15,7 @@ npm install @toznysecure/sdk
 npm install @toznysecure/account-sdk --production
 ```
 
-The `--production` flag installs the library without the necessary build & dev dependencies.
+The `--production` flag, though not necessary, installs the library without the any build & dev dependencies.
 
 Create a new Account connection object -- this defines the API and specific client SDK in use.
 
@@ -27,21 +27,6 @@ const account = new Account(Tozny, 'http://platform.local.tozny.com:8000') // wh
 ```
 
 The `Account` instance provides methods for creating a account client in various ways. The client object returned from each is identical in use and operation, but the method matches a context specific means of creating the client. See the [`Account` class definition](src/account.js) for the full list of available methods and return values.
-
-### Migration to Typescript
-
-Originally, this project used vanilla ES6 javascript that is natively available in Node 6+. Beginning in July 2021, we started a process of migrating to typescript for the added type safety and error checking. Transition to to typescript is a work in progress. All new code added to this library should be written in typescript. Existing modules are converted as needed.
-
-Source code in `src/` is compiled from ts/js to ES6 js in `dist/`.
-
-To compile updated or altered code from js/ts to the build directory, ensure all build dependencies are installed:
-```sh
-npm install @toznysecure/account-sdk
-```
-and compile code with
-```sh
-npm run build
-```
 
 ### Example
 
