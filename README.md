@@ -6,20 +6,16 @@ Javascript SDK for performing Tozny platform account level operations
 
 The Tozny platform client SDKs abstract over working with the Tozny platform as a client. In addition to client level operations, Tozny offers endpoints which perform various account level operations—they control how the overall account operates. This functionality is only useful to a very small subset of Tozny clients. For this reason it does not make sense to ship the full set of account operation in the client SDK. It also does not make sense to rewrite all of the request handling and cryptographic operations in another SDK for handling account operations. Especially as different cryptographic methods and target are defined. To reconcile this, the account SDK in this repository consumes a valid instance of a Tozny client implementation and layers functionality on top of it enabling account level operations. This allows the crypto to remain context specific while the account operations are defined in a single package.
 
-### ES6
-
-To avoid the complexity of babel, and the need to 'build' the code with each change, this repository is built using only the ES6 features that are natively available in Node 6+. This means that you will not find `import` syntax in the source files, but as of yet ES6 modules is the only ES6 feature that has been noticeably missing. Debugging the SDK is significantly easier when not transpiling the code using something like Babel. It also means we don't use generators for things like async/await, meaning the overall source package size is smaller.
-
-Generally when a consuming application adds this package, the application will make use of something like babel and webpack to prepare the application. It is better to allow the application to manage the build settings. Otherwise the transpiler is running over code that has already been transpiled, which then typically runs through something like Webpack. Using natively available node features only we avoid the headache and make resulting sourcemaps far more useful.
-
 ## Getting Started
 
 To use the SDK, first require it as well as the Tozny client SDK package.
 
 ```bash
 npm install @toznysecure/sdk
-npm install @toznysecure/account-sdk
+npm install @toznysecure/account-sdk --production
 ```
+
+The `--production` flag installs the library without the necessary build & dev dependencies.
 
 Create a new Account connection object -- this defines the API and specific client SDK in use.
 
@@ -31,6 +27,21 @@ const account = new Account(Tozny, 'http://platform.local.tozny.com:8000') // wh
 ```
 
 The `Account` instance provides methods for creating a account client in various ways. The client object returned from each is identical in use and operation, but the method matches a context specific means of creating the client. See the [`Account` class definition](src/account.js) for the full list of available methods and return values.
+
+### Migration to Typescript
+
+Originally, this project used vanilla ES6 javascript that is natively available in Node 6+. Beginning in July 2021, we started a process of migrating to typescript for the added type safety and error checking. Transition to to typescript is a work in progress. All new code added to this library should be written in typescript. Existing modules are converted as needed.
+
+Source code in `src/` is compiled from ts/js to ES6 js in `dist/`.
+
+To compile updated or altered code from js/ts to the build directory, ensure all build dependencies are installed:
+```sh
+npm install @toznysecure/account-sdk
+```
+and compile code with
+```sh
+npm run build
+```
 
 ### Example
 
