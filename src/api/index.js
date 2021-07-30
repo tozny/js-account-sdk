@@ -6,8 +6,6 @@ const Token = require('./token')
 const utils = require('../utils/index')
 const { validateRequestAsJSON, checkStatus } = require('../utils')
 const { DEFAULT_API_URL } = require('../utils/constants')
-// REMOVEME
-const { thisIsATest } = require('./tsIntegrationTest')
 
 /**
  * API abstracts over the actual API calls made for various account-level operations.
@@ -709,10 +707,6 @@ class API {
       }
     )
     return validateRequestAsJSON(response)
-  }
-
-  _typescriptIntegrationTest(input) {
-    return thisIsATest(input)
   }
 }
 
