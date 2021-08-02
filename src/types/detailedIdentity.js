@@ -1,4 +1,4 @@
-const Group = require('./group')
+const Group = require('./group').default
 const RoleMapping = require('./roleMapping')
 
 /**

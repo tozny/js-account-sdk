@@ -1,5 +1,5 @@
 "use strict";
-const Group = require('./group');
+const Group = require('./group').default;
 const RoleMapping = require('./roleMapping');
 /**
  * Detailed information about a registered Identity for a Tozny realm.
