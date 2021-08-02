@@ -2,7 +2,11 @@
  * Information about a group in an identity realm.
  */
 class Group {
-  constructor(id, name, path, subGroups) {
+  id: string
+  name: string
+  path: string
+  subGroups: string[]
+  constructor(id: string, name: string, path: string, subGroups: string[]) {
     this.id = id
     this.name = name
     this.path = path
@@ -26,9 +30,18 @@ class Group {
    *
    * @return {<Group>}
    */
-  static decode(json) {
-    return new Group(json.id, json.name, json.path, json.sub_groups)
+  static decode(json: ToznyAPIGroup): Group {
+    return new Group(json.id, json.name, json.path, json.subGroups || [])
   }
 }
 
-module.exports = Group
+export type ToznyAPIGroup = {
+  id: string
+  name: string
+  path: string
+  attributes: Record<string, string>
+  // NOTE: go client indeed returns camelCase here. keeping separate type definitions regardless.
+  subGroups?: string[]
+}
+
+export default Group

@@ -2,14 +2,12 @@
  * Exposes the various defined types used in the Account SDK for easy consumption.
  */
 
-'use strict'
-
 const AccountBillingStatus = require('./accountBillingStatus')
 const BasicIdentity = require('./basicIdentity')
 const ClientInfo = require('./clientInfo')
 const ClientInfoList = require('./clientInfoList')
 const DetailedIdentity = require('./detailedIdentity')
-const Group = require('./group')
+const Group = require('./group').default
 const Identity = require('./identity')
 const ListIdentitiesResult = require('./listIdentitiesResult')
 const Realm = require('./realm')

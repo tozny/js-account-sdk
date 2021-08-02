@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Information about a group in an identity realm.
  */
@@ -27,7 +28,7 @@ class Group {
      * @return {<Group>}
      */
     static decode(json) {
-        return new Group(json.id, json.name, json.path, json.sub_groups);
+        return new Group(json.id, json.name, json.path, json.subGroups || []);
     }
 }
-module.exports = Group;
+exports.default = Group;
