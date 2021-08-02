@@ -1,5 +1,5 @@
 const { validateStorageClient } = require('./utils')
-const API = require('./api')
+const API = require('./api').default
 const { KEY_HASH_ROUNDS } = require('./utils/constants')
 const {
   AccountBillingStatus,
@@ -9,6 +9,7 @@ const {
   Identity,
   ClientInfo,
   ClientInfoList,
+  Role,
 } = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
@@ -273,7 +274,7 @@ class Client {
       endTime
     )
   }
-  /*
+  /**
    * Requests the creation of a new TozID Realm.
    *
    * @param {string} realmName The user defined name for the realm to create.
@@ -299,6 +300,47 @@ class Client {
   async listRealms() {
     const rawResponse = await this.api.listRealms(this.queenClient)
     return Realms.decode(rawResponse)
+  }
+
+  /**
+   * Creates a new role for a realm.
+   *
+   * @param {string} realmName  Name of realm.
+   * @param {object} role       Object with `name` and `description` of role.
+   * @returns {Promise<Role>}   The newly created role.
+   */
+  async createRealmRole(realmName, role) {
+    const rawResponse = await this.api.createRealmRole(
+      this.queenClient,
+      realmName,
+      role
+    )
+    return Role.decode(rawResponse)
+  }
+
+  /**
+   * Deletes a realm role by id.
+   *
+   * @param {string} realmName Name of realm.
+   * @param {string} roleId Id of role to delete.
+   * @returns {Promise<boolean>} True if successful.
+   */
+  async deleteRealmRole(realmName, roleId) {
+    return this.api.deleteRealmRole(this.queenClient, realmName, roleId)
+  }
+
+  /**
+   * Lists all realm roles for a realm.
+   *
+   * @param {string} realmName  Name of realm.
+   * @returns {Promise<Role[]>} List of all roles at realm.
+   */
+  async listRealmRoles(realmName) {
+    const rawResponse = await this.api.listRealmRoles(
+      this.queenClient,
+      realmName
+    )
+    return rawResponse.map(Role.decode)
   }
 
   /**

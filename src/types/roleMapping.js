@@ -1,4 +1,4 @@
-const Role = require('./role')
+const Role = require('./role').default
 
 /**
  * A full set of roles for a realm and client applications in the realm.

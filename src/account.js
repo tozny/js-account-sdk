@@ -3,7 +3,8 @@
  */
 
 const Client = require('./client')
-const API = require('./api')
+// a quirk of importing ts into js is that it exports as an object with a `default` property
+const API = require('./api').default
 const Token = require('./api/token')
 const Refresher = require('./api/refresher')
 const { validatePlatformSDK, validateEmail } = require('./utils')

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * A defined role which provides permissions in a realm.
  */
@@ -34,4 +35,4 @@ class Role {
         return new Role(json.id, json.name, json.description, json.composite, json.client_role, json.container_id);
     }
 }
-module.exports = Role;
+exports.default = Role;

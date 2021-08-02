@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const { validateStorageClient } = require('./utils');
-const API = require('./api');
+const API = require('./api').default;
 const { KEY_HASH_ROUNDS } = require('./utils/constants');
-const { AccountBillingStatus, RegistrationToken, Realm, Realms, Identity, ClientInfo, ClientInfoList, } = require('./types');
+const { AccountBillingStatus, RegistrationToken, Realm, Realms, Identity, ClientInfo, ClientInfoList, Role, } = require('./types');
 const Refresher = require('./api/refresher');
 const Token = require('./api/token');
 const BasicIdentity = require('./types/basicIdentity');
@@ -243,7 +243,7 @@ class Client {
             return this.api.getAggregations(this.queenClient, accountId, startTime, endTime);
         });
     }
-    /*
+    /**
      * Requests the creation of a new TozID Realm.
      *
      * @param {string} realmName The user defined name for the realm to create.
@@ -266,6 +266,43 @@ class Client {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listRealms(this.queenClient);
             return Realms.decode(rawResponse);
+        });
+    }
+    /**
+     * Creates a new role for a realm.
+     *
+     * @param {string} realmName  Name of realm.
+     * @param {object} role       Object with `name` and `description` of role.
+     * @returns {Promise<Role>}   The newly created role.
+     */
+    createRealmRole(realmName, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.createRealmRole(this.queenClient, realmName, role);
+            return Role.decode(rawResponse);
+        });
+    }
+    /**
+     * Deletes a realm role by id.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} roleId Id of role to delete.
+     * @returns {Promise<boolean>} True if successful.
+     */
+    deleteRealmRole(realmName, roleId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.deleteRealmRole(this.queenClient, realmName, roleId);
+        });
+    }
+    /**
+     * Lists all realm roles for a realm.
+     *
+     * @param {string} realmName  Name of realm.
+     * @returns {Promise<Role[]>} List of all roles at realm.
+     */
+    listRealmRoles(realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.listRealmRoles(this.queenClient, realmName);
+            return rawResponse.map(Role.decode);
         });
     }
     /**

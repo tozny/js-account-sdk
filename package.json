@@ -42,7 +42,9 @@
   },
   "devDependencies": {
     "@toznysecure/sdk": "^1.0.0-rc.4",
+    "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^26.0.24",
+    "@types/uuid": "^8.3.1",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",

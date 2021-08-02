@@ -1,11 +1,16 @@
+// @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 /**
  * Account level API request definitions.
  */
-const fetch = require('isomorphic-fetch')
-const Token = require('./token')
-const utils = require('../utils/index')
-const { validateRequestAsJSON, checkStatus } = require('../utils')
-const { DEFAULT_API_URL } = require('../utils/constants')
+import fetch from 'isomorphic-fetch'
+import { createRealmRole, deleteRealmRole, listRealmRoles } from './realmRoles'
+import Token from './token'
+import Role, { ToznyAPIRole } from '../types/role'
+import { validateRequestAsJSON, checkStatus } from '../utils'
+import { DEFAULT_API_URL } from '../utils/constants'
+
+// this is a placeholder until we have real types from js-sdk
+type ToznyClient = any
 
 /**
  * API abstracts over the actual API calls made for various account-level operations.
@@ -23,6 +28,9 @@ class API {
     }
     return api
   }
+
+  apiUrl: string
+  _token: any // TODO
 
   constructor(apiUrl = DEFAULT_API_URL) {
     this.apiUrl = apiUrl
@@ -108,7 +116,7 @@ class API {
       },
       body,
     })
-    return utils.validateRequestAsJSON(request)
+    return validateRequestAsJSON(request)
   }
 
   /**
@@ -629,6 +637,45 @@ class API {
   }
 
   /**
+   * Creates a new role for the requested realm.
+   */
+  async createRealmRole(
+    queenClient: ToznyClient,
+    realmName: string,
+    role: Role
+  ): Promise<ToznyAPIRole> {
+    return createRealmRole(
+      { realmName, role },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
+   * Deletes a realm role by id.
+   */
+  async deleteRealmRole(
+    queenClient: ToznyClient,
+    realmName: string,
+    roleId: string
+  ): Promise<boolean> {
+    await deleteRealmRole(
+      { realmName, roleId },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+    return true
+  }
+
+  /**
+   * Lists all roles for the request realm.
+   */
+  async listRealmRoles(
+    queenClient: ToznyClient,
+    realmName: string
+  ): Promise<ToznyAPIRole[]> {
+    return listRealmRoles({ realmName }, { apiUrl: this.apiUrl, queenClient })
+  }
+
+  /**
    * Gets the public info about the Tozny hosted broker
    *
    * @return {Promise<object>} The hosted broker public info.
@@ -710,4 +757,4 @@ class API {
   }
 }
 
-module.exports = API
+export default API

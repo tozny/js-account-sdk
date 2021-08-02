@@ -2,7 +2,21 @@
  * A defined role which provides permissions in a realm.
  */
 class Role {
-  constructor(id, name, description, composite, clientRole, containerId) {
+  id: string
+  name: string
+  description: string
+  composite: boolean
+  clientRole: boolean
+  containerId: string
+
+  constructor(
+    id: string,
+    name: string,
+    description: string,
+    composite: boolean,
+    clientRole: boolean,
+    containerId: string
+  ) {
     this.id = id
     this.name = name
     this.description = description
@@ -30,7 +44,7 @@ class Role {
    *
    * @return {<Role>}
    */
-  static decode(json) {
+  static decode(json: ToznyAPIRole): Role {
     return new Role(
       json.id,
       json.name,
@@ -42,4 +56,13 @@ class Role {
   }
 }
 
-module.exports = Role
+export type ToznyAPIRole = {
+  id: string
+  name: string
+  description: string
+  composite: boolean
+  client_role: boolean
+  container_id: string
+}
+
+export default Role

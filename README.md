@@ -194,6 +194,30 @@ const realmName = 'westeros'
 await accountClient.deleteRealm(realmName)
 ```
 
+**Create a realm role**
+```js
+const realmName = 'westeros'
+const myNewRole = {
+  name: "NightsWatch",
+  description: "Offer protection from northern baddies.",
+}
+const role = await accountClient.createRealmRole(realmName, myNewRole)
+```
+
+**List roles in a realm**
+```js
+const realmName = 'westeros'
+const roles = await accountClient.listRealmRoles(realmName)
+```
+
+**Delete a realm role**
+```js
+const realmName = 'westeros'
+const roleId = '000000000000-0000-0000-0000-00000000'
+await accountClient.deleteRealmRole(realmName, roleId)
+```
+
+
 **List identities in a realm**
 
 ```js

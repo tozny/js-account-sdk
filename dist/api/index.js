@@ -8,20 +8,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 /**
  * Account level API request definitions.
  */
-const fetch = require('isomorphic-fetch');
-const Token = require('./token');
-const utils = require('../utils/index');
-const { validateRequestAsJSON, checkStatus } = require('../utils');
-const { DEFAULT_API_URL } = require('../utils/constants');
-// REMOVEME
-const { thisIsATest } = require('./tsIntegrationTest');
+const isomorphic_fetch_1 = __importDefault(require("isomorphic-fetch"));
+const realmRoles_1 = require("./realmRoles");
+const token_1 = __importDefault(require("./token"));
+const utils_1 = require("../utils");
+const constants_1 = require("../utils/constants");
 /**
  * API abstracts over the actual API calls made for various account-level operations.
  */
 class API {
+    constructor(apiUrl = constants_1.DEFAULT_API_URL) {
+        this.apiUrl = apiUrl;
+    }
     /**
      * Validates a suspected instance of the API is actually an instance.
      *
@@ -33,9 +39,6 @@ class API {
             throw new Error('the api sent is not an instance of the API class');
         }
         return api;
-    }
-    constructor(apiUrl = DEFAULT_API_URL) {
-        this.apiUrl = apiUrl;
     }
     /**
      * Gets a token, either cached, or if expired, from the refresh method.
@@ -60,7 +63,7 @@ class API {
      * @return {undefined}
      */
     setToken(token) {
-        if (!(token instanceof Token)) {
+        if (!(token instanceof token_1.default)) {
             throw new Error('Tokens must be an instance of the token helper class');
         }
         this._token = token;
@@ -110,14 +113,14 @@ class API {
             const body = JSON.stringify({
                 email: username,
             });
-            const request = yield fetch(this.apiUrl + '/v1/account/challenge', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/challenge', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body,
             });
-            return utils.validateRequestAsJSON(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -131,7 +134,7 @@ class API {
      */
     completeChallenge(username, challenge, response, keyType) {
         return __awaiter(this, void 0, void 0, function* () {
-            const request = yield fetch(this.apiUrl + '/v1/account/auth', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/auth', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -143,7 +146,7 @@ class API {
                     keyid: keyType,
                 }),
             });
-            return validateRequestAsJSON(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -156,11 +159,11 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const request = yield fetch(this.apiUrl + '/v1/account/profile/meta', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile/meta', {
                 method: 'GET',
                 headers,
             });
-            return validateRequestAsJSON(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -173,12 +176,12 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const request = yield fetch(this.apiUrl + '/v1/account/profile/meta', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile/meta', {
                 method: 'PUT',
                 headers,
                 body: JSON.stringify(metaMap),
             });
-            return checkStatus(request);
+            return utils_1.checkStatus(request);
         });
     }
     /**
@@ -192,14 +195,14 @@ class API {
                 profile: profile,
                 account: account,
             });
-            const request = yield fetch(this.apiUrl + '/v1/account/profile', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body,
             });
-            return validateRequestAsJSON(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -224,7 +227,7 @@ class API {
                 },
                 body,
             });
-            return validateRequestAsJSON(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /** requests email verification for a tozny account
@@ -239,10 +242,10 @@ class API {
      */
     verifyEmail(id, otp) {
         return __awaiter(this, void 0, void 0, function* () {
-            const request = yield fetch(this.apiUrl + `/v1/account/profile/verified?id=${id}&otp=${otp}`, {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/profile/verified?id=${id}&otp=${otp}`, {
                 method: 'GET',
             });
-            return checkStatus(request);
+            return utils_1.checkStatus(request);
         });
     }
     /** requests email verification for Tozny account be resent
@@ -255,7 +258,7 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const request = yield fetch(this.apiUrl + '/v1/account/profile', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile', {
                 method: 'PATCH',
                 headers,
                 body: JSON.stringify({
@@ -264,27 +267,27 @@ class API {
                     },
                 }),
             });
-            return checkStatus(request);
+            return utils_1.checkStatus(request);
         });
     }
     initiateRecoverAccount(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(this.apiUrl + '/v1/account/challenge/email/reset', {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/challenge/email/reset', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email: email,
                 }),
             });
-            return checkStatus(response);
+            return utils_1.checkStatus(response);
         });
     }
     verifyRecoverAccountChallenge(id, otp) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(this.apiUrl + `/v1/account/profile/authenticate?id=${id}&otp=${otp}`, {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/profile/authenticate?id=${id}&otp=${otp}`, {
                 method: 'GET',
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     rollQueen(client) {
@@ -292,12 +295,12 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield fetch(this.apiUrl + `/v1/account/e3db/clients/queen`, {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/e3db/clients/queen`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({ client }),
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     getBillingStatus(queenClient) {
@@ -305,7 +308,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + '/v1/billing/subscription/status', {
                 method: 'GET',
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     addBillingCoupon(queenClient, couponCode) {
@@ -315,7 +318,7 @@ class API {
                 'Content-Type': 'application/json',
                 body: JSON.stringify({ coupon_code: couponCode }),
             });
-            return checkStatus(response);
+            return utils_1.checkStatus(response);
         });
     }
     updateAccountBilling(account) {
@@ -323,14 +326,14 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield fetch(this.apiUrl + '/v1/account/profile', {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile', {
                 method: 'PATCH',
                 headers: headers,
                 body: JSON.stringify({
                     account: account,
                 }),
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     subscribe(queenClient) {
@@ -338,7 +341,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + '/v1/billing/resubscribe', {
                 method: 'GET',
             });
-            return checkStatus(response);
+            return utils_1.checkStatus(response);
         });
     }
     unsubscribe(queenClient) {
@@ -346,7 +349,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + '/v1/billing/unsubscribe', {
                 method: 'GET',
             });
-            return checkStatus(response);
+            return utils_1.checkStatus(response);
         });
     }
     listClients(queenClient, nextToken, perPage = 50) {
@@ -354,7 +357,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(`${this.apiUrl}/v1/client/admin?next=${nextToken}&limit=${perPage}`, {
                 method: 'GET',
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     getClient(queenClient, clientId) {
@@ -362,7 +365,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + `/v1/client/admin/${clientId}`, {
                 method: 'GET',
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     setClientEnabled(queenClient, clientId, enabled) {
@@ -371,7 +374,7 @@ class API {
                 method: 'PATCH',
                 body: JSON.stringify({ enabled }),
             });
-            return checkStatus(request);
+            return utils_1.checkStatus(request);
         });
     }
     updateProfile(profile) {
@@ -379,12 +382,12 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const request = yield fetch(this.apiUrl + '/v1/account/profile', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile', {
                 method: 'PATCH',
                 headers,
                 body: JSON.stringify({ profile: profile }),
             });
-            return validateRequestAsJSON(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -397,11 +400,11 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield fetch(this.apiUrl + `/v1/account/tokens`, {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/tokens`, {
                 method: 'GET',
                 headers,
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -424,12 +427,12 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield fetch(this.apiUrl + `/v1/account/tokens`, {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/tokens`, {
                 method: 'POST',
                 headers,
                 body,
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -444,11 +447,11 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield fetch(`${this.apiUrl}/v1/account/tokens/${token}`, {
+            const response = yield isomorphic_fetch_1.default(`${this.apiUrl}/v1/account/tokens/${token}`, {
                 method: 'DELETE',
                 headers,
             });
-            yield checkStatus(response);
+            yield utils_1.checkStatus(response);
             return true;
         });
     }
@@ -462,7 +465,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + `/v1/hook`, {
                 method: 'GET',
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -489,7 +492,7 @@ class API {
                 method: 'POST',
                 body,
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -504,7 +507,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + `/v1/hook/${webhookId}`, {
                 method: 'DELETE',
             });
-            yield checkStatus(response);
+            yield utils_1.checkStatus(response);
             return true;
         });
     }
@@ -525,7 +528,7 @@ class API {
                 method: 'POST',
                 body: body,
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -548,7 +551,7 @@ class API {
                 method: 'POST',
                 body: JSON.stringify(createRealmRequest),
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -563,7 +566,7 @@ class API {
             const response = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + '/v1/identity/realm', {
                 method: 'GET',
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     getAggregations(queenClient, accountId, startTime, endTime) {
@@ -579,7 +582,7 @@ class API {
                 method: 'POST',
                 body: body,
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -595,7 +598,32 @@ class API {
             const response = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + `/v1/identity/realm/${realmName}`, {
                 method: 'DELETE',
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
+        });
+    }
+    /**
+     * Creates a new role for the requested realm.
+     */
+    createRealmRole(queenClient, realmName, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmRoles_1.createRealmRole({ realmName, role }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Deletes a realm role by id.
+     */
+    deleteRealmRole(queenClient, realmName, roleId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield realmRoles_1.deleteRealmRole({ realmName, roleId }, { apiUrl: this.apiUrl, queenClient });
+            return true;
+        });
+    }
+    /**
+     * Lists all roles for the request realm.
+     */
+    listRealmRoles(queenClient, realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmRoles_1.listRealmRoles({ realmName }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -605,8 +633,8 @@ class API {
      */
     getHostedBrokerInfo() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${this.apiUrl}/v1/identity/broker/info`);
-            return validateRequestAsJSON(response);
+            const response = yield isomorphic_fetch_1.default(`${this.apiUrl}/v1/identity/broker/info`);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -627,7 +655,7 @@ class API {
                 method: 'POST',
                 body: JSON.stringify(registerRealmBrokerRequest),
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -653,7 +681,7 @@ class API {
             const response = yield queenClient.authenticator.tsv1Fetch(fullUrl, {
                 method: 'GET',
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -669,11 +697,8 @@ class API {
             const response = yield queenClient.authenticator.tsv1Fetch(`${this.apiUrl}/v1/identity/realm/${realmName}/identity/${encUsername}`, {
                 method: 'GET',
             });
-            return validateRequestAsJSON(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
-    _typescriptIntegrationTest(input) {
-        return thisIsATest(input);
-    }
 }
-module.exports = API;
+exports.default = API;

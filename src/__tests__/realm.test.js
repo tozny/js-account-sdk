@@ -3,6 +3,7 @@ const Tozny = require('@toznysecure/sdk/node')
 const { v4: uuidv4 } = require('uuid')
 const BasicIdentity = require('../types/basicIdentity')
 const DetailedIdentity = require('../types/detailedIdentity')
+const { cleanupRealms } = require('./utils')
 
 // Set really high for slower APIs.
 jest.setTimeout(100000)
@@ -30,19 +31,6 @@ beforeAll(async () => {
   )
 })
 
-/**
- * cleanup cleanup's all Tozny resources associated with a client
- * @param  {object} client the queen client for the account
- * @return {nil}
- */
-async function cleanup(client) {
-  // Cleanup all created realms
-  const realms = await client.listRealms()
-  for (let realm of realms.realms) {
-    await client.deleteRealm(realm.name)
-  }
-}
-
 describe('Account Client', () => {
   test('can create a realm', async () => {
     try {
@@ -53,10 +41,10 @@ describe('Account Client', () => {
       // verify the realm has the user defined name
       expect(realm.name).toEqual(realmName)
     } catch (error) {
-      await cleanup(client)
+      await cleanupRealms(client)
       throw error
     } finally {
-      await cleanup(client)
+      await cleanupRealms(client)
     }
   })
   test('can list created realm', async () => {
@@ -77,10 +65,10 @@ describe('Account Client', () => {
       }
       expect(found).toEqual(true)
     } catch (error) {
-      await cleanup(client)
+      await cleanupRealms(client)
       throw error
     } finally {
-      await cleanup(client)
+      await cleanupRealms(client)
     }
   })
   test('can delete created realm', async () => {
@@ -105,7 +93,7 @@ describe('Account Client', () => {
       }
       expect(found).toEqual(false)
     } catch (error) {
-      await cleanup(client)
+      await cleanupRealms(client)
       throw error
     }
   })
@@ -135,10 +123,10 @@ describe('Account Client', () => {
       // verify the realm's broker tozny client id is the same one registered
       expect(realmBrokerIdentityToznyClientID).toBe(realmBrokerIdentity.toznyId)
     } catch (error) {
-      await cleanup(client)
+      await cleanupRealms(client)
       throw error
     } finally {
-      await cleanup(client)
+      await cleanupRealms(client)
     }
   })
 
@@ -187,7 +175,7 @@ describe('Account Client', () => {
         seen.push(i.id)
       })
     } finally {
-      await cleanup(client)
+      await cleanupRealms(client)
     }
   })
   test('can paginate identities', async () => {
@@ -242,7 +230,7 @@ describe('Account Client', () => {
       expect(pages).toBe(2)
       expect(seen.length).toEqual(3)
     } finally {
-      await cleanup(client)
+      await cleanupRealms(client)
     }
   })
   test('can get identity details', async () => {
@@ -267,7 +255,7 @@ describe('Account Client', () => {
         idDetails.roles.clients['realm-management'].map(r => r.name)
       ).toContain('realm-admin')
     } finally {
-      await cleanup(client)
+      await cleanupRealms(client)
     }
   })
 })

@@ -15,7 +15,7 @@ const ListIdentitiesResult = require('./listIdentitiesResult')
 const Realm = require('./realm')
 const Realms = require('./realms')
 const RegistrationToken = require('./registrationToken')
-const Role = require('./role')
+const Role = require('./role').default
 const RoleMapping = require('./roleMapping')
 const Sovereign = require('./sovereign')
 
