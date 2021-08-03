@@ -5,9 +5,6 @@ const BasicIdentity = require('../types/basicIdentity')
 const DetailedIdentity = require('../types/detailedIdentity')
 const { cleanupRealms } = require('./utils')
 
-// Set really high for slower APIs.
-jest.setTimeout(100000)
-
 const accountFactory = new Account(Tozny, process.env.API_URL)
 let client = null
 let registrationToken = null

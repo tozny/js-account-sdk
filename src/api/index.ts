@@ -8,6 +8,8 @@ import Token from './token'
 import Role, { ToznyAPIRole } from '../types/role'
 import { validateRequestAsJSON, checkStatus } from '../utils'
 import { DEFAULT_API_URL } from '../utils/constants'
+import { ToznyAPIGroup } from '../types/group'
+import { createRealmGroup } from './realmGroups'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -634,6 +636,20 @@ class API {
       }
     )
     return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Creates a new group for the requested realm.
+   */
+  async createRealmGroup(
+    queenClient: ToznyClient,
+    realmName: string,
+    group: { name: string }
+  ): Promise<ToznyAPIGroup> {
+    return createRealmGroup(
+      { realmName, group },
+      { apiUrl: this.apiUrl, queenClient }
+    )
   }
 
   /**

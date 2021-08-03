@@ -10,6 +10,7 @@ const {
   ClientInfo,
   ClientInfoList,
   Role,
+  Group,
 } = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
@@ -303,6 +304,33 @@ class Client {
   }
 
   /**
+   * Requests the deletion of a named TozID Realm belonging to the account.
+   *
+   * @param {string} realmName The name for the realm to delete.
+   *
+   * @returns {Promise<Object>} Empty object.
+   */
+  async deleteRealm(realmName) {
+    return this.api.deleteRealm(this.queenClient, realmName)
+  }
+
+  /**
+   * Creates a new group in the realm.
+   *
+   * @param {string} realmName Name of realm.
+   * @param {object} group     Object containing `name` of group.
+   * @returns {Promise<Group>} The newly created group.
+   */
+  async createRealmGroup(realmName, group) {
+    const rawResponse = await this.api.createRealmGroup(
+      this.queenClient,
+      realmName,
+      group
+    )
+    return Group.decode(rawResponse)
+  }
+
+  /**
    * Creates a new role for a realm.
    *
    * @param {string} realmName  Name of realm.
@@ -341,17 +369,6 @@ class Client {
       realmName
     )
     return rawResponse.map(Role.decode)
-  }
-
-  /**
-   * Requests the deletion of a named TozID Realm belonging to the account.
-   *
-   * @param {string} realmName The name for the realm to delete.
-   *
-   * @returns {Promise<Object>} Empty object.
-   */
-  async deleteRealm(realmName) {
-    return this.api.deleteRealm(this.queenClient, realmName)
   }
 
   /**

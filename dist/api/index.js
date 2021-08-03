@@ -21,6 +21,7 @@ const realmRoles_1 = require("./realmRoles");
 const token_1 = __importDefault(require("./token"));
 const utils_1 = require("../utils");
 const constants_1 = require("../utils/constants");
+const realmGroups_1 = require("./realmGroups");
 /**
  * API abstracts over the actual API calls made for various account-level operations.
  */
@@ -599,6 +600,14 @@ class API {
                 method: 'DELETE',
             });
             return utils_1.validateRequestAsJSON(response);
+        });
+    }
+    /**
+     * Creates a new group for the requested realm.
+     */
+    createRealmGroup(queenClient, realmName, group) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmGroups_1.createRealmGroup({ realmName, group }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
