@@ -611,6 +611,14 @@ class API {
         });
     }
     /**
+     * Lists all groups for the request realm.
+     */
+    listRealmGroups(queenClient, realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmGroups_1.listRealmGroups({ realmName }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
      * Creates a new role for the requested realm.
      */
     createRealmRole(queenClient, realmName, role) {

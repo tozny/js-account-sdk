@@ -294,6 +294,18 @@ class Client {
         });
     }
     /**
+     * Lists all realm groups for a realm.
+     *
+     * @param {string} realmName  Name of realm.
+     * @returns {Promise<Group[]>} List of all groups at realm.
+     */
+    listRealmGroups(realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.listRealmGroups(this.queenClient, realmName);
+            return rawResponse.map(Group.decode);
+        });
+    }
+    /**
      * Creates a new role for a realm.
      *
      * @param {string} realmName  Name of realm.

@@ -34,5 +34,11 @@ describe('Realm Groups', () => {
 
     expect(adminGroup.id).toBeTruthy()
     expect(adminGroup.name).toBe('Admins')
+
+    const groups = await client.listRealmGroups(realmName)
+
+    expect(groups).toHaveLength(1)
+    expect(groups[0].id).toBe(adminGroup.id)
+    expect(groups[0].name).toBe('Admins')
   })
 })

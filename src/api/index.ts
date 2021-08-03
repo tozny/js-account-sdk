@@ -9,7 +9,7 @@ import Role, { ToznyAPIRole } from '../types/role'
 import { validateRequestAsJSON, checkStatus } from '../utils'
 import { DEFAULT_API_URL } from '../utils/constants'
 import { ToznyAPIGroup } from '../types/group'
-import { createRealmGroup } from './realmGroups'
+import { createRealmGroup, listRealmGroups } from './realmGroups'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -650,6 +650,16 @@ class API {
       { realmName, group },
       { apiUrl: this.apiUrl, queenClient }
     )
+  }
+
+  /**
+   * Lists all groups for the request realm.
+   */
+  async listRealmGroups(
+    queenClient: ToznyClient,
+    realmName: string
+  ): Promise<ToznyAPIGroup[]> {
+    return listRealmGroups({ realmName }, { apiUrl: this.apiUrl, queenClient })
   }
 
   /**

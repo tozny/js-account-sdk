@@ -20,3 +20,19 @@ export async function createRealmGroup(
   )
   return validateRequestAsJSON(response)
 }
+
+type ListRealmGroupData = { realmName: string }
+type ListRealmGroupsResponse = { groups: ToznyAPIGroup[] }
+export async function listRealmGroups(
+  { realmName }: ListRealmGroupData,
+  { apiUrl, queenClient }: APIContext
+): Promise<ToznyAPIGroup[]> {
+  const response = await queenClient.authenticator.tsv1Fetch(
+    `${apiUrl}/v1/identity/realm/${realmName}/group`,
+    { method: 'GET' }
+  )
+  const { groups } = (await validateRequestAsJSON(
+    response
+  )) as ListRealmGroupsResponse
+  return groups
+}
