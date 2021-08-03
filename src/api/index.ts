@@ -8,6 +8,12 @@ import Token from './token'
 import Role, { ToznyAPIRole } from '../types/role'
 import { validateRequestAsJSON, checkStatus } from '../utils'
 import { DEFAULT_API_URL } from '../utils/constants'
+import { ToznyAPIGroup } from '../types/group'
+import {
+  createRealmGroup,
+  deleteRealmGroup,
+  listRealmGroups,
+} from './realmGroups'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -601,6 +607,24 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  /**
+   * Requests the creation of a new TozID Realm.
+   *
+   * @param {object} queenClient The queen client for the account to delete the realm from.
+   * @param {string} realmName The name of the realm to delete.
+   *
+   * @return {Promise<object>} Empty object.
+   */
+  async deleteRealm(queenClient, realmName) {
+    const response = await queenClient.authenticator.tsv1Fetch(
+      this.apiUrl + `/v1/identity/realm/${realmName}`,
+      {
+        method: 'DELETE',
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
   async getAggregations(queenClient, accountId, startTime, endTime) {
     const body = JSON.stringify({
       account_id: accountId,
@@ -618,22 +642,44 @@ class API {
     )
     return validateRequestAsJSON(response)
   }
+
   /**
-   * Requests the creation of a new TozID Realm.
-   *
-   * @param {object} queenClient The queen client for the account to delete the realm from.
-   * @param {string} realmName The name of the realm to delete.
-   *
-   * @return {Promise<object>} Empty object.
+   * Creates a new group for the requested realm.
    */
-  async deleteRealm(queenClient, realmName) {
-    const response = await queenClient.authenticator.tsv1Fetch(
-      this.apiUrl + `/v1/identity/realm/${realmName}`,
-      {
-        method: 'DELETE',
-      }
+  async createRealmGroup(
+    queenClient: ToznyClient,
+    realmName: string,
+    group: { name: string }
+  ): Promise<ToznyAPIGroup> {
+    return createRealmGroup(
+      { realmName, group },
+      { apiUrl: this.apiUrl, queenClient }
     )
-    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Deletes a realm group by id.
+   */
+  async deleteRealmGroup(
+    queenClient: ToznyClient,
+    realmName: string,
+    groupId: string
+  ): Promise<boolean> {
+    await deleteRealmGroup(
+      { realmName, groupId },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+    return true
+  }
+
+  /**
+   * Lists all groups for the request realm.
+   */
+  async listRealmGroups(
+    queenClient: ToznyClient,
+    realmName: string
+  ): Promise<ToznyAPIGroup[]> {
+    return listRealmGroups({ realmName }, { apiUrl: this.apiUrl, queenClient })
   }
 
   /**

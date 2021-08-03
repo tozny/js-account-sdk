@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const { validateStorageClient } = require('./utils');
 const API = require('./api').default;
 const { KEY_HASH_ROUNDS } = require('./utils/constants');
-const { AccountBillingStatus, RegistrationToken, Realm, Realms, Identity, ClientInfo, ClientInfoList, Role, } = require('./types');
+const { AccountBillingStatus, RegistrationToken, Realm, Realms, Identity, ClientInfo, ClientInfoList, Role, Group, } = require('./types');
 const Refresher = require('./api/refresher');
 const Token = require('./api/token');
 const BasicIdentity = require('./types/basicIdentity');
@@ -269,6 +269,55 @@ class Client {
         });
     }
     /**
+     * Requests the deletion of a named TozID Realm belonging to the account.
+     *
+     * @param {string} realmName The name for the realm to delete.
+     *
+     * @returns {Promise<Object>} Empty object.
+     */
+    deleteRealm(realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.deleteRealm(this.queenClient, realmName);
+        });
+    }
+    /**
+     * Creates a new group in the realm.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {object} group     Object containing `name` of group.
+     * @returns {Promise<Group>} The newly created group.
+     */
+    createRealmGroup(realmName, group) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.createRealmGroup(this.queenClient, realmName, group);
+            return Group.decode(rawResponse);
+        });
+    }
+    /**
+     * Lists all realm groups for a realm.
+     *
+     * @param {string} realmName  Name of realm.
+     * @returns {Promise<Group[]>} List of all groups at realm.
+     */
+    listRealmGroups(realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.listRealmGroups(this.queenClient, realmName);
+            return rawResponse.map(Group.decode);
+        });
+    }
+    /**
+     * Deletes a group in the named realm by id.
+     *
+     * @param {string} realmName   The name of the realm containing the group.
+     * @param {string} groupId     The id of the group to delete.
+     * @returns {Promise<boolean>} True if successful.
+     */
+    deleteRealmGroup(realmName, groupId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.deleteRealmGroup(this.queenClient, realmName, groupId);
+        });
+    }
+    /**
      * Creates a new role for a realm.
      *
      * @param {string} realmName  Name of realm.
@@ -303,18 +352,6 @@ class Client {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listRealmRoles(this.queenClient, realmName);
             return rawResponse.map(Role.decode);
-        });
-    }
-    /**
-     * Requests the deletion of a named TozID Realm belonging to the account.
-     *
-     * @param {string} realmName The name for the realm to delete.
-     *
-     * @returns {Promise<Object>} Empty object.
-     */
-    deleteRealm(realmName) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.api.deleteRealm(this.queenClient, realmName);
         });
     }
     /**

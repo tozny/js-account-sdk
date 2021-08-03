@@ -194,6 +194,28 @@ const realmName = 'westeros'
 await accountClient.deleteRealm(realmName)
 ```
 
+**Create a group**
+```js
+const realmName = 'westeros'
+const myNewGroup = {
+  name: "WhiteWalkers",
+}
+const group = await accountClient.createRealmGroup(realmName, myNewGroup)
+```
+
+**List groups in a realm**
+```js
+const realmName = 'westeros'
+const groups = await accountClient.listRealmGroups(realmName)
+```
+
+**Delete a realm group**
+```js
+const realmName = 'westeros'
+const groupId = '000000000000-0000-0000-0000-00000000'
+await accountClient.deleteRealmGroup(realmName, groupId)
+```
+
 **Create a realm role**
 ```js
 const realmName = 'westeros'
@@ -216,7 +238,6 @@ const realmName = 'westeros'
 const roleId = '000000000000-0000-0000-0000-00000000'
 await accountClient.deleteRealmRole(realmName, roleId)
 ```
-
 
 **List identities in a realm**
 
@@ -246,7 +267,7 @@ for (let realmRole in details.roles.realm) {
   console.log(realmRole.name)
 }
 // where 'kingGuard' is the name of a client application in the realm
-for (let clientRole in details.roles.clients.kindsGuard) {
+for (let clientRole in details.roles.clients.kingGuard) {
   console.log(clientRole.name)
 }
 ```

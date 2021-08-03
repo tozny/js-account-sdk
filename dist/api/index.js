@@ -21,6 +21,7 @@ const realmRoles_1 = require("./realmRoles");
 const token_1 = __importDefault(require("./token"));
 const utils_1 = require("../utils");
 const constants_1 = require("../utils/constants");
+const realmGroups_1 = require("./realmGroups");
 /**
  * API abstracts over the actual API calls made for various account-level operations.
  */
@@ -569,6 +570,22 @@ class API {
             return utils_1.validateRequestAsJSON(response);
         });
     }
+    /**
+     * Requests the creation of a new TozID Realm.
+     *
+     * @param {object} queenClient The queen client for the account to delete the realm from.
+     * @param {string} realmName The name of the realm to delete.
+     *
+     * @return {Promise<object>} Empty object.
+     */
+    deleteRealm(queenClient, realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + `/v1/identity/realm/${realmName}`, {
+                method: 'DELETE',
+            });
+            return utils_1.validateRequestAsJSON(response);
+        });
+    }
     getAggregations(queenClient, accountId, startTime, endTime) {
         return __awaiter(this, void 0, void 0, function* () {
             const body = JSON.stringify({
@@ -586,19 +603,28 @@ class API {
         });
     }
     /**
-     * Requests the creation of a new TozID Realm.
-     *
-     * @param {object} queenClient The queen client for the account to delete the realm from.
-     * @param {string} realmName The name of the realm to delete.
-     *
-     * @return {Promise<object>} Empty object.
+     * Creates a new group for the requested realm.
      */
-    deleteRealm(queenClient, realmName) {
+    createRealmGroup(queenClient, realmName, group) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + `/v1/identity/realm/${realmName}`, {
-                method: 'DELETE',
-            });
-            return utils_1.validateRequestAsJSON(response);
+            return realmGroups_1.createRealmGroup({ realmName, group }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Deletes a realm group by id.
+     */
+    deleteRealmGroup(queenClient, realmName, groupId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield realmGroups_1.deleteRealmGroup({ realmName, groupId }, { apiUrl: this.apiUrl, queenClient });
+            return true;
+        });
+    }
+    /**
+     * Lists all groups for the request realm.
+     */
+    listRealmGroups(queenClient, realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmGroups_1.listRealmGroups({ realmName }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**

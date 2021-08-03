@@ -10,6 +10,7 @@ const {
   ClientInfo,
   ClientInfoList,
   Role,
+  Group,
 } = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
@@ -303,6 +304,58 @@ class Client {
   }
 
   /**
+   * Requests the deletion of a named TozID Realm belonging to the account.
+   *
+   * @param {string} realmName The name for the realm to delete.
+   *
+   * @returns {Promise<Object>} Empty object.
+   */
+  async deleteRealm(realmName) {
+    return this.api.deleteRealm(this.queenClient, realmName)
+  }
+
+  /**
+   * Creates a new group in the realm.
+   *
+   * @param {string} realmName Name of realm.
+   * @param {object} group     Object containing `name` of group.
+   * @returns {Promise<Group>} The newly created group.
+   */
+  async createRealmGroup(realmName, group) {
+    const rawResponse = await this.api.createRealmGroup(
+      this.queenClient,
+      realmName,
+      group
+    )
+    return Group.decode(rawResponse)
+  }
+
+  /**
+   * Lists all realm groups for a realm.
+   *
+   * @param {string} realmName  Name of realm.
+   * @returns {Promise<Group[]>} List of all groups at realm.
+   */
+  async listRealmGroups(realmName) {
+    const rawResponse = await this.api.listRealmGroups(
+      this.queenClient,
+      realmName
+    )
+    return rawResponse.map(Group.decode)
+  }
+
+  /**
+   * Deletes a group in the named realm by id.
+   *
+   * @param {string} realmName   The name of the realm containing the group.
+   * @param {string} groupId     The id of the group to delete.
+   * @returns {Promise<boolean>} True if successful.
+   */
+  async deleteRealmGroup(realmName, groupId) {
+    return this.api.deleteRealmGroup(this.queenClient, realmName, groupId)
+  }
+
+  /**
    * Creates a new role for a realm.
    *
    * @param {string} realmName  Name of realm.
@@ -341,17 +394,6 @@ class Client {
       realmName
     )
     return rawResponse.map(Role.decode)
-  }
-
-  /**
-   * Requests the deletion of a named TozID Realm belonging to the account.
-   *
-   * @param {string} realmName The name for the realm to delete.
-   *
-   * @returns {Promise<Object>} Empty object.
-   */
-  async deleteRealm(realmName) {
-    return this.api.deleteRealm(this.queenClient, realmName)
   }
 
   /**
