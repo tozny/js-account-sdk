@@ -345,6 +345,17 @@ class Client {
   }
 
   /**
+   * Deletes a group in the named realm by id.
+   *
+   * @param {string} realmName   The name of the realm containing the group.
+   * @param {string} groupId     The id of the group to delete.
+   * @returns {Promise<boolean>} True if successful.
+   */
+  async deleteRealmGroup(realmName, groupId) {
+    return this.api.deleteRealmGroup(this.queenClient, realmName, groupId)
+  }
+
+  /**
    * Creates a new role for a realm.
    *
    * @param {string} realmName  Name of realm.

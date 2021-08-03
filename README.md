@@ -203,6 +203,19 @@ const myNewGroup = {
 const group = await accountClient.createRealmGroup(realmName, myNewGroup)
 ```
 
+**List groups in a realm**
+```js
+const realmName = 'westeros'
+const groups = await accountClient.listRealmGroups(realmName)
+```
+
+**Delete a realm group**
+```js
+const realmName = 'westeros'
+const groupId = '000000000000-0000-0000-0000-00000000'
+await accountClient.deleteRealmGroup(realmName, groupId)
+```
+
 **Create a realm role**
 ```js
 const realmName = 'westeros'

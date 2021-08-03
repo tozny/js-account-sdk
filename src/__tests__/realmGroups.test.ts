@@ -27,7 +27,8 @@ afterAll(async () => {
 })
 
 describe('Realm Groups', () => {
-  it('creates realm groups', async () => {
+  it('creates, lists, & deletes realm groups', async () => {
+    // creation of group
     const adminGroup = await client.createRealmGroup(realmName, {
       name: 'Admins',
     })
@@ -35,10 +36,21 @@ describe('Realm Groups', () => {
     expect(adminGroup.id).toBeTruthy()
     expect(adminGroup.name).toBe('Admins')
 
+    // list groups
     const groups = await client.listRealmGroups(realmName)
 
     expect(groups).toHaveLength(1)
     expect(groups[0].id).toBe(adminGroup.id)
     expect(groups[0].name).toBe('Admins')
+
+    // deletes groups
+    const deleteSuccessful = await client.deleteRealmGroup(
+      realmName,
+      adminGroup.id
+    )
+    expect(deleteSuccessful).toBeTruthy()
+
+    // ensure it really was deleted
+    expect(await client.listRealmGroups(realmName)).toHaveLength(0)
   })
 })

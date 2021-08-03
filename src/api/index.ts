@@ -9,7 +9,11 @@ import Role, { ToznyAPIRole } from '../types/role'
 import { validateRequestAsJSON, checkStatus } from '../utils'
 import { DEFAULT_API_URL } from '../utils/constants'
 import { ToznyAPIGroup } from '../types/group'
-import { createRealmGroup, listRealmGroups } from './realmGroups'
+import {
+  createRealmGroup,
+  deleteRealmGroup,
+  listRealmGroups,
+} from './realmGroups'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -603,23 +607,6 @@ class API {
     return validateRequestAsJSON(response)
   }
 
-  async getAggregations(queenClient, accountId, startTime, endTime) {
-    const body = JSON.stringify({
-      account_id: accountId,
-      range: {
-        start_time: startTime,
-        end_time: endTime,
-      },
-    })
-    const response = await queenClient.authenticator.tokenFetch(
-      this.apiUrl + `/v1/metric/requests/aggregations`,
-      {
-        method: 'POST',
-        body: body,
-      }
-    )
-    return validateRequestAsJSON(response)
-  }
   /**
    * Requests the creation of a new TozID Realm.
    *
@@ -638,6 +625,24 @@ class API {
     return validateRequestAsJSON(response)
   }
 
+  async getAggregations(queenClient, accountId, startTime, endTime) {
+    const body = JSON.stringify({
+      account_id: accountId,
+      range: {
+        start_time: startTime,
+        end_time: endTime,
+      },
+    })
+    const response = await queenClient.authenticator.tokenFetch(
+      this.apiUrl + `/v1/metric/requests/aggregations`,
+      {
+        method: 'POST',
+        body: body,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
   /**
    * Creates a new group for the requested realm.
    */
@@ -650,6 +655,21 @@ class API {
       { realmName, group },
       { apiUrl: this.apiUrl, queenClient }
     )
+  }
+
+  /**
+   * Deletes a realm group by id.
+   */
+  async deleteRealmGroup(
+    queenClient: ToznyClient,
+    realmName: string,
+    groupId: string
+  ): Promise<boolean> {
+    await deleteRealmGroup(
+      { realmName, groupId },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+    return true
   }
 
   /**

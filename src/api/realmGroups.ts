@@ -1,5 +1,5 @@
 import { ToznyAPIGroup } from '../types/group'
-import { validateRequestAsJSON } from '../utils'
+import { checkStatus, validateRequestAsJSON } from '../utils'
 import { APIContext } from './context'
 
 type CreateRealmGroupData = {
@@ -19,6 +19,19 @@ export async function createRealmGroup(
     }
   )
   return validateRequestAsJSON(response)
+}
+
+type DeleteRealmGroupData = { realmName: string; groupId: string }
+export async function deleteRealmGroup(
+  { realmName, groupId }: DeleteRealmGroupData,
+  { apiUrl, queenClient }: APIContext
+): Promise<void> {
+  const response = await queenClient.authenticator.tsv1Fetch(
+    `${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}`,
+    { method: 'DELETE' }
+  )
+  checkStatus(response)
+  return
 }
 
 type ListRealmGroupData = { realmName: string }
