@@ -34,6 +34,18 @@ export async function deleteRealmGroup(
   return
 }
 
+type DescribeRealmGroupData = { realmName: string; groupId: string }
+export async function describeRealmGroup(
+  { realmName, groupId }: DescribeRealmGroupData,
+  { apiUrl, queenClient }: APIContext
+): Promise<void> {
+  const response = await queenClient.authenticator.tsv1Fetch(
+    `${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}`,
+    { method: 'GET' }
+  )
+  return validateRequestAsJSON(response)
+}
+
 type ListRealmGroupData = { realmName: string }
 type ListRealmGroupsResponse = { groups: ToznyAPIGroup[] }
 export async function listRealmGroups(

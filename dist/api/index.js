@@ -620,6 +620,14 @@ class API {
         });
     }
     /**
+     * Describe a single realm group by id.
+     */
+    describeRealmGroup(queenClient, realmName, groupId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmGroups_1.describeRealmGroup({ realmName, groupId }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
      * Lists all groups for the request realm.
      */
     listRealmGroups(queenClient, realmName) {
@@ -642,6 +650,14 @@ class API {
         return __awaiter(this, void 0, void 0, function* () {
             yield realmRoles_1.deleteRealmRole({ realmName, roleId }, { apiUrl: this.apiUrl, queenClient });
             return true;
+        });
+    }
+    /**
+     * Describe a single realm role by id.
+     */
+    describeRealmRole(queenClient, realmName, roleId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmRoles_1.describeRealmRole({ realmName, roleId }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
