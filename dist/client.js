@@ -294,6 +294,18 @@ class Client {
         });
     }
     /**
+     * Describe a realm group by id.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} groupId   Id of group to describe.
+     * @returns {Promise<Group>}
+     */
+    describeRealmGroup(realmName, groupId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.describeRealmGroup(this.queenClient, realmName, groupId);
+        });
+    }
+    /**
      * Lists all realm groups for a realm.
      *
      * @param {string} realmName  Name of realm.
@@ -340,6 +352,18 @@ class Client {
     deleteRealmRole(realmName, roleId) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.api.deleteRealmRole(this.queenClient, realmName, roleId);
+        });
+    }
+    /**
+     * Describe a realm role by id.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} roleId    Id of role to describe.
+     * @returns {Promise<Role>}
+     */
+    describeRealmRole(realmName, roleId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.describeRealmRole(this.queenClient, realmName, roleId);
         });
     }
     /**

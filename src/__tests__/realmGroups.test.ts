@@ -53,4 +53,22 @@ describe('Realm Groups', () => {
     // ensure it really was deleted
     expect(await client.listRealmGroups(realmName)).toHaveLength(0)
   })
+
+  it('describes a group by id', async () => {
+    const veggies = await client.createRealmGroup(realmName, {
+      name: 'Vegetables',
+    })
+
+    const described = await client.describeRealmGroup(realmName, veggies.id)
+    expect(described.id).toBe(veggies.id)
+    expect(described.name).toBe('Vegetables')
+
+    // sad but true, we throw 500 on nonexistent entity, not 404
+    await expect(
+      client.describeRealmGroup(
+        realmName,
+        '000000000000-0000-0000-0000-00000000'
+      )
+    ).rejects.toThrowErrorMatchingInlineSnapshot(`"Internal Server Error"`)
+  })
 })

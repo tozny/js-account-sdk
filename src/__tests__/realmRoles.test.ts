@@ -72,4 +72,23 @@ describe('Realm Roles', () => {
     expect(listed).toHaveLength(3)
     expect(listed.map(r => r.id)).not.toContain(chef.id)
   })
+
+  it('describes a role by id', async () => {
+    const chef = await client.createRealmRole(realmName, {
+      name: 'Chef',
+      description: 'They cook things.',
+    })
+
+    const described = await client.describeRealmRole(realmName, chef.id)
+    expect(described.id).toBe(chef.id)
+    expect(described.name).toBe('Chef')
+
+    // sad but true, we throw 500 on nonexistent entity, not 404
+    await expect(
+      client.describeRealmRole(
+        realmName,
+        '000000000000-0000-0000-0000-00000000'
+      )
+    ).rejects.toThrowErrorMatchingInlineSnapshot(`"Internal Server Error"`)
+  })
 })

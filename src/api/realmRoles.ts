@@ -34,6 +34,18 @@ export async function deleteRealmRole(
   return
 }
 
+type DescribeRealmRoleData = { realmName: string; roleId: string }
+export async function describeRealmRole(
+  { realmName, roleId }: DescribeRealmRoleData,
+  { apiUrl, queenClient }: APIContext
+): Promise<ToznyAPIRole> {
+  const response = await queenClient.authenticator.tsv1Fetch(
+    `${apiUrl}/v1/identity/realm/${realmName}/role/${roleId}`,
+    { method: 'GET' }
+  )
+  return validateRequestAsJSON(response)
+}
+
 type ListRealmRoleData = { realmName: string }
 type ListRealmRolesResponse = { roles: ToznyAPIRole[] }
 export async function listRealmRoles(

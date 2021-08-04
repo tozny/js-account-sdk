@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listRealmGroups = exports.deleteRealmGroup = exports.createRealmGroup = void 0;
+exports.listRealmGroups = exports.describeRealmGroup = exports.deleteRealmGroup = exports.createRealmGroup = void 0;
 const utils_1 = require("../utils");
 function createRealmGroup({ realmName, group }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -29,6 +29,13 @@ function deleteRealmGroup({ realmName, groupId }, { apiUrl, queenClient }) {
     });
 }
 exports.deleteRealmGroup = deleteRealmGroup;
+function describeRealmGroup({ realmName, groupId }, { apiUrl, queenClient }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}`, { method: 'GET' });
+        return utils_1.validateRequestAsJSON(response);
+    });
+}
+exports.describeRealmGroup = describeRealmGroup;
 function listRealmGroups({ realmName }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/group`, { method: 'GET' });

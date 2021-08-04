@@ -3,7 +3,12 @@
  * Account level API request definitions.
  */
 import fetch from 'isomorphic-fetch'
-import { createRealmRole, deleteRealmRole, listRealmRoles } from './realmRoles'
+import {
+  createRealmRole,
+  deleteRealmRole,
+  describeRealmRole,
+  listRealmRoles,
+} from './realmRoles'
 import Token from './token'
 import Role, { ToznyAPIRole } from '../types/role'
 import { validateRequestAsJSON, checkStatus } from '../utils'
@@ -12,6 +17,7 @@ import { ToznyAPIGroup } from '../types/group'
 import {
   createRealmGroup,
   deleteRealmGroup,
+  describeRealmGroup,
   listRealmGroups,
 } from './realmGroups'
 
@@ -673,6 +679,20 @@ class API {
   }
 
   /**
+   * Describe a single realm group by id.
+   */
+  async describeRealmGroup(
+    queenClient: ToznyClient,
+    realmName: string,
+    groupId: string
+  ): Promise<ToznyAPIGroup> {
+    return describeRealmGroup(
+      { realmName, groupId },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
    * Lists all groups for the request realm.
    */
   async listRealmGroups(
@@ -709,6 +729,20 @@ class API {
       { apiUrl: this.apiUrl, queenClient }
     )
     return true
+  }
+
+  /**
+   * Describe a single realm role by id.
+   */
+  async describeRealmRole(
+    queenClient: ToznyClient,
+    realmName: string,
+    roleId: string
+  ): Promise<ToznyAPIRole> {
+    return describeRealmRole(
+      { realmName, roleId },
+      { apiUrl: this.apiUrl, queenClient }
+    )
   }
 
   /**
