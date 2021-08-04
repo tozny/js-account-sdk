@@ -1,5 +1,5 @@
 const Group = require('./group').default
-const RoleMapping = require('./roleMapping')
+const RoleMapping = require('./roleMapping').default
 
 /**
  * Detailed information about a registered Identity for a Tozny realm.

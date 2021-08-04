@@ -14,7 +14,7 @@ const Realm = require('./realm')
 const Realms = require('./realms')
 const RegistrationToken = require('./registrationToken')
 const Role = require('./role').default
-const RoleMapping = require('./roleMapping')
+const RoleMapping = require('./roleMapping').default
 const Sovereign = require('./sovereign')
 
 module.exports = {

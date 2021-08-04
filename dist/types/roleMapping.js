@@ -1,11 +1,17 @@
 "use strict";
-const Role = require('./role').default;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const role_1 = __importDefault(require("./role"));
 /**
  * A full set of roles for a realm and client applications in the realm.
  */
 class RoleMapping {
     constructor(realm, clients) {
         this.realm = realm;
+        // NOTE: this is different from Tozny's API property.
+        // keeping for backwards-compatibility
         this.clients = clients;
     }
     /**
@@ -45,22 +51,19 @@ class RoleMapping {
      */
     static decode(json) {
         const realm = RoleMapping._decodeRoles(json.realm);
-        const client = {};
+        const clients = {};
         if (typeof json.client === 'object') {
             for (let name in json.client) {
-                client[name] = RoleMapping._decodeRoles(json.client[name]);
+                clients[name] = RoleMapping._decodeRoles(json.client[name]);
             }
         }
-        return new RoleMapping(realm, client);
+        return new RoleMapping(realm, clients);
     }
     /**
      * decodes a list of role objects into the correct type
-     * @param {Array} roles The list of JSON serialized roles
-     * @return {Array<Role>} The list of role objects
-     *
      */
     static _decodeRoles(roles) {
-        return Array.isArray(roles) ? roles.map(Role.decode) : [];
+        return roles.map(role_1.default.decode);
     }
 }
-module.exports = RoleMapping;
+exports.default = RoleMapping;

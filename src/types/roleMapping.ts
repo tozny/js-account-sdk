@@ -1,11 +1,17 @@
-const Role = require('./role').default
+import Role, { ToznyAPIRole } from './role'
+
+type ClientRoles = Record<string, Role[]>
 
 /**
  * A full set of roles for a realm and client applications in the realm.
  */
 class RoleMapping {
-  constructor(realm, clients) {
+  realm: Role[]
+  clients: ClientRoles
+  constructor(realm: Role[], clients: ClientRoles) {
     this.realm = realm
+    // NOTE: this is different from Tozny's API property.
+    // keeping for backwards-compatibility
     this.clients = clients
   }
 
@@ -44,26 +50,28 @@ class RoleMapping {
    *
    * @return {<RoleMapping>}
    */
-  static decode(json) {
+  static decode(json: ToznyAPIRoleMapping): RoleMapping {
     const realm = RoleMapping._decodeRoles(json.realm)
-    const client = {}
+    const clients: ClientRoles = {}
     if (typeof json.client === 'object') {
       for (let name in json.client) {
-        client[name] = RoleMapping._decodeRoles(json.client[name])
+        clients[name] = RoleMapping._decodeRoles(json.client[name])
       }
     }
-    return new RoleMapping(realm, client)
+    return new RoleMapping(realm, clients)
   }
 
   /**
    * decodes a list of role objects into the correct type
-   * @param {Array} roles The list of JSON serialized roles
-   * @return {Array<Role>} The list of role objects
-   *
    */
-  static _decodeRoles(roles) {
-    return Array.isArray(roles) ? roles.map(Role.decode) : []
+  static _decodeRoles(roles: ToznyAPIRole[]): Role[] {
+    return roles.map(Role.decode)
   }
 }
 
-module.exports = RoleMapping
+export type ToznyAPIRoleMapping = {
+  realm: ToznyAPIRole[]
+  client: Record<string, ToznyAPIRole[]>
+}
+
+export default RoleMapping
