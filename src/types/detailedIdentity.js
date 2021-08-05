@@ -1,5 +1,5 @@
 const Group = require('./group').default
-const RoleMapping = require('./roleMapping').default
+const GroupRoleMapping = require('./groupRoleMapping').default
 
 /**
  * Detailed information about a registered Identity for a Tozny realm.
@@ -93,7 +93,7 @@ class DetailedIdentity {
       json.last_name,
       json.active,
       json.federated,
-      RoleMapping.decode(json.roles),
+      GroupRoleMapping.decode(json.roles),
       Array.isArray(json.groups) ? json.groups.map(Group.decode) : [],
       typeof json.attributes === 'object' ? json.attributes : {}
     )

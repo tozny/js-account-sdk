@@ -20,7 +20,7 @@ import {
   describeRealmGroup,
   listRealmGroups,
 } from './realmGroups'
-import { ToznyAPIRoleMapping } from '../types/roleMapping'
+import { ToznyAPIGroupRoleMapping } from '../types/groupRoleMapping'
 import { listGroupRoleMappings } from './groupRoleMappings'
 
 // this is a placeholder until we have real types from js-sdk
@@ -764,7 +764,7 @@ class API {
     queenClient: ToznyClient,
     realmName: string,
     groupId: string
-  ): Promise<ToznyAPIRoleMapping[]> {
+  ): Promise<ToznyAPIGroupRoleMapping> {
     return listGroupRoleMappings(
       { groupId, realmName },
       { apiUrl: this.apiUrl, queenClient }

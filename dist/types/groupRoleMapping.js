@@ -5,14 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const role_1 = __importDefault(require("./role"));
 /**
- * A full set of roles for a realm and client applications in the realm.
+ * An object representing the realm & client roles to which a particular realm group maps.
  */
-class RoleMapping {
-    constructor(realm, clients) {
-        this.realm = realm;
-        // NOTE: this is different from Tozny's API property.
-        // keeping for backwards-compatibility
-        this.clients = clients;
+class GroupRoleMapping {
+    constructor(realmRoles, rolesByClient) {
+        this.realm = realmRoles;
+        this.client = rolesByClient;
     }
     /**
      * Specify how an already unserialized JSON array should be marshaled into
@@ -44,20 +42,15 @@ class RoleMapping {
      *   }
      * })
      * <code>
-     *
-     * @param {object} json
-     *
-     * @return {<RoleMapping>}
      */
     static decode(json) {
-        const realm = RoleMapping._decodeRoles(json.realm);
-        const clients = {};
-        if (typeof json.client === 'object') {
-            for (let name in json.client) {
-                clients[name] = RoleMapping._decodeRoles(json.client[name]);
-            }
-        }
-        return new RoleMapping(realm, clients);
+        const realmRoles = GroupRoleMapping._decodeRoles(json.realm);
+        const rolesByClient = {};
+        const clientNames = Object.keys(json.client);
+        clientNames.forEach(clientName => {
+            rolesByClient[clientName] = this._decodeRoles(json.client[clientName]);
+        });
+        return new GroupRoleMapping(realmRoles, rolesByClient);
     }
     /**
      * decodes a list of role objects into the correct type
@@ -66,4 +59,4 @@ class RoleMapping {
         return roles.map(role_1.default.decode);
     }
 }
-exports.default = RoleMapping;
+exports.default = GroupRoleMapping;

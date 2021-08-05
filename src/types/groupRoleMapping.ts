@@ -1,18 +1,18 @@
 import Role, { ToznyAPIRole } from './role'
 
-type ClientRoles = Record<string, Role[]>
+type RolesByClient = Record<string, Role[]>
 
 /**
- * A full set of roles for a realm and client applications in the realm.
+ * An object representing the realm & client roles to which a particular realm group maps.
  */
-class RoleMapping {
+class GroupRoleMapping {
+  /** Realm roles to which the group maps. */
   realm: Role[]
-  clients: ClientRoles
-  constructor(realm: Role[], clients: ClientRoles) {
-    this.realm = realm
-    // NOTE: this is different from Tozny's API property.
-    // keeping for backwards-compatibility
-    this.clients = clients
+  /** A map of client names to roles to which this group maps. */
+  client: RolesByClient
+  constructor(realmRoles: Role[], rolesByClient: RolesByClient) {
+    this.realm = realmRoles
+    this.client = rolesByClient
   }
 
   /**
@@ -45,20 +45,17 @@ class RoleMapping {
    *   }
    * })
    * <code>
-   *
-   * @param {object} json
-   *
-   * @return {<RoleMapping>}
    */
-  static decode(json: ToznyAPIRoleMapping): RoleMapping {
-    const realm = RoleMapping._decodeRoles(json.realm)
-    const clients: ClientRoles = {}
-    if (typeof json.client === 'object') {
-      for (let name in json.client) {
-        clients[name] = RoleMapping._decodeRoles(json.client[name])
-      }
-    }
-    return new RoleMapping(realm, clients)
+  static decode(json: ToznyAPIGroupRoleMapping): GroupRoleMapping {
+    const realmRoles = GroupRoleMapping._decodeRoles(json.realm)
+
+    const rolesByClient: RolesByClient = {}
+    const clientNames = Object.keys(json.client)
+    clientNames.forEach(clientName => {
+      rolesByClient[clientName] = this._decodeRoles(json.client[clientName])
+    })
+
+    return new GroupRoleMapping(realmRoles, rolesByClient)
   }
 
   /**
@@ -69,9 +66,9 @@ class RoleMapping {
   }
 }
 
-export type ToznyAPIRoleMapping = {
+export type ToznyAPIGroupRoleMapping = {
   realm: ToznyAPIRole[]
   client: Record<string, ToznyAPIRole[]>
 }
 
-export default RoleMapping
+export default GroupRoleMapping

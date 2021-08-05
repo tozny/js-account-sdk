@@ -14,7 +14,7 @@ const Realm = require('./realm');
 const Realms = require('./realms');
 const RegistrationToken = require('./registrationToken');
 const Role = require('./role').default;
-const RoleMapping = require('./roleMapping').default;
+const GroupRoleMapping = require('./groupRoleMapping').default;
 const Sovereign = require('./sovereign');
 module.exports = {
     AccountBillingStatus,
@@ -29,6 +29,6 @@ module.exports = {
     Realms,
     RegistrationToken,
     Role,
-    RoleMapping,
+    GroupRoleMapping,
     Sovereign,
 };

@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const { validateStorageClient } = require('./utils');
 const API = require('./api').default;
 const { KEY_HASH_ROUNDS } = require('./utils/constants');
-const { AccountBillingStatus, RegistrationToken, Realm, Realms, Identity, ClientInfo, ClientInfoList, Role, Group, RoleMapping, } = require('./types');
+const { AccountBillingStatus, RegistrationToken, Realm, Realms, Identity, ClientInfo, ClientInfoList, Role, Group, GroupRoleMapping, } = require('./types');
 const Refresher = require('./api/refresher');
 const Token = require('./api/token');
 const BasicIdentity = require('./types/basicIdentity');
@@ -381,14 +381,14 @@ class Client {
     /**
      * Gets realm & client roles that are mapped to a particular realm group.
      *
-     * @param {string} realmName  Name of realm.
-     * @param {string} groupId    Id of group for which to list role mappings.
-     * @returns {Promise<Role[]>} List of all roles at realm.
+     * @param {string} realmName            Name of realm.
+     * @param {string} groupId              Id of group for which to list role mappings.
+     * @returns {Promise<GroupRoleMapping>} List of all roles at realm.
      */
     listGroupRoleMappings(realmName, groupId) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listGroupRoleMappings(this.queenClient, realmName, groupId);
-            return RoleMapping.decode(rawResponse);
+            return GroupRoleMapping.decode(rawResponse);
         });
     }
     /**

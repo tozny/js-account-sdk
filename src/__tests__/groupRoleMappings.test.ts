@@ -3,7 +3,6 @@ import Account from '../account'
 import Tozny from '@toznysecure/sdk/node'
 import { v4 as uuidv4 } from 'uuid'
 import { cleanupRealms } from './utils'
-import { Group } from '../types'
 
 const accountFactory = new Account(Tozny, process.env.API_URL)
 let client: any = null
@@ -33,7 +32,9 @@ describe('Group Role Mappings', () => {
 
     const roleMappings = await client.listGroupRoleMappings(realmName, group.id)
 
-    expect(roleMappings.clients).toEqual({})
+    console.log({ roleMappings })
+
+    expect(roleMappings.client).toEqual({})
     expect(roleMappings.realm).toBeInstanceOf(Array)
     expect(roleMappings.realm).toHaveLength(0)
   })

@@ -267,7 +267,7 @@ for (let realmRole in details.roles.realm) {
   console.log(realmRole.name)
 }
 // where 'kingGuard' is the name of a client application in the realm
-for (let clientRole in details.roles.clients.kingGuard) {
+for (let clientRole in details.roles.client.kingGuard) {
   console.log(clientRole.name)
 }
 ```

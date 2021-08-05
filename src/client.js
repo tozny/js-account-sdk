@@ -11,7 +11,7 @@ const {
   ClientInfoList,
   Role,
   Group,
-  RoleMapping,
+  GroupRoleMapping,
 } = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
@@ -422,9 +422,9 @@ class Client {
   /**
    * Gets realm & client roles that are mapped to a particular realm group.
    *
-   * @param {string} realmName  Name of realm.
-   * @param {string} groupId    Id of group for which to list role mappings.
-   * @returns {Promise<Role[]>} List of all roles at realm.
+   * @param {string} realmName            Name of realm.
+   * @param {string} groupId              Id of group for which to list role mappings.
+   * @returns {Promise<GroupRoleMapping>} List of all roles at realm.
    */
   async listGroupRoleMappings(realmName, groupId) {
     const rawResponse = await this.api.listGroupRoleMappings(
@@ -432,7 +432,7 @@ class Client {
       realmName,
       groupId
     )
-    return RoleMapping.decode(rawResponse)
+    return GroupRoleMapping.decode(rawResponse)
   }
 
   /**

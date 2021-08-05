@@ -249,7 +249,7 @@ describe('Account Client', () => {
       expect(idDetails).toBeInstanceOf(DetailedIdentity)
       expect(idDetails.username).toBe(sovereignName.toLowerCase())
       expect(
-        idDetails.roles.clients['realm-management'].map(r => r.name)
+        idDetails.roles.client['realm-management'].map(r => r.name)
       ).toContain('realm-admin')
     } finally {
       await cleanupRealms(client)
