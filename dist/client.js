@@ -392,6 +392,35 @@ class Client {
         });
     }
     /**
+     * Adds a set of realm/client roles to a group's role mapping
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} groupId Id of realm group.
+     * @param {GroupRoleMapping} groupRoleMapping The map of roles.
+     * @returns {Promise<boolean>} True if successful
+     *
+     * @example
+     * const realmName = 'kitchen'
+     * const chefGroup = await client.createRealmGroup(realmName, { name: 'Chefs' })
+     * const fridgeAccessRole = await client.createRealmRole(realmName, {
+     *   name: 'FridgeAccess',
+     *   description: 'Grants access to the secrets of the fridge.',
+     * })
+     *
+     * // map the "Chefs" realm group to the "FridgeAccess" realm role
+     * // returns true on success
+     * await client.addGroupRoleMappings(
+     *   realmName,
+     *   chefGroup.id,
+     *   { realm: [fridgeAccessRole] }
+     * )
+     */
+    addGroupRoleMappings(realmName, groupId, groupRoleMapping) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.addGroupRoleMappings(this.queenClient, realmName, groupId, groupRoleMapping);
+        });
+    }
+    /**
      * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
      * @param  {string} realmName         The name of the realm to register the broker identity with.
      * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.

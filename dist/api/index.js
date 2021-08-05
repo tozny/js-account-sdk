@@ -678,6 +678,15 @@ class API {
         });
     }
     /**
+     * Maps a particular realm group to a set of realm & client roles.
+     */
+    addGroupRoleMappings(queenClient, realmName, groupId, groupRoleMapping) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield groupRoleMappings_1.addGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl: this.apiUrl, queenClient });
+            return true;
+        });
+    }
+    /**
      * Gets the public info about the Tozny hosted broker
      *
      * @return {Promise<object>} The hosted broker public info.

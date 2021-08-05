@@ -9,12 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listGroupRoleMappings = void 0;
+exports.addGroupRoleMappings = exports.listGroupRoleMappings = void 0;
 const utils_1 = require("../utils");
+const roleMappingForGroupUri = (apiUrl, realmName, groupId) => `${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}/role_mapping`;
 function listGroupRoleMappings({ groupId, realmName }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}/role_mapping`, { method: 'GET' });
+        const response = yield queenClient.authenticator.tsv1Fetch(roleMappingForGroupUri(apiUrl, realmName, groupId), { method: 'GET' });
         return utils_1.validateRequestAsJSON(response);
     });
 }
 exports.listGroupRoleMappings = listGroupRoleMappings;
+function addGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl, queenClient }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield queenClient.authenticator.tsv1Fetch(roleMappingForGroupUri(apiUrl, realmName, groupId), {
+            method: 'POST',
+            body: JSON.stringify(groupRoleMapping),
+        });
+        utils_1.checkStatus(response);
+        return;
+    });
+}
+exports.addGroupRoleMappings = addGroupRoleMappings;

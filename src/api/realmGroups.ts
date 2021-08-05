@@ -38,7 +38,7 @@ type DescribeRealmGroupData = { realmName: string; groupId: string }
 export async function describeRealmGroup(
   { realmName, groupId }: DescribeRealmGroupData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<ToznyAPIGroup> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}`,
     { method: 'GET' }
