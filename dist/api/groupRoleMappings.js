@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addGroupRoleMappings = exports.listGroupRoleMappings = void 0;
+exports.removeGroupRoleMappings = exports.addGroupRoleMappings = exports.listGroupRoleMappings = void 0;
 const utils_1 = require("../utils");
 const roleMappingForGroupUri = (apiUrl, realmName, groupId) => `${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}/role_mapping`;
 function listGroupRoleMappings({ groupId, realmName }, { apiUrl, queenClient }) {
@@ -30,3 +30,14 @@ function addGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl
     });
 }
 exports.addGroupRoleMappings = addGroupRoleMappings;
+function removeGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl, queenClient }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield queenClient.authenticator.tsv1Fetch(roleMappingForGroupUri(apiUrl, realmName, groupId), {
+            method: 'DELETE',
+            body: JSON.stringify(groupRoleMapping),
+        });
+        utils_1.checkStatus(response);
+        return;
+    });
+}
+exports.removeGroupRoleMappings = removeGroupRoleMappings;

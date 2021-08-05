@@ -28,7 +28,7 @@ afterAll(async () => {
 })
 
 describe('Group Role Mappings', () => {
-  it('adds, lists group role mappings', async () => {
+  it('adds, lists, removes group role mappings', async () => {
     const group = await client.createRealmGroup(realmName, { name: 'Chefs' })
     const role1 = await client.createRealmRole(realmName, {
       name: 'FridgeAccess',
@@ -71,5 +71,25 @@ describe('Group Role Mappings', () => {
     expect(
       mappingsAfterAdd.realm.find((r: Role) => r.id === role2.id)
     ).toMatchObject(role2)
+
+    // the day chefs lost access to the fridge
+    const removeResponse = await client.removeGroupRoleMappings(
+      realmName,
+      group.id,
+      { realm: [role1] }
+    )
+
+    expect(removeResponse).toBeTruthy()
+
+    const mappingsAfterRemove = await client.listGroupRoleMappings(
+      realmName,
+      group.id
+    )
+
+    expect(mappingsAfterRemove.realm).toHaveLength(1)
+    expect(mappingsAfterRemove.realm[0].id).toEqual(role2.id)
+    expect(mappingsAfterRemove.realm[0].name).toMatchInlineSnapshot(
+      `"StovePowers"`
+    )
   })
 })

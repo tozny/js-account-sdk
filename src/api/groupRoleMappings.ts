@@ -42,11 +42,26 @@ type AddRemoveGroupRoleMappingData = {
 export async function addGroupRoleMappings(
   { realmName, groupId, groupRoleMapping }: AddRemoveGroupRoleMappingData,
   { apiUrl, queenClient }: APIContext
-) {
+): Promise<void> {
   const response = await queenClient.authenticator.tsv1Fetch(
     roleMappingForGroupUri(apiUrl, realmName, groupId),
     {
       method: 'POST',
+      body: JSON.stringify(groupRoleMapping),
+    }
+  )
+  checkStatus(response)
+  return
+}
+
+export async function removeGroupRoleMappings(
+  { realmName, groupId, groupRoleMapping }: AddRemoveGroupRoleMappingData,
+  { apiUrl, queenClient }: APIContext
+): Promise<void> {
+  const response = await queenClient.authenticator.tsv1Fetch(
+    roleMappingForGroupUri(apiUrl, realmName, groupId),
+    {
+      method: 'DELETE',
       body: JSON.stringify(groupRoleMapping),
     }
   )

@@ -687,6 +687,15 @@ class API {
         });
     }
     /**
+     * Removes a set of realm/client roles from a group's role mapping.
+     */
+    removeGroupRoleMappings(queenClient, realmName, groupId, groupRoleMapping) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield groupRoleMappings_1.removeGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl: this.apiUrl, queenClient });
+            return true;
+        });
+    }
+    /**
      * Gets the public info about the Tozny hosted broker
      *
      * @return {Promise<object>} The hosted broker public info.

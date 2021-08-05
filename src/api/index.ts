@@ -27,6 +27,7 @@ import {
   addGroupRoleMappings,
   GroupRoleMappingInput,
   listGroupRoleMappings,
+  removeGroupRoleMappings,
 } from './groupRoleMappings'
 
 // this is a placeholder until we have real types from js-sdk
@@ -787,6 +788,22 @@ class API {
     groupRoleMapping: GroupRoleMappingInput
   ): Promise<boolean> {
     await addGroupRoleMappings(
+      { realmName, groupId, groupRoleMapping },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+    return true
+  }
+
+  /**
+   * Removes a set of realm/client roles from a group's role mapping.
+   */
+  async removeGroupRoleMappings(
+    queenClient: ToznyClient,
+    realmName: string,
+    groupId: string,
+    groupRoleMapping: GroupRoleMappingInput
+  ): Promise<boolean> {
+    await removeGroupRoleMappings(
       { realmName, groupId, groupRoleMapping },
       { apiUrl: this.apiUrl, queenClient }
     )

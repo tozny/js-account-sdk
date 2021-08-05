@@ -440,7 +440,7 @@ class Client {
    *
    * @param {string} realmName Name of realm.
    * @param {string} groupId Id of realm group.
-   * @param {GroupRoleMapping} groupRoleMapping The map of roles.
+   * @param {GroupRoleMapping} groupRoleMapping The map of roles to add to group's mapping.
    * @returns {Promise<boolean>} True if successful
    *
    * @example
@@ -461,6 +461,23 @@ class Client {
    */
   async addGroupRoleMappings(realmName, groupId, groupRoleMapping) {
     return this.api.addGroupRoleMappings(
+      this.queenClient,
+      realmName,
+      groupId,
+      groupRoleMapping
+    )
+  }
+
+  /**
+   * Removes a set of realm/client roles from a group's role mapping.
+   *
+   * @param {string} realmName Name of realm.
+   * @param {string} groupId Id of realm group.
+   * @param {GroupRoleMapping} groupRoleMapping The map of roles to remove to group's mapping.
+   * @returns {Promise<boolean>} True if successful
+   */
+  async removeGroupRoleMappings(realmName, groupId, groupRoleMapping) {
+    return this.api.removeGroupRoleMappings(
       this.queenClient,
       realmName,
       groupId,

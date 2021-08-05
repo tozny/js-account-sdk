@@ -396,7 +396,7 @@ class Client {
      *
      * @param {string} realmName Name of realm.
      * @param {string} groupId Id of realm group.
-     * @param {GroupRoleMapping} groupRoleMapping The map of roles.
+     * @param {GroupRoleMapping} groupRoleMapping The map of roles to add to group's mapping.
      * @returns {Promise<boolean>} True if successful
      *
      * @example
@@ -418,6 +418,19 @@ class Client {
     addGroupRoleMappings(realmName, groupId, groupRoleMapping) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.api.addGroupRoleMappings(this.queenClient, realmName, groupId, groupRoleMapping);
+        });
+    }
+    /**
+     * Removes a set of realm/client roles from a group's role mapping.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} groupId Id of realm group.
+     * @param {GroupRoleMapping} groupRoleMapping The map of roles to remove to group's mapping.
+     * @returns {Promise<boolean>} True if successful
+     */
+    removeGroupRoleMappings(realmName, groupId, groupRoleMapping) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.removeGroupRoleMappings(this.queenClient, realmName, groupId, groupRoleMapping);
         });
     }
     /**
