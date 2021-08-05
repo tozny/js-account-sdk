@@ -22,6 +22,7 @@ const token_1 = __importDefault(require("./token"));
 const utils_1 = require("../utils");
 const constants_1 = require("../utils/constants");
 const realmGroups_1 = require("./realmGroups");
+const groupRoleMappings_1 = require("./groupRoleMappings");
 /**
  * API abstracts over the actual API calls made for various account-level operations.
  */
@@ -666,6 +667,14 @@ class API {
     listRealmRoles(queenClient, realmName) {
         return __awaiter(this, void 0, void 0, function* () {
             return realmRoles_1.listRealmRoles({ realmName }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Gets realm & client roles that are mapped to a particular realm group.
+     */
+    listGroupRoleMappings(queenClient, realmName, groupId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupRoleMappings_1.listGroupRoleMappings({ groupId, realmName }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
