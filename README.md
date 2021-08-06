@@ -272,35 +272,6 @@ for (let clientRole in details.roles.client.kingGuard) {
 }
 ```
 
-***Get Identity Group membership**
-```js
-
-let identity_id = identity.storage.config.clientId
-const groupList = await client.groupMembership(realmName, identity_id)
-
-```
-
-***Update Identity Group membership**
-```js
-  
-const toznyEngineersGroup = await client.createRealmGroup(realmName, {name: 'ToznyEngineers',})
-await client.updateGroupMembership(realmName, identity_id, {groups: [toznyEngineersGroup.id],})
-```
-
-***Join Realm Groups**
-```js
-const toznyEngineersGroup = await client.createRealmGroup(realmName, {name: 'ToznyEngineers',})
-await client.joinGroups(realmName, identity_id, {groups: [toznyEngineersGroup.id],})
-
-```
-
-***Leave Realm Groups**
-```js
-const toznyEngineersGroup = await client.createRealmGroup(realmName, {name: 'ToznyEngineers',})
-await client.joinGroups(realmName, identity_id, {groups: [toznyEngineersGroup.id],})
-await client.leaveGroups(realmName, identity_id, { groups: [toznyEngineersGroup.id] })
-```
-
 ## Terms of Service
 
 Your use of the Tozny JavaScript SDK must abide by our [Terms of Service](https://github.com/tozny/e3db-java/blob/master/terms.pdf), as detailed in the linked document.

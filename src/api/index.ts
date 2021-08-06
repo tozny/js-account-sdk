@@ -29,12 +29,6 @@ import {
   listGroupRoleMappings,
   removeGroupRoleMappings,
 } from './groupRoleMappings'
-import {
-  leaveGroups,
-  joinGroups,
-  updateGroupMembership,
-  groupMembership,
-} from './groupMembership'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -772,62 +766,6 @@ class API {
 
   /**
    * Gets realm & client roles that are mapped to a particular realm group.
-   * List all groups for an identity
-   */
-  async groupMembership(
-    queenClient: ToznyClient,
-    realmName: string,
-    identityId: string
-  ): Promise<ToznyAPIGroup[]> {
-    return groupMembership(
-      { realmName, identityId },
-      { apiUrl: this.apiUrl, queenClient }
-    )
-  }
-  /**
-   * update group membership
-   */
-  async updateGroupMembership(
-    queenClient: ToznyClient,
-    realmName: string,
-    identityId: string,
-    groups: ToznyAPIGroup[]
-  ): Promise<void> {
-    return updateGroupMembership(
-      { realmName, identityId, groups },
-      { apiUrl: this.apiUrl, queenClient }
-    )
-  }
-  /**
-   * Join a list of groups for an identity
-   */
-  async joinGroups(
-    queenClient: ToznyClient,
-    realmName: string,
-    identityId: string,
-    groups: ToznyAPIGroup[]
-  ): Promise<void> {
-    return joinGroups(
-      { realmName, identityId, groups },
-      { apiUrl: this.apiUrl, queenClient }
-    )
-  }
-  /**
-   * Leave a list of Groups
-   */
-  async leaveGroups(
-    queenClient: ToznyClient,
-    realmName: string,
-    identityId: string,
-    groups: ToznyAPIGroup[]
-  ): Promise<void> {
-    return leaveGroups(
-      { realmName, identityId, groups },
-      { apiUrl: this.apiUrl, queenClient }
-    )
-  }
-  /**
-   * Lists realm's group-role mappings for group by id.
    */
   async listGroupRoleMappings(
     queenClient: ToznyClient,
