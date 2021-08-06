@@ -195,21 +195,24 @@ await accountClient.deleteRealm(realmName)
 ```
 
 **Create a group**
+
 ```js
 const realmName = 'westeros'
 const myNewGroup = {
-  name: "WhiteWalkers",
+  name: 'WhiteWalkers',
 }
 const group = await accountClient.createRealmGroup(realmName, myNewGroup)
 ```
 
 **List groups in a realm**
+
 ```js
 const realmName = 'westeros'
 const groups = await accountClient.listRealmGroups(realmName)
 ```
 
 **Delete a realm group**
+
 ```js
 const realmName = 'westeros'
 const groupId = '000000000000-0000-0000-0000-00000000'
@@ -217,22 +220,25 @@ await accountClient.deleteRealmGroup(realmName, groupId)
 ```
 
 **Create a realm role**
+
 ```js
 const realmName = 'westeros'
 const myNewRole = {
-  name: "NightsWatch",
-  description: "Offer protection from northern baddies.",
+  name: 'NightsWatch',
+  description: 'Offer protection from northern baddies.',
 }
 const role = await accountClient.createRealmRole(realmName, myNewRole)
 ```
 
 **List roles in a realm**
+
 ```js
 const realmName = 'westeros'
 const roles = await accountClient.listRealmRoles(realmName)
 ```
 
 **Delete a realm role**
+
 ```js
 const realmName = 'westeros'
 const roleId = '000000000000-0000-0000-0000-00000000'
@@ -270,6 +276,49 @@ for (let realmRole in details.roles.realm) {
 for (let clientRole in details.roles.client.kingGuard) {
   console.log(clientRole.name)
 }
+```
+
+**Get Identity Group membership**
+
+```js
+let identityId = identity.storage.config.clientId
+const groupList = await client.groupMembership(realmName, identityId)
+```
+
+**Update Identity Group membership**
+
+```js
+const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+  name: 'ToznyEngineers',
+})
+await client.updateGroupMembership(realmName, identityId, {
+  groups: [toznyEngineersGroup.id],
+})
+```
+
+**Join Realm Groups**
+
+```js
+const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+  name: 'ToznyEngineers',
+})
+await client.joinGroups(realmName, identityId, {
+  groups: [toznyEngineersGroup.id],
+})
+```
+
+**Leave Realm Groups**
+
+```js
+const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+  name: 'ToznyEngineers',
+})
+await client.joinGroups(realmName, identityId, {
+  groups: [toznyEngineersGroup.id],
+})
+await client.leaveGroups(realmName, identityId, {
+  groups: [toznyEngineersGroup.id],
+})
 ```
 
 ## Terms of Service

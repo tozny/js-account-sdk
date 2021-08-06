@@ -158,7 +158,7 @@ module.exports = {
   // testRunner: "jasmine2",
 
   // Default timeout of a test in milliseconds.
-  testTimeout: 10000,
+  testTimeout: 1000000,
 
   // This option sets the URL for the jsdom environment. It is reflected in properties such as location.href
   // testURL: "http://localhost",

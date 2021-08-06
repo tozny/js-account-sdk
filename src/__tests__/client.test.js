@@ -7,8 +7,6 @@ let accountClient = null
 let registrationToken = null
 let registeredClients = []
 
-jest.setTimeout(30000)
-
 /*
 After the `beforeAll()` method runs, the registered client array is full of objects in this shape:
 Basically information from the registration just stored in this module variable for testing reference.

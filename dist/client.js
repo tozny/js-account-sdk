@@ -434,6 +434,60 @@ class Client {
         });
     }
     /**
+     * List all realm groups for an identity
+     *
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} identityId Id of identity
+     *
+     * @returns {Promise<Group>}  If successful
+     */
+    groupMembership(realmName, identityId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.groupMembership(this.queenClient, realmName, identityId);
+            return rawResponse.map(Group.decode);
+        });
+    }
+    /**
+     * Update group membership
+     *
+     * @param {string} realmName Name of realm.
+     *  @param {string} identityId Id of identity
+     * @param {Group} groups The map of groupIds to update.
+     * @returns {Promise<boolean>} True if successful
+     */
+    updateGroupMembership(realmName, identityId, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.updateGroupMembership(this.queenClient, realmName, identityId, groups);
+        });
+    }
+    /**
+     * Join a list of Realm groups for an identity
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} identityId Id of identity
+     * @param {Group} groups The map of groupIds to join.
+     * @returns {Promise<boolean>} True if successful
+     */
+    joinGroups(realmName, identityId, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.joinGroups(this.queenClient, realmName, identityId, groups);
+        });
+    }
+    /**
+     * Leave a list of Realm Groups for an identity
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} identityId Id of identity
+     * @param {Group} groups The map of groupIds to leave.
+     * @returns {Promise<boolean>} True if successful
+     */
+    leaveGroups(realmName, identityId, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.leaveGroups(this.queenClient, realmName, identityId, groups);
+        });
+    }
+    /**
      * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
      * @param  {string} realmName         The name of the realm to register the broker identity with.
      * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.
