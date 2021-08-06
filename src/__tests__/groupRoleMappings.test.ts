@@ -5,6 +5,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { cleanupRealms } from './utils'
 import { Role } from '../types'
 
+// default of 5s is sometimes, but not always, enough time. give the tests 10s
+jest.setTimeout(100000)
+
 const accountFactory = new Account(Tozny, process.env.API_URL)
 let client: any = null
 let realmName: string
