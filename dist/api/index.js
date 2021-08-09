@@ -23,6 +23,7 @@ const utils_1 = require("../utils");
 const constants_1 = require("../utils/constants");
 const realmGroups_1 = require("./realmGroups");
 const groupRoleMappings_1 = require("./groupRoleMappings");
+const groupMembership_1 = require("./groupMembership");
 /**
  * API abstracts over the actual API calls made for various account-level operations.
  */
@@ -670,6 +671,39 @@ class API {
         });
     }
     /**
+     * List all groups for an identity
+     */
+    groupMembership(queenClient, realmName, identityId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupMembership_1.groupMembership({ realmName, identityId }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * update group membership
+     */
+    updateGroupMembership(queenClient, realmName, identityId, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupMembership_1.updateGroupMembership({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Join a list of groups for an identity
+     */
+    joinGroups(queenClient, realmName, identityId, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupMembership_1.joinGroups({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Leave a list of Groups
+     */
+    leaveGroups(queenClient, realmName, identityId, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupMembership_1.leaveGroups({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     *
      * Gets realm & client roles that are mapped to a particular realm group.
      */
     listGroupRoleMappings(queenClient, realmName, groupId) {
