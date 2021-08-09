@@ -24,6 +24,7 @@ const constants_1 = require("../utils/constants");
 const realmGroups_1 = require("./realmGroups");
 const groupRoleMappings_1 = require("./groupRoleMappings");
 const groupMembership_1 = require("./groupMembership");
+const realmApplicationRoles_1 = require("./realmApplicationRoles");
 /**
  * API abstracts over the actual API calls made for various account-level operations.
  */
@@ -668,6 +669,39 @@ class API {
     listRealmRoles(queenClient, realmName) {
         return __awaiter(this, void 0, void 0, function* () {
             return realmRoles_1.listRealmRoles({ realmName }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Creates a new role for the requested realm.
+     */
+    createRealmApplicationRole(queenClient, realmName, applicationId, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmApplicationRoles_1.createRealmApplicationRole({ realmName, applicationId, role }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Deletes a realm role by name.
+     */
+    deleteRealmApplicationRole(queenClient, realmName, applicationId, roleName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield realmApplicationRoles_1.deleteRealmApplicationRole({ realmName, applicationId, roleName }, { apiUrl: this.apiUrl, queenClient });
+            return true;
+        });
+    }
+    /**
+     * Describe a single realm role by name.
+     */
+    describeRealmApplicationRole(queenClient, realmName, applicationId, roleName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmApplicationRoles_1.describeRealmApplicationRole({ realmName, applicationId, roleName }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Lists all roles for the request realm.
+     */
+    listRealmApplicationRoles(queenClient, realmName, applicationId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmApplicationRoles_1.listRealmApplicationRoles({ realmName, applicationId }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
