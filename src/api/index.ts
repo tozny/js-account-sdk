@@ -35,6 +35,12 @@ import {
   updateGroupMembership,
   groupMembership,
 } from './groupMembership'
+import {
+  createRealmApplicationRole,
+  deleteRealmApplicationRole,
+  describeRealmApplicationRole,
+  listRealmApplicationRoles,
+} from './realmApplicationRoles'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -768,6 +774,66 @@ class API {
     realmName: string
   ): Promise<ToznyAPIRole[]> {
     return listRealmRoles({ realmName }, { apiUrl: this.apiUrl, queenClient })
+  }
+
+  /**
+   * Creates a new role for the requested realm.
+   */
+  async createRealmApplicationRole(
+    queenClient: ToznyClient,
+    realmName: string,
+    applicationId: string,
+    role: Role
+  ): Promise<ToznyAPIRole> {
+    return createRealmApplicationRole(
+      { realmName, applicationId, role },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
+   * Deletes a realm role by name.
+   */
+  async deleteRealmApplicationRole(
+    queenClient: ToznyClient,
+    realmName: string,
+    applicationId: string,
+    roleName: string
+  ): Promise<boolean> {
+    await deleteRealmApplicationRole(
+      { realmName, applicationId, roleName },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+    return true
+  }
+
+  /**
+   * Describe a single realm role by name.
+   */
+  async describeRealmApplicationRole(
+    queenClient: ToznyClient,
+    realmName: string,
+    applicationId: string,
+    roleName: string
+  ): Promise<ToznyAPIRole> {
+    return describeRealmApplicationRole(
+      { realmName, applicationId, roleName },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
+   * Lists all roles for the request realm.
+   */
+  async listRealmApplicationRoles(
+    queenClient: ToznyClient,
+    realmName: string,
+    applicationId: string
+  ): Promise<ToznyAPIRole[]> {
+    return listRealmApplicationRoles(
+      { realmName, applicationId },
+      { apiUrl: this.apiUrl, queenClient }
+    )
   }
 
   /**

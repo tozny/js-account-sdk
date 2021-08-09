@@ -420,7 +420,75 @@ class Client {
   }
 
   /**
-   * Gets realm & client roles that are mapped to a particular realm group.
+   * Creates a new application role for a realm.
+   *
+   * @param {string} realmName      Name of realm.
+   * @param {string} applicationId  Id of client application.
+   * @param {object} role           Object with `name` and `description` of role.
+   * @returns {Promise<Role>}       The newly created role.
+   */
+  async createRealmApplicationRole(realmName, applicationId, role) {
+    const rawResponse = await this.api.createRealmApplicationRole(
+      this.queenClient,
+      realmName,
+      applicationId,
+      role
+    )
+    return Role.decode(rawResponse)
+  }
+
+  /**
+   * Deletes a realm application role by id.
+   *
+   * @param {string} realmName      Name of realm.
+   * @param {string} applicationId  Id of client application.
+   * @param {string} roleName       Name of role to delete.
+   * @returns {Promise<boolean>}    True if successful.
+   */
+  async deleteRealmApplicationRole(realmName, applicationId, roleName) {
+    return this.api.deleteRealmApplicationRole(
+      this.queenClient,
+      realmName,
+      applicationId,
+      roleName
+    )
+  }
+
+  /**
+   * Describe a realm application role by id.
+   *
+   * @param {string} realmName      Name of realm.
+   * @param {string} applicationId  Id of client application.
+   * @param {string} roleName       Name of role to describe.
+   * @returns {Promise<Role>}
+   */
+  async describeRealmApplicationRole(realmName, applicationId, roleName) {
+    return this.api.describeRealmApplicationRole(
+      this.queenClient,
+      realmName,
+      applicationId,
+      roleName
+    )
+  }
+
+  /**
+   * Lists all realm application roles for a realm.
+   *
+   * @param {string} realmName      Name of realm.
+   * @param {string} applicationId  Id of client application.
+   * @returns {Promise<Role[]>}     List of all roles for application.
+   */
+  async listRealmApplicationRoles(realmName, applicationId) {
+    const rawResponse = await this.api.listRealmApplicationRoles(
+      this.queenClient,
+      realmName,
+      applicationId
+    )
+    return rawResponse.map(Role.decode)
+  }
+
+  /**
+   * Gets realm & client (application) roles that are mapped to a particular realm group.
    *
    * @param {string} realmName            Name of realm.
    * @param {string} groupId              Id of group for which to list role mappings.
