@@ -541,6 +541,54 @@ class Client {
         });
     }
     /**
+     * Lists all default groups for the request realm.
+     *
+     * @param {string} realmName  Name of realm.
+     * @returns {Promise<Group[]>} List of all groups at realm.
+     */
+    listDefaultRealmGroups(realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.listDefaultRealmGroups(this.queenClient, realmName);
+            return rawResponse.map(Group.decode);
+        });
+    }
+    /**
+     * Replace default groups for the request realm.
+     *
+     * @param {string} realmName  Name of realm.
+     * @param {Group} groups The map of groupIds to set as new default.
+     * @returns {Promise<void>}
+     */
+    replaceDefaultRealmGroups(realmName, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.replaceDefaultRealmGroups(this.queenClient, realmName, groups);
+        });
+    }
+    /**
+     * Add default groups for the request realm.
+     *
+     * @param {string} realmName  Name of realm.
+     * @param {Group} groups The map of groupIds to add.
+     * @returns {Promise<void>}
+     */
+    addDefaultRealmGroups(realmName, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.addDefaultRealmGroups(this.queenClient, realmName, groups);
+        });
+    }
+    /**
+     * Remove groups for the request realm.
+     *
+     * @param {string} realmName  Name of realm.
+     * @param {Group} groups The map of groupIds to remove.
+     * @returns {Promise<void>}
+     */
+    removeDefaultRealmGroups(realmName, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.removeDefaultRealmGroups(this.queenClient, realmName, groups);
+        });
+    }
+    /**
      * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
      * @param  {string} realmName         The name of the realm to register the broker identity with.
      * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.

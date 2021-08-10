@@ -25,6 +25,7 @@ const realmGroups_1 = require("./realmGroups");
 const groupRoleMappings_1 = require("./groupRoleMappings");
 const groupMembership_1 = require("./groupMembership");
 const realmApplicationRoles_1 = require("./realmApplicationRoles");
+const defaultRealmGroups_1 = require("./defaultRealmGroups");
 /**
  * API abstracts over the actual API calls made for various account-level operations.
  */
@@ -761,6 +762,38 @@ class API {
         return __awaiter(this, void 0, void 0, function* () {
             yield groupRoleMappings_1.removeGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl: this.apiUrl, queenClient });
             return true;
+        });
+    }
+    /**
+     * Lists all default groups for the request realm.
+     */
+    listDefaultRealmGroups(queenClient, realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return defaultRealmGroups_1.listDefaultRealmGroups({ realmName }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Replace default groups for the request realm.
+     */
+    replaceDefaultRealmGroups(queenClient, realmName, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return defaultRealmGroups_1.replaceDefaultRealmGroups({ realmName, groups }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Add default groups for the request realm.
+     */
+    addDefaultRealmGroups(queenClient, realmName, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return defaultRealmGroups_1.addDefaultRealmGroups({ realmName, groups }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Remove groups for the request realm.
+     */
+    removeDefaultRealmGroups(queenClient, realmName, groups) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return defaultRealmGroups_1.removeDefaultRealmGroups({ realmName, groups }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**

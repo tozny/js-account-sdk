@@ -41,6 +41,12 @@ import {
   describeRealmApplicationRole,
   listRealmApplicationRoles,
 } from './realmApplicationRoles'
+import {
+  listDefaultRealmGroups,
+  replaceDefaultRealmGroups,
+  addDefaultRealmGroups,
+  removeDefaultRealmGroups,
+} from './defaultRealmGroups'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -936,6 +942,59 @@ class API {
       { apiUrl: this.apiUrl, queenClient }
     )
     return true
+  }
+
+  /**
+   * Lists all default groups for the request realm.
+   */
+  async listDefaultRealmGroups(
+    queenClient: ToznyClient,
+    realmName: string
+  ): Promise<ToznyAPIGroup[]> {
+    return listDefaultRealmGroups(
+      { realmName },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
+   * Replace default groups for the request realm.
+   */
+  async replaceDefaultRealmGroups(
+    queenClient: ToznyClient,
+    realmName: string,
+    groups: ToznyAPIGroup[]
+  ): Promise<void> {
+    return replaceDefaultRealmGroups(
+      { realmName, groups },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+  /**
+   * Add default groups for the request realm.
+   */
+  async addDefaultRealmGroups(
+    queenClient: ToznyClient,
+    realmName: string,
+    groups: ToznyAPIGroup[]
+  ): Promise<void> {
+    return addDefaultRealmGroups(
+      { realmName, groups },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+  /**
+   * Remove groups for the request realm.
+   */
+  async removeDefaultRealmGroups(
+    queenClient: ToznyClient,
+    realmName: string,
+    groups: ToznyAPIGroup[]
+  ): Promise<void> {
+    return removeDefaultRealmGroups(
+      { realmName, groups },
+      { apiUrl: this.apiUrl, queenClient }
+    )
   }
 
   /**

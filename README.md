@@ -321,6 +321,51 @@ await client.leaveGroups(realmName, identityId, {
 })
 ```
 
+**Default Realm Groups**
+When a new user is created in a realm they are added to each `defaultRealmGroup` _note: when default realm groups changed existing users groups are not updated_
+
+**List Default Realm Groups**
+
+```js
+const groupList = await client.listDefaultRealmGroups(realmName)
+```
+
+**Replace Default Realm Groups**
+
+```js
+const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+  name: 'ToznyEngineers',
+})
+await client.replaceDefaultRealmGroups(realmName, {
+  groups: [toznyEngineersGroup.id],
+})
+```
+
+**Add Default Realm Groups**
+
+```js
+const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+  name: 'ToznyEngineers',
+})
+await client.addDefaultRealmGroups(realmName, {
+  groups: [toznyEngineersGroup.id],
+})
+```
+
+**Remove Default Realm Groups**
+
+```js
+const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+  name: 'ToznyEngineers',
+})
+await client.addDefaultRealmGroups(realmName, {
+  groups: [toznyEngineersGroup.id],
+})
+await client.removeDefaultRealmGroups(realmName, {
+  groups: [toznyEngineersGroup.id],
+})
+```
+
 ## Terms of Service
 
 Your use of the Tozny JavaScript SDK must abide by our [Terms of Service](https://github.com/tozny/e3db-java/blob/master/terms.pdf), as detailed in the linked document.
