@@ -26,6 +26,7 @@ const groupRoleMappings_1 = require("./groupRoleMappings");
 const groupMembership_1 = require("./groupMembership");
 const realmApplicationRoles_1 = require("./realmApplicationRoles");
 const defaultRealmGroups_1 = require("./defaultRealmGroups");
+const identity_1 = require("./identity");
 /**
  * API abstracts over the actual API calls made for various account-level operations.
  */
@@ -797,6 +798,22 @@ class API {
         });
     }
     /**
+     *
+     */
+    registerIdentity(realm_name, realm_registration_token, identity) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return identity_1.registerIdentity({ realm_name, realm_registration_token, identity }, { apiUrl: this.apiUrl });
+        });
+    }
+    /**
+     * Remove an identity from a realm
+     */
+    deleteIdentity(queenClient, realmName, identityId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return identity_1.deleteIdentity({ realmName, identityId }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
      * Gets the public info about the Tozny hosted broker
      *
      * @return {Promise<object>} The hosted broker public info.
@@ -825,7 +842,8 @@ class API {
                 method: 'POST',
                 body: JSON.stringify(registerRealmBrokerRequest),
             });
-            return utils_1.validateRequestAsJSON(response);
+            const requestResponse = (yield utils_1.validateRequestAsJSON(response));
+            return requestResponse;
         });
     }
     /**

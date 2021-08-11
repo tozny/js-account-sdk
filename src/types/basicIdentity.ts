@@ -2,7 +2,20 @@
  * Basic information about a registered Identity for a Tozny realm.
  */
 class BasicIdentity {
-  constructor(id, username, firstName, lastName, active, federated) {
+  id: string
+  username: string
+  firstName: string
+  lastName: string
+  active: string
+  federated: string
+  constructor(
+    id: string,
+    username: string,
+    firstName: string,
+    lastName: string,
+    active: string,
+    federated: string
+  ) {
     this.id = id
     this.username = username
     this.firstName = firstName
@@ -30,7 +43,7 @@ class BasicIdentity {
    *
    * @return {<BasicIdentity>}
    */
-  static decode(json) {
+  static decode(json: ToznyAPIBasicIdentity): BasicIdentity {
     return new BasicIdentity(
       json.subject_id,
       json.username,
@@ -42,4 +55,12 @@ class BasicIdentity {
   }
 }
 
-module.exports = BasicIdentity
+export type ToznyAPIBasicIdentity = {
+  subject_id: string
+  username: string
+  first_name: string
+  last_name: string
+  active: string
+  federated: string
+}
+export default BasicIdentity

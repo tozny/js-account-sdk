@@ -1,7 +1,7 @@
 const Account = require('../account')
 const Tozny = require('@toznysecure/sdk/node')
 const { v4: uuidv4 } = require('uuid')
-const BasicIdentity = require('../types/basicIdentity')
+const BasicIdentity = require('../types/basicIdentity').default
 const DetailedIdentity = require('../types/detailedIdentity')
 const { cleanupRealms } = require('./utils')
 

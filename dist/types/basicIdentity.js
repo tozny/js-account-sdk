@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Basic information about a registered Identity for a Tozny realm.
  */
@@ -34,4 +35,4 @@ class BasicIdentity {
         return new BasicIdentity(json.subject_id, json.username, json.first_name, json.last_name, json.active, json.federated);
     }
 }
-module.exports = BasicIdentity;
+exports.default = BasicIdentity;

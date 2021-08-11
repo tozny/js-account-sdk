@@ -3,12 +3,12 @@
  */
 
 const AccountBillingStatus = require('./accountBillingStatus')
-const BasicIdentity = require('./basicIdentity')
+const BasicIdentity = require('./basicIdentity').default
 const ClientInfo = require('./clientInfo')
 const ClientInfoList = require('./clientInfoList')
 const DetailedIdentity = require('./detailedIdentity')
 const Group = require('./group').default
-const Identity = require('./identity')
+const Identity = require('./identity').default
 const ListIdentitiesResult = require('./listIdentitiesResult')
 const Realm = require('./realm')
 const Realms = require('./realms')

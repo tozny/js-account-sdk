@@ -47,6 +47,8 @@ import {
   addDefaultRealmGroups,
   removeDefaultRealmGroups,
 } from './defaultRealmGroups'
+import { deleteIdentity, registerIdentity } from './identity'
+import Identity, { ToznyAPIIdentity } from '../types/identity'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -998,6 +1000,34 @@ class API {
   }
 
   /**
+   *
+   */
+  async registerIdentity(
+    realm_name: string,
+    realm_registration_token: string,
+    identity: ToznyAPIIdentity
+  ): Promise<void> {
+    return registerIdentity(
+      { realm_name, realm_registration_token, identity },
+      { apiUrl: this.apiUrl }
+    )
+  }
+
+  /**
+   * Remove an identity from a realm
+   */
+  async deleteIdentity(
+    queenClient: ToznyClient,
+    realmName: string,
+    identityId: string
+  ): Promise<void> {
+    return deleteIdentity(
+      { realmName, identityId },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
    * Gets the public info about the Tozny hosted broker
    *
    * @return {Promise<object>} The hosted broker public info.
@@ -1020,7 +1050,7 @@ class API {
     realmName,
     registrationToken,
     brokerIdentity
-  ) {
+  ): Promise<Identity> {
     const registerRealmBrokerRequest = {
       realm_registration_token: registrationToken,
       identity: brokerIdentity,
@@ -1032,7 +1062,10 @@ class API {
         body: JSON.stringify(registerRealmBrokerRequest),
       }
     )
-    return validateRequestAsJSON(response)
+    const requestResponse = (await validateRequestAsJSON(
+      response
+    )) as ToznyAPIIdentity
+    return requestResponse
   }
 
   /**

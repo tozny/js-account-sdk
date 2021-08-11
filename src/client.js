@@ -15,7 +15,7 @@ const {
 } = require('./types')
 const Refresher = require('./api/refresher')
 const Token = require('./api/token')
-const BasicIdentity = require('./types/basicIdentity')
+const BasicIdentity = require('./types/basicIdentity').default
 const ListIdentitiesResult = require('./types/listIdentitiesResult')
 const DetailedIdentity = require('./types/detailedIdentity')
 
@@ -658,6 +658,34 @@ class Client {
       groups
     )
   }
+
+  /**
+   * Registers an identity with the specified realm using the specified parameters,returning the created identity and error (if any).
+   *
+   * @param {string} realmName Name of realm.
+   * @param {string} registrationToken the token for the realm
+   * @param {ToznyAPIIdentity} identity Configuration for the new identity
+   * @returns {Promise<Identity>}
+   */
+  async registerIdentity(realmName, registrationToken, identity) {
+    const crypto = this._queenClient.crypto
+    const encryptionKeyPair = await crypto.generateKeypair()
+    const signingKeyPair = await crypto.generateSigningKeypair()
+    ;(identity.public_key = { curve25519: encryptionKeyPair.publicKey }),
+      (identity.signing_key = { ed25519: signingKeyPair.publicKey })
+    return this.api.registerIdentity(realmName, registrationToken, identity)
+  }
+
+  /**
+   * Removes an identity in the given realm.
+   *
+   * @param {string} realmName Name of realm.
+   * @param {string} identityId Id of identity
+   * @returns {Promise<boolean>} True if successful
+   */
+  async deleteIdentity(realmName, identityId) {
+    return this.api.deleteIdentity(this.queenClient, realmName, identityId)
+  }
   /**
    * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
    * @param  {string} realmName         The name of the realm to register the broker identity with.
@@ -689,7 +717,7 @@ class Client {
     rawResponse.identity.private_signing_key = {
       ed25519: signingKeyPair.privateKey,
     }
-    return Identity.decode(rawResponse)
+    return Identity.decode(rawResponse.identity)
   }
 
   /**
