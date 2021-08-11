@@ -14,7 +14,7 @@ const { KEY_HASH_ROUNDS } = require('./utils/constants');
 const { AccountBillingStatus, RegistrationToken, Realm, Realms, Identity, ClientInfo, ClientInfoList, Role, Group, GroupRoleMapping, } = require('./types');
 const Refresher = require('./api/refresher');
 const Token = require('./api/token');
-const BasicIdentity = require('./types/basicIdentity');
+const BasicIdentity = require('./types/basicIdentity').default;
 const ListIdentitiesResult = require('./types/listIdentitiesResult');
 const DetailedIdentity = require('./types/detailedIdentity');
 class Client {
@@ -589,6 +589,36 @@ class Client {
         });
     }
     /**
+     * Registers an identity with the specified realm using the specified parameters,returning the created identity and error (if any).
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} registrationToken the token for the realm
+     * @param {ToznyAPIIdentity} identity Configuration for the new identity
+     * @returns {Promise<Identity>}
+     */
+    registerIdentity(realmName, registrationToken, identity) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const crypto = this._queenClient.crypto;
+            const encryptionKeyPair = yield crypto.generateKeypair();
+            const signingKeyPair = yield crypto.generateSigningKeypair();
+            (identity.public_key = { curve25519: encryptionKeyPair.publicKey }),
+                (identity.signing_key = { ed25519: signingKeyPair.publicKey });
+            return this.api.registerIdentity(realmName, registrationToken, identity);
+        });
+    }
+    /**
+     * Removes an identity in the given realm.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} identityId Id of identity
+     * @returns {Promise<boolean>} True if successful
+     */
+    deleteIdentity(realmName, identityId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.deleteIdentity(this.queenClient, realmName, identityId);
+        });
+    }
+    /**
      * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
      * @param  {string} realmName         The name of the realm to register the broker identity with.
      * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.
@@ -615,7 +645,7 @@ class Client {
             rawResponse.identity.private_signing_key = {
                 ed25519: signingKeyPair.privateKey,
             };
-            return Identity.decode(rawResponse);
+            return Identity.decode(rawResponse.identity);
         });
     }
     /**

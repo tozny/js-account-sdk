@@ -2,18 +2,32 @@
  * A registered Identity for a Tozny realm.
  */
 class Identity {
+  id: string
+  toznyId: string
+  realmId: string
+  realmName: string
+  name: string
+  apiKeyId: string
+  apiSecretKey: string
+  publicKey: string
+  signingKey: string
+  privateKey: string
+  privateSigningKey: string
+  email: string
+
   constructor(
-    id,
-    toznyId,
-    realmId,
-    realmName,
-    name,
-    apiKeyId,
-    apiSecretKey,
-    publicKey,
-    signingKey,
-    privateKey,
-    privateSigningKey
+    id: string,
+    toznyId: string,
+    realmId: string,
+    realmName: string,
+    name: string,
+    apiKeyId: string,
+    apiSecretKey: string,
+    publicKey: string,
+    signingKey: string,
+    privateKey: string,
+    privateSigningKey: string,
+    email: string
   ) {
     this.id = id
     this.toznyId = toznyId
@@ -26,6 +40,7 @@ class Identity {
     this.signingKey = signingKey
     this.privateKey = privateKey
     this.privateSigningKey = privateSigningKey
+    this.email = email
   }
 
   /**
@@ -54,21 +69,37 @@ class Identity {
    *
    * @return {<Identity>}
    */
-  static decode(json) {
+  static decode(json: ToznyAPIIdentity): Identity {
     return new Identity(
-      json.identity.id,
-      json.identity.tozny_id,
-      json.identity.realm_id,
-      json.identity.realm_name,
-      json.identity.name,
-      json.identity.api_key_id,
-      json.identity.api_secret_key,
-      json.identity.public_key,
-      json.identity.signing_key,
-      json.identity.private_key,
-      json.identity.private_signing_key
+      json.id,
+      json.tozny_id,
+      json.realm_id,
+      json.realm_name,
+      json.name,
+      json.api_key_id,
+      json.api_secret_key,
+      json.public_key,
+      json.signing_key,
+      json.private_key,
+      json.private_signing_key,
+      json.email
     )
   }
 }
 
-module.exports = Identity
+export type ToznyAPIIdentity = {
+  id: string
+  tozny_id: string
+  realm_id: string
+  realm_name: string
+  name: string
+  api_key_id: string
+  api_secret_key: string
+  public_key: string
+  signing_key: string
+  private_key: string
+  private_signing_key: string
+  email: string
+}
+
+export default Identity

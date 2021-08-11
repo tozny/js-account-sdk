@@ -259,6 +259,32 @@ while (!idList.done) {
 }
 ```
 
+**Register an Identity in a Realm**
+
+```js
+// Create a token
+const token = await accountClient.newRegistrationToken(tokenName, permissions)
+const identity = {
+  name: 'identityName',
+  email: 'identity@example.com',
+  first_name: 'firstName',
+  last_name: 'lastName',
+}
+// Register Identity
+const identityResponse = await accountClient.registerIdentity(
+  realmName,
+  token.token,
+  identity
+)
+```
+
+**Delete Identity from Realm**
+
+```js
+// Delete identity
+await accountClient.deleteIdentity(realmName, identityId)
+```
+
 **Get details about an identity in a realm**
 
 ```js
