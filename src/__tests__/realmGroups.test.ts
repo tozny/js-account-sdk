@@ -27,14 +27,20 @@ afterAll(async () => {
 })
 
 describe('Realm Groups', () => {
-  it('creates, lists, & deletes realm groups', async () => {
+  it('creates, updates, lists, & deletes realm groups', async () => {
     // creation of group
     const adminGroup = await client.createRealmGroup(realmName, {
       name: 'Admins',
+      attributes: {
+        key1: 'value1',
+        key2: 'value2'
+      }
     })
 
     expect(adminGroup.id).toBeTruthy()
     expect(adminGroup.name).toBe('Admins')
+    expect(adminGroup.attributes.key1).toBe('value1')
+    expect(adminGroup.attributes.key2).toBe('value2')
 
     // list groups
     const groups = await client.listRealmGroups(realmName)
@@ -42,6 +48,20 @@ describe('Realm Groups', () => {
     expect(groups).toHaveLength(1)
     expect(groups[0].id).toBe(adminGroup.id)
     expect(groups[0].name).toBe('Admins')
+
+    // updates a group
+    const updatedGroup = await client.updateRealmGroup(realmName, adminGroup.id, {
+      name: 'Updated',
+      attributes: {
+        key2: 'updated',
+        key3: 'new',
+      }
+    })
+
+    expect(updatedGroup.name).toBe('Updated')
+    expect(updatedGroup.attributes.key1).toBeUndefined()
+    expect(updatedGroup.attributes.key2).toBe('updated')
+    expect(updatedGroup.attributes.key3).toBe('new')
 
     // deletes groups
     const deleteSuccessful = await client.deleteRealmGroup(
@@ -70,5 +90,25 @@ describe('Realm Groups', () => {
         '000000000000-0000-0000-0000-00000000'
       )
     ).rejects.toThrowErrorMatchingInlineSnapshot(`"Internal Server Error"`)
+  })
+
+  it('has optional attributes', async () => {
+    const createdWithoutAttributes = await client.createRealmGroup(realmName, {
+      name: 'Without',
+    })
+    const createdWithAttributes = await client.createRealmGroup(realmName, {
+      name: 'With',
+      attributes: {
+        key1: 'value1',
+        key2: 'value2'
+      }
+    })
+
+    const withoutAttributes = await client.describeRealmGroup(realmName, createdWithoutAttributes.id)
+    const withAttributes = await client.describeRealmGroup(realmName, createdWithAttributes.id)
+
+    expect(withoutAttributes.attributes).toStrictEqual({})
+    expect(withAttributes.attributes).toMatchObject({ key1: 'value1'})
+    expect(withAttributes.attributes).toMatchObject({ key2: 'value2'})
   })
 })

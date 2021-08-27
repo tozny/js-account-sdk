@@ -339,7 +339,31 @@ class Client {
    * @returns {Promise<Group>}
    */
   async describeRealmGroup(realmName, groupId) {
-    return this.api.describeRealmGroup(this.queenClient, realmName, groupId)
+    const rawResponse = await this.api.describeRealmGroup(
+      this.queenClient,
+      realmName,
+      groupId
+    )
+
+    return Group.decode(rawResponse)
+  }
+
+  /**
+   * Update an existing group in the realm given a group id.
+   *
+   * @param {string} realmName Name of realm.
+   * @param {string} groupId   Id of group to update.
+   * @param {Group} group      Updated attributes of the group
+   * @returns {Promise<Group>}
+   */
+  async updateRealmGroup(realmName, groupId, group) {
+    const rawResponse = await this.api.updateRealmGroup(
+      this.queenClient,
+      realmName,
+      groupId,
+      group
+    )
+    return Group.decode(rawResponse)
   }
 
   /**

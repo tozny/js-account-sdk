@@ -204,6 +204,27 @@ const myNewGroup = {
 const group = await accountClient.createRealmGroup(realmName, myNewGroup)
 ```
 
+**Fetch an existing realm group**
+
+```js
+const realmName = 'westeros'
+const groupId = '000000000000-0000-0000-0000-00000000'
+const group = await accountClient.describeRealmGroup(realmName, groupId)
+```
+
+**Update a realm group**
+
+```js
+const realmName = 'westeros'
+const groupId = '000000000000-0000-0000-0000-00000000'
+const group = await accountClient.describeRealmGroup(realmName, groupId)
+
+group.name = 'WhiteWalkers'
+group.attributes.status = 'undead'
+group.attributes.temperature = 'cold'
+await accountClient.updateRealmGroup(realmName, group)
+```
+
 **List groups in a realm**
 
 ```js

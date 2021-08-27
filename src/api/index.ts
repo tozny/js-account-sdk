@@ -17,6 +17,7 @@ import { DEFAULT_API_URL } from '../utils/constants'
 import { ToznyAPIGroup } from '../types/group'
 import {
   createRealmGroup,
+  updateRealmGroup,
   deleteRealmGroup,
   describeRealmGroup,
   listRealmGroups,
@@ -689,6 +690,21 @@ class API {
   ): Promise<ToznyAPIGroup> {
     return createRealmGroup(
       { realmName, group },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
+   * Updates an existing group for the requested realm.
+   */
+   async updateRealmGroup(
+    queenClient: ToznyClient,
+    realmName: string,
+    groupId: string,
+    group: { name: string }
+  ): Promise<ToznyAPIGroup> {
+    return updateRealmGroup(
+      { realmName, groupId, group },
       { apiUrl: this.apiUrl, queenClient }
     )
   }
