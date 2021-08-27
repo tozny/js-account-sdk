@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listRealmApplicationRoles = exports.describeRealmApplicationRole = exports.deleteRealmApplicationRole = exports.createRealmApplicationRole = void 0;
+exports.listRealmApplicationRoles = exports.describeRealmApplicationRole = exports.deleteRealmApplicationRole = exports.updateRealmApplicationRole = exports.createRealmApplicationRole = void 0;
 const utils_1 = require("../utils");
 const realmApplicationRoleUri = (apiUrl, realmName, applicationId) => `${apiUrl}/v1/identity/realm/${realmName}/application/${applicationId}/role`;
 function createRealmApplicationRole({ realmName, applicationId, role }, { apiUrl, queenClient }) {
@@ -22,9 +22,23 @@ function createRealmApplicationRole({ realmName, applicationId, role }, { apiUrl
     });
 }
 exports.createRealmApplicationRole = createRealmApplicationRole;
+function updateRealmApplicationRole({ realmName, applicationId, originalRoleName, role }, { apiUrl, queenClient }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const encodedRoleName = encodeURIComponent(originalRoleName);
+        const uri = `${realmApplicationRoleUri(apiUrl, realmName, applicationId)}/${encodedRoleName}`;
+        const response = yield queenClient.authenticator.tsv1Fetch(uri, {
+            method: 'PUT',
+            body: JSON.stringify(role),
+        });
+        return utils_1.validateRequestAsJSON(response);
+    });
+}
+exports.updateRealmApplicationRole = updateRealmApplicationRole;
 function deleteRealmApplicationRole({ realmName, applicationId, roleName }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield queenClient.authenticator.tsv1Fetch(`${realmApplicationRoleUri(apiUrl, realmName, applicationId)}/${roleName}`, { method: 'DELETE' });
+        const encodedRoleName = encodeURIComponent(roleName);
+        const uri = `${realmApplicationRoleUri(apiUrl, realmName, applicationId)}/${encodedRoleName}`;
+        const response = yield queenClient.authenticator.tsv1Fetch(uri, { method: 'DELETE' });
         utils_1.checkStatus(response);
         return;
     });
@@ -32,7 +46,9 @@ function deleteRealmApplicationRole({ realmName, applicationId, roleName }, { ap
 exports.deleteRealmApplicationRole = deleteRealmApplicationRole;
 function describeRealmApplicationRole({ realmName, applicationId, roleName }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield queenClient.authenticator.tsv1Fetch(`${realmApplicationRoleUri(apiUrl, realmName, applicationId)}/${roleName}`, { method: 'GET' });
+        const encodedRoleName = encodeURIComponent(roleName);
+        const uri = `${realmApplicationRoleUri(apiUrl, realmName, applicationId)}/${encodedRoleName}`;
+        const response = yield queenClient.authenticator.tsv1Fetch(uri, { method: 'GET' });
         return utils_1.validateRequestAsJSON(response);
     });
 }

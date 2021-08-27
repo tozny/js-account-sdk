@@ -39,6 +39,7 @@ import {
 } from './groupMembership'
 import {
   createRealmApplicationRole,
+  updateRealmApplicationRole,
   deleteRealmApplicationRole,
   describeRealmApplicationRole,
   listRealmApplicationRoles,
@@ -826,6 +827,22 @@ class API {
   ): Promise<ToznyAPIRole> {
     return createRealmApplicationRole(
       { realmName, applicationId, role },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
+   * Updates an existing application role for the requested realm.
+   */
+   async updateRealmApplicationRole(
+    queenClient: ToznyClient,
+    realmName: string,
+    applicationId: string,
+    originalRoleName: string,
+    role: { name: string, description: string }
+  ): Promise<ToznyAPIRole> {
+    return updateRealmApplicationRole(
+      { realmName, applicationId, originalRoleName, role },
       { apiUrl: this.apiUrl, queenClient }
     )
   }

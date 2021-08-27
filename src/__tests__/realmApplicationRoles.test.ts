@@ -51,7 +51,7 @@ afterAll(async () => {
 })
 
 describe('Realm Application Roles', () => {
-  it('creates, lists, & deletes application roles', async () => {
+  it('creates, updates, lists, & deletes application roles', async () => {
     // creating
     const superhuman = await client.createRealmApplicationRole(
       realmName,
@@ -75,7 +75,7 @@ describe('Realm Application Roles', () => {
       realmName,
       applicationId,
       {
-        name: 'Chef',
+        name: 'Head Chef',
         description: 'They cook things.',
       }
     )
@@ -97,6 +97,19 @@ describe('Realm Application Roles', () => {
     const roleIds = realmApplicationRoles.map(r => r.id)
     expect(roleIds).toContain(superhuman.id)
     expect(roleIds).toContain(chef.id)
+
+    // update
+    const originalRoleName = chef.name
+    chef.name = 'Updated Name'
+    chef.description = 'Updated Description'
+    const updatedChef = await client.updateRealmApplicationRole(
+      realmName,
+      applicationId,
+      originalRoleName,
+      chef
+    )
+    expect(updatedChef.name).toBe('Updated Name')
+    expect(updatedChef.description).toBe('Updated Description')
 
     // deleting
     // NO MORE CHEFS!
@@ -120,7 +133,7 @@ describe('Realm Application Roles', () => {
       realmName,
       applicationId,
       {
-        name: 'Chef',
+        name: 'Head Chef',
         description: 'They cook things.',
       }
     )
@@ -132,7 +145,7 @@ describe('Realm Application Roles', () => {
     )
 
     expect(described.id).toBe(chef.id)
-    expect(described.name).toBe('Chef')
+    expect(described.name).toBe('Head Chef')
 
     // sad but true, we throw 500 on nonexistent entity, not 404
     await expect(

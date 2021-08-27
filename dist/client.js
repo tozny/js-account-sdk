@@ -302,7 +302,22 @@ class Client {
      */
     describeRealmGroup(realmName, groupId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.describeRealmGroup(this.queenClient, realmName, groupId);
+            const rawResponse = yield this.api.describeRealmGroup(this.queenClient, realmName, groupId);
+            return Group.decode(rawResponse);
+        });
+    }
+    /**
+     * Update an existing group in the realm given a group id.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} groupId   Id of group to update.
+     * @param {Group} group      Updated attributes of the group
+     * @returns {Promise<Group>}
+     */
+    updateRealmGroup(realmName, groupId, group) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.updateRealmGroup(this.queenClient, realmName, groupId, group);
+            return Group.decode(rawResponse);
         });
     }
     /**
@@ -402,6 +417,21 @@ class Client {
     createRealmApplicationRole(realmName, applicationId, role) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.createRealmApplicationRole(this.queenClient, realmName, applicationId, role);
+            return Role.decode(rawResponse);
+        });
+    }
+    /**
+     * Update an existing application role in the realm given the original role name.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} applicationId  Id of client application.
+     * @param {string} originalRoleName Name of the role being updated.
+     * @param {role} role        Updated attributes of the role.
+     * @returns {Promise<Role>}
+     */
+    updateRealmApplicationRole(realmName, applicationId, originalRoleName, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.updateRealmApplicationRole(this.queenClient, realmName, applicationId, originalRoleName, role);
             return Role.decode(rawResponse);
         });
     }

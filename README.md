@@ -286,6 +286,58 @@ const roleId = '000000000000-0000-0000-0000-00000000'
 await accountClient.deleteRealmRole(realmName, roleId)
 ```
 
+**Create a new realm application role**
+
+```js
+const realmName = 'westeros'
+const applicationId = '000000000000-0000-0000-0000-00000000'
+const myNewRole = {
+  name: 'NightsWatch',
+  description: 'Offer protection from northern baddies.',
+}
+const role = await accountClient.createRealmApplicationRole(realmName, applicationId, myNewRole)
+```
+
+**Fetch an existing realm application role**
+
+```js
+const realmName = 'westeros'
+const applicationId = '000000000000-0000-0000-0000-00000000'
+const roleName = 'NightsWatch'
+const role = await accountClient.describeRealmApplicationRole(realmName, applicationId, roleName)
+```
+
+**Update a realm application role**
+
+```js
+const realmName = 'westeros'
+const applicationId = '000000000000-0000-0000-0000-00000000'
+const roleName = 'NightsWatch'
+const role = await accountClient.describeRealmApplicationRole(realmName, applicationId, roleName)
+
+const originalRoleName = roleName
+role.name = 'WhiteWalkers'
+role.description = 'Updated'
+await accountClient.updateRealmApplicationRole(realmName, applicationId, originalRoleName, role)
+```
+
+**List application roles in a realm**
+
+```js
+const realmName = 'westeros'
+const applicationId = '000000000000-0000-0000-0000-00000000'
+const roles = await accountClient.listRealmApplicationRoles(realmName, applicationId)
+```
+
+**Delete a realm application role**
+
+```js
+const realmName = 'westeros'
+const applicationId = '000000000000-0000-0000-0000-00000000'
+const roleName = 'NightsWatch'
+await accountClient.deleteRealmApplicationRole(realmName, applicationId, roleName)
+```
+
 **List identities in a realm**
 
 ```js

@@ -616,6 +616,14 @@ class API {
         });
     }
     /**
+     * Updates an existing group for the requested realm.
+     */
+    updateRealmGroup(queenClient, realmName, groupId, group) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmGroups_1.updateRealmGroup({ realmName, groupId, group }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
      * Deletes a realm group by id.
      */
     deleteRealmGroup(queenClient, realmName, groupId) {
@@ -687,6 +695,14 @@ class API {
     createRealmApplicationRole(queenClient, realmName, applicationId, role) {
         return __awaiter(this, void 0, void 0, function* () {
             return realmApplicationRoles_1.createRealmApplicationRole({ realmName, applicationId, role }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
+     * Updates an existing application role for the requested realm.
+     */
+    updateRealmApplicationRole(queenClient, realmName, applicationId, originalRoleName, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmApplicationRoles_1.updateRealmApplicationRole({ realmName, applicationId, originalRoleName, role }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**

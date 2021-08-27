@@ -478,6 +478,31 @@ class Client {
   }
 
   /**
+   * Update an existing application role in the realm given the original role name.
+   *
+   * @param {string} realmName Name of realm.
+   * @param {string} applicationId  Id of client application.
+   * @param {string} originalRoleName Name of the role being updated.
+   * @param {role} role        Updated attributes of the role.
+   * @returns {Promise<Role>}
+   */
+  async updateRealmApplicationRole(
+    realmName,
+    applicationId,
+    originalRoleName,
+    role
+  ) {
+    const rawResponse = await this.api.updateRealmApplicationRole(
+      this.queenClient,
+      realmName,
+      applicationId,
+      originalRoleName,
+      role
+    )
+    return Role.decode(rawResponse)
+  }
+
+  /**
    * Deletes a realm application role by id.
    *
    * @param {string} realmName      Name of realm.
