@@ -649,6 +649,14 @@ class API {
         });
     }
     /**
+     * Updates an existing role for the requested realm.
+     */
+    updateRealmRole(queenClient, realmName, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return realmRoles_1.updateRealmRole({ realmName, role }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
      * Deletes a realm role by id.
      */
     deleteRealmRole(queenClient, realmName, roleId) {

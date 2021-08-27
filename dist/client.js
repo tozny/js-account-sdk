@@ -343,6 +343,19 @@ class Client {
         });
     }
     /**
+     * Update an existing role in the realm given a role id.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {role} role        Updated attributes of the role.
+     * @returns {Promise<Role>}
+     */
+    updateRealmRole(realmName, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.updateRealmRole(this.queenClient, realmName, role);
+            return Role.decode(rawResponse);
+        });
+    }
+    /**
      * Deletes a realm role by id.
      *
      * @param {string} realmName Name of realm.

@@ -28,7 +28,7 @@ afterAll(async () => {
 })
 
 describe('Realm Roles', () => {
-  it('creates, lists, & deletes roles', async () => {
+  it('creates, updates, lists, & deletes roles', async () => {
     // creating
     const superhuman = await client.createRealmRole(realmName, {
       name: 'Superhuman',
@@ -62,6 +62,13 @@ describe('Realm Roles', () => {
     const roleIds = realmRoles.map(r => r.id)
     expect(roleIds).toContain(superhuman.id)
     expect(roleIds).toContain(chef.id)
+
+    // update
+    chef.name = 'Updated Name'
+    chef.description = 'Updated Description'
+    const updatedChef = await client.updateRealmRole(realmName, chef)
+    expect(updatedChef.name).toBe('Updated Name')
+    expect(updatedChef.description).toBe('Updated Description')
 
     // deleting
     // NO MORE CHEFS!

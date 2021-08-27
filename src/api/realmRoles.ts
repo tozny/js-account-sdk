@@ -21,6 +21,24 @@ export async function createRealmRole(
   return validateRequestAsJSON(response)
 }
 
+type UpdateRealmRoleData = {
+  realmName: string
+  role: { id: string, name: string, description: string }
+}
+export async function updateRealmRole(
+  { realmName, role }: UpdateRealmRoleData,
+  { apiUrl, queenClient }: APIContext
+): Promise<ToznyAPIRole> {
+  const response = await queenClient.authenticator.tsv1Fetch(
+    `${apiUrl}/v1/identity/realm/${realmName}/role/${role.id}`,
+    {
+      method: 'PUT',
+      body: JSON.stringify(role),
+    }
+  )
+  return validateRequestAsJSON(response)
+}
+
 type DeleteRealmRoleData = { realmName: string; roleId: string }
 export async function deleteRealmRole(
   { realmName, roleId }: DeleteRealmRoleData,

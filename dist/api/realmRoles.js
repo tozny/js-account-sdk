@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listRealmRoles = exports.describeRealmRole = exports.deleteRealmRole = exports.createRealmRole = void 0;
+exports.listRealmRoles = exports.describeRealmRole = exports.deleteRealmRole = exports.updateRealmRole = exports.createRealmRole = void 0;
 const utils_1 = require("../utils");
 function createRealmRole({ realmName, role }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -21,6 +21,16 @@ function createRealmRole({ realmName, role }, { apiUrl, queenClient }) {
     });
 }
 exports.createRealmRole = createRealmRole;
+function updateRealmRole({ realmName, role }, { apiUrl, queenClient }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/role/${role.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(role),
+        });
+        return utils_1.validateRequestAsJSON(response);
+    });
+}
+exports.updateRealmRole = updateRealmRole;
 function deleteRealmRole({ realmName, roleId }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/role/${roleId}`, { method: 'DELETE' });

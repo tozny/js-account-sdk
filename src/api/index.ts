@@ -5,6 +5,7 @@
 import fetch from 'isomorphic-fetch'
 import {
   createRealmRole,
+  updateRealmRole,
   deleteRealmRole,
   describeRealmRole,
   listRealmRoles,
@@ -740,6 +741,20 @@ class API {
     role: Role
   ): Promise<ToznyAPIRole> {
     return createRealmRole(
+      { realmName, role },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
+   * Updates an existing role for the requested realm.
+   */
+   async updateRealmRole(
+    queenClient: ToznyClient,
+    realmName: string,
+    role: { name: string, description: string }
+  ): Promise<ToznyAPIRole> {
+    return updateRealmRole(
       { realmName, role },
       { apiUrl: this.apiUrl, queenClient }
     )

@@ -230,6 +230,26 @@ const myNewRole = {
 const role = await accountClient.createRealmRole(realmName, myNewRole)
 ```
 
+**Fetch an existing realm role**
+
+```js
+const realmName = 'westeros'
+const roleId = '000000000000-0000-0000-0000-00000000'
+const role = await accountClient.describeRealmRole(realmName, roleId)
+```
+
+**Update a realm role**
+
+```js
+const realmName = 'westeros'
+const roleId = '000000000000-0000-0000-0000-00000000'
+const role = await accountClient.describeRealmRole(realmName, roleId)
+
+role.name = 'WhiteWalkers'
+role.description = 'Updated'
+await accountClient.updateRealmRole(realmName, role)
+```
+
 **List roles in a realm**
 
 ```js
