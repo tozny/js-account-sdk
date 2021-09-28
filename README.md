@@ -1,4 +1,5 @@
 # Tozny JS Account SDK
+[![Build Status](https://app.travis-ci.com/tozny/js-account-sdk.svg?branch=master)](https://app.travis-ci.com/tozny/js-account-sdk)
 
 Javascript SDK for performing Tozny platform account level operations
 
