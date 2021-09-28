@@ -698,7 +698,7 @@ class API {
   /**
    * Updates an existing group for the requested realm.
    */
-   async updateRealmGroup(
+  async updateRealmGroup(
     queenClient: ToznyClient,
     realmName: string,
     groupId: string,
@@ -766,10 +766,10 @@ class API {
   /**
    * Updates an existing role for the requested realm.
    */
-   async updateRealmRole(
+  async updateRealmRole(
     queenClient: ToznyClient,
     realmName: string,
-    role: { name: string, description: string }
+    role: { name: string; description: string }
   ): Promise<ToznyAPIRole> {
     return updateRealmRole(
       { realmName, role },
@@ -834,12 +834,12 @@ class API {
   /**
    * Updates an existing application role for the requested realm.
    */
-   async updateRealmApplicationRole(
+  async updateRealmApplicationRole(
     queenClient: ToznyClient,
     realmName: string,
     applicationId: string,
     originalRoleName: string,
-    role: { name: string, description: string }
+    role: { name: string; description: string }
   ): Promise<ToznyAPIRole> {
     return updateRealmApplicationRole(
       { realmName, applicationId, originalRoleName, role },

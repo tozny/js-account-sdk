@@ -23,7 +23,7 @@ export async function createRealmRole(
 
 type UpdateRealmRoleData = {
   realmName: string
-  role: { id: string, name: string, description: string }
+  role: { id: string; name: string; description: string }
 }
 export async function updateRealmRole(
   { realmName, role }: UpdateRealmRoleData,

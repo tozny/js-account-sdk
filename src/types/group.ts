@@ -9,7 +9,13 @@ class Group {
   path: string
   attributes?: RealmGroupAttributes
   subGroups: string[]
-  constructor(id: string, name: string, path: string, attributes: RealmGroupAttributes, subGroups: string[]) {
+  constructor(
+    id: string,
+    name: string,
+    path: string,
+    attributes: RealmGroupAttributes,
+    subGroups: string[]
+  ) {
     this.id = id
     this.name = name
     this.path = path
@@ -38,7 +44,13 @@ class Group {
   static decode(json: ToznyAPIGroup): Group {
     const attributes = transformAttributes(json.attributes || {})
 
-    return new Group(json.id, json.name, json.path, attributes, json.subGroups || [])
+    return new Group(
+      json.id,
+      json.name,
+      json.path,
+      attributes,
+      json.subGroups || []
+    )
   }
 }
 

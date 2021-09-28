@@ -32,20 +32,27 @@ type UpdateRealmApplicationRoleData = {
   realmName: string
   applicationId: string
   originalRoleName: string
-  role: { id: string, name: string, description: string }
+  role: { id: string; name: string; description: string }
 }
 export async function updateRealmApplicationRole(
-  { realmName, applicationId, originalRoleName, role }: UpdateRealmApplicationRoleData,
+  {
+    realmName,
+    applicationId,
+    originalRoleName,
+    role,
+  }: UpdateRealmApplicationRoleData,
   { apiUrl, queenClient }: APIContext
 ): Promise<ToznyAPIRole> {
   const encodedRoleName = encodeURIComponent(originalRoleName)
-  const uri = `${realmApplicationRoleUri(apiUrl, realmName, applicationId)}/${encodedRoleName}`
-  const response = await queenClient.authenticator.tsv1Fetch(uri,
-    {
-      method: 'PUT',
-      body: JSON.stringify(role),
-    }
-  )
+  const uri = `${realmApplicationRoleUri(
+    apiUrl,
+    realmName,
+    applicationId
+  )}/${encodedRoleName}`
+  const response = await queenClient.authenticator.tsv1Fetch(uri, {
+    method: 'PUT',
+    body: JSON.stringify(role),
+  })
   return validateRequestAsJSON(response)
 }
 
@@ -59,8 +66,14 @@ export async function deleteRealmApplicationRole(
   { apiUrl, queenClient }: APIContext
 ): Promise<void> {
   const encodedRoleName = encodeURIComponent(roleName)
-  const uri = `${realmApplicationRoleUri(apiUrl, realmName, applicationId)}/${encodedRoleName}`
-  const response = await queenClient.authenticator.tsv1Fetch(uri, { method: 'DELETE' })
+  const uri = `${realmApplicationRoleUri(
+    apiUrl,
+    realmName,
+    applicationId
+  )}/${encodedRoleName}`
+  const response = await queenClient.authenticator.tsv1Fetch(uri, {
+    method: 'DELETE',
+  })
   checkStatus(response)
   return
 }
@@ -75,8 +88,14 @@ export async function describeRealmApplicationRole(
   { apiUrl, queenClient }: APIContext
 ): Promise<ToznyAPIRole> {
   const encodedRoleName = encodeURIComponent(roleName)
-  const uri = `${realmApplicationRoleUri(apiUrl, realmName, applicationId)}/${encodedRoleName}`
-  const response = await queenClient.authenticator.tsv1Fetch(uri, { method: 'GET' })
+  const uri = `${realmApplicationRoleUri(
+    apiUrl,
+    realmName,
+    applicationId
+  )}/${encodedRoleName}`
+  const response = await queenClient.authenticator.tsv1Fetch(uri, {
+    method: 'GET',
+  })
   return validateRequestAsJSON(response)
 }
 

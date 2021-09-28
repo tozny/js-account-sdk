@@ -9,7 +9,7 @@
   "scripts": {
     "build": "rm -fr dist && tsc",
     "test": "jest",
-    "prettier": "prettier --write src/**/*.js",
+    "prettier": "prettier --write src/**/*.{js,ts}",
     "tp": "./scripts/tozny_platform.sh",
     "typecheck": "tsc --noEmit"
   },
@@ -69,7 +69,11 @@
   "lint-staged": {
     "*.js": [
       "eslint --fix",
-      "git add"
+      "prettier --write"
+    ],
+    "*.ts": [
+      "npm run typecheck",
+      "prettier --write"
     ]
   }
 }
