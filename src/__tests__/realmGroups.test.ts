@@ -33,8 +33,8 @@ describe('Realm Groups', () => {
       name: 'Admins',
       attributes: {
         key1: 'value1',
-        key2: 'value2'
-      }
+        key2: 'value2',
+      },
     })
 
     expect(adminGroup.id).toBeTruthy()
@@ -50,13 +50,17 @@ describe('Realm Groups', () => {
     expect(groups[0].name).toBe('Admins')
 
     // updates a group
-    const updatedGroup = await client.updateRealmGroup(realmName, adminGroup.id, {
-      name: 'Updated',
-      attributes: {
-        key2: 'updated',
-        key3: 'new',
+    const updatedGroup = await client.updateRealmGroup(
+      realmName,
+      adminGroup.id,
+      {
+        name: 'Updated',
+        attributes: {
+          key2: 'updated',
+          key3: 'new',
+        },
       }
-    })
+    )
 
     expect(updatedGroup.name).toBe('Updated')
     expect(updatedGroup.attributes.key1).toBeUndefined()
@@ -100,15 +104,21 @@ describe('Realm Groups', () => {
       name: 'With',
       attributes: {
         key1: 'value1',
-        key2: 'value2'
-      }
+        key2: 'value2',
+      },
     })
 
-    const withoutAttributes = await client.describeRealmGroup(realmName, createdWithoutAttributes.id)
-    const withAttributes = await client.describeRealmGroup(realmName, createdWithAttributes.id)
+    const withoutAttributes = await client.describeRealmGroup(
+      realmName,
+      createdWithoutAttributes.id
+    )
+    const withAttributes = await client.describeRealmGroup(
+      realmName,
+      createdWithAttributes.id
+    )
 
     expect(withoutAttributes.attributes).toStrictEqual({})
-    expect(withAttributes.attributes).toMatchObject({ key1: 'value1'})
-    expect(withAttributes.attributes).toMatchObject({ key2: 'value2'})
+    expect(withAttributes.attributes).toMatchObject({ key1: 'value1' })
+    expect(withAttributes.attributes).toMatchObject({ key2: 'value2' })
   })
 })
