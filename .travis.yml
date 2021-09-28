@@ -1,0 +1,13 @@
+language: node_js
+git:
+  depth: 1
+  quiet: true
+branches:
+  only:
+    - master
+    - /^test\/.*$/
+  except:
+    - /^hack\/.*$/
+node_js:
+  - 12
+  - 14
