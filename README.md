@@ -375,8 +375,11 @@ const identityResponse = await accountClient.registerIdentity(
 **Delete Identity from Realm**
 
 ```js
+// Get the identityId you wish to delete
+const identity = accountClient.identityDetails(realmName, username)
+
 // Delete identity
-await accountClient.deleteIdentity(realmName, identityId)
+await accountClient.deleteIdentity(realmName, identity.toznyId)
 ```
 
 **Get details about an identity in a realm**

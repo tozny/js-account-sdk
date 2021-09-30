@@ -246,6 +246,8 @@ describe('Account Client', () => {
         realmName,
         sovereignName.toLowerCase()
       )
+      expect(idDetails.id).toBeTruthy()
+      expect(idDetails.toznyId).toBeTruthy()
       expect(idDetails).toBeInstanceOf(DetailedIdentity)
       expect(idDetails.username).toBe(sovereignName.toLowerCase())
       expect(

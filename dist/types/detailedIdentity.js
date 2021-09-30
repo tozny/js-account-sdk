@@ -5,8 +5,9 @@ const GroupRoleMapping = require('./groupRoleMapping').default;
  * Detailed information about a registered Identity for a Tozny realm.
  */
 class DetailedIdentity {
-    constructor(id, username, email, firstName, lastName, active, federated, roles, groups, attributes) {
+    constructor(id, username, email, firstName, lastName, active, federated, roles, groups, attributes, tozny_id) {
         this.id = id;
+        this.toznyId = tozny_id;
         this.username = username;
         this.email = email;
         this.firstName = firstName;
@@ -24,6 +25,7 @@ class DetailedIdentity {
      * <code>
      * identity = DetailedIdentity::decode({
      *   id: '00000000-0000-0000-0000-000000000000',
+     *   tozny_id: '00000000-0000-0000-0000-000000000000',
      *   name: 'jsmith',
      *   email: 'jsmith@example.com'
      *   first_name: 'John',
@@ -73,7 +75,7 @@ class DetailedIdentity {
      * @return {<DetailedIdentity>}
      */
     static decode(json) {
-        return new DetailedIdentity(json.subject_id, json.username, json.email, json.first_name, json.last_name, json.active, json.federated, GroupRoleMapping.decode(json.roles), Array.isArray(json.groups) ? json.groups.map(Group.decode) : [], typeof json.attributes === 'object' ? json.attributes : {});
+        return new DetailedIdentity(json.subject_id, json.username, json.email, json.first_name, json.last_name, json.active, json.federated, GroupRoleMapping.decode(json.roles), Array.isArray(json.groups) ? json.groups.map(Group.decode) : [], typeof json.attributes === 'object' ? json.attributes : {}, json.tozny_id);
     }
 }
 module.exports = DetailedIdentity;
