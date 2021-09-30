@@ -15,9 +15,11 @@ class DetailedIdentity {
     federated,
     roles,
     groups,
-    attributes
+    attributes,
+    tozny_id
   ) {
     this.id = id
+    this.toznyId = tozny_id
     this.username = username
     this.email = email
     this.firstName = firstName
@@ -36,6 +38,7 @@ class DetailedIdentity {
    * <code>
    * identity = DetailedIdentity::decode({
    *   id: '00000000-0000-0000-0000-000000000000',
+   *   tozny_id: '00000000-0000-0000-0000-000000000000',
    *   name: 'jsmith',
    *   email: 'jsmith@example.com'
    *   first_name: 'John',
@@ -95,7 +98,8 @@ class DetailedIdentity {
       json.federated,
       GroupRoleMapping.decode(json.roles),
       Array.isArray(json.groups) ? json.groups.map(Group.decode) : [],
-      typeof json.attributes === 'object' ? json.attributes : {}
+      typeof json.attributes === 'object' ? json.attributes : {},
+      json.tozny_id
     )
   }
 }
