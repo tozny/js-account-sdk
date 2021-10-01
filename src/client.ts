@@ -1,7 +1,8 @@
-const { validateStorageClient } = require('./utils')
+// @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
+import { validateStorageClient } from './utils'
 const API = require('./api').default
-const { KEY_HASH_ROUNDS } = require('./utils/constants')
-const {
+import { KEY_HASH_ROUNDS } from './utils/constants'
+import {
   AccountBillingStatus,
   RegistrationToken,
   Realm,
@@ -12,13 +13,16 @@ const {
   Role,
   Group,
   GroupRoleMapping,
-} = require('./types')
-const Refresher = require('./api/refresher')
-const Token = require('./api/token')
+} from './types'
+import Refresher from './api/refresher'
+import Token from './api/token'
 const BasicIdentity = require('./types/basicIdentity').default
-const ListIdentitiesResult = require('./types/listIdentitiesResult')
-const DetailedIdentity = require('./types/detailedIdentity')
+import ListIdentitiesResult from './types/listIdentitiesResult'
+import DetailedIdentity from './types/detailedIdentity'
 
+/**
+ * The client for Tozny's Account API.
+ */
 class Client {
   constructor(api, account, profile, queenClient) {
     this.api = API.validateInstance(api)
@@ -840,15 +844,15 @@ class Client {
     return DetailedIdentity.decode(response)
   }
 
-  /*
-    refreshProfile users internal logic in the api token refresher
-    to update the user's profile info from the backend.
-    Currently, this is used to allow a user to verify their email,
-    hit refresh in an already open window, and continue with an
-    updated accountClient on the frontend.
-
-    This will likely be replaced by a call to GET the account profile.
-  */
+  /**
+   * refreshProfile users internal logic in the api token refresher
+   * to update the user's profile info from the backend.
+   * Currently, this is used to allow a user to verify their email,
+   * hit refresh in an already open window, and continue with an
+   * updated accountClient on the frontend.
+   *
+   * This will likely be replaced by a call to GET the account profile.
+   */
 
   async refreshProfile() {
     const fetched = await this.api._token._refresher.profile()
@@ -875,4 +879,4 @@ class Client {
   }
 }
 
-module.exports = Client
+export default Client

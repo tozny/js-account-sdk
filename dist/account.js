@@ -1,4 +1,5 @@
 "use strict";
+// @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 /**
  * Account connection operations, including setting up the SDK and API URL
  */
@@ -11,14 +12,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const Client = require('./client');
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const client_1 = __importDefault(require("./client"));
 // a quirk of importing ts into js is that it exports as an object with a `default` property
 const API = require('./api').default;
-const Token = require('./api/token');
-const Refresher = require('./api/refresher');
-const { validatePlatformSDK, validateEmail } = require('./utils');
-const { DEFAULT_API_URL, KEY_HASH_ROUNDS } = require('./utils/constants');
-const niceware = require('niceware');
+const token_1 = __importDefault(require("./api/token"));
+const refresher_1 = __importDefault(require("./api/refresher"));
+const utils_1 = require("./utils");
+const constants_1 = require("./utils/constants");
+const niceware_1 = __importDefault(require("niceware"));
 /**
  * Account creates connections to a specific Tozny account
  *
@@ -35,9 +40,9 @@ class Account {
      * @param {Tozny} sdk An instance of a Tozny client SDK.
      * @param {string} apiUrl The URL of the Tozny Platform instance to connect to.
      */
-    constructor(sdk, apiUrl = DEFAULT_API_URL) {
+    constructor(sdk, apiUrl = constants_1.DEFAULT_API_URL) {
         this.api = new API(apiUrl);
-        this._sdk = validatePlatformSDK(sdk);
+        this._sdk = utils_1.validatePlatformSDK(sdk);
     }
     /**
      * gets the current crypto implementation provided by the Tozny client SDK.
@@ -85,13 +90,13 @@ class Account {
             const challenge = yield this.api.getChallenge(username);
             const b64AuthSalt = type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt;
             const authSalt = yield this.crypto.platform.b64URLDecode(b64AuthSalt);
-            const sigKeys = yield this.crypto.deriveSigningKey(password, authSalt, KEY_HASH_ROUNDS);
+            const sigKeys = yield this.crypto.deriveSigningKey(password, authSalt, constants_1.KEY_HASH_ROUNDS);
             const signature = yield this.crypto.sign(challenge.challenge, sigKeys.privateKey);
             const profile = yield this.api.completeChallenge(username, challenge.challenge, signature, type === 'paper' ? 'paper' : 'password');
             // Set up client API with token an refresh
-            const clientToken = new Token(profile.token);
+            const clientToken = new token_1.default(profile.token);
             const clientApi = this.api.clone();
-            clientToken.refresher = new Refresher(clientApi, this.crypto, sigKeys, username);
+            clientToken.refresher = new refresher_1.default(clientApi, this.crypto, sigKeys, username);
             clientApi.setToken(clientToken);
             // Set up queen client
             const meta = yield clientApi.getProfileMeta();
@@ -100,7 +105,7 @@ class Account {
                 ? profile.profile.paper_enc_salt
                 : profile.profile.enc_salt;
             const encSalt = yield this.crypto.platform.b64URLDecode(b64EncSalt);
-            const encKey = yield this.crypto.deriveSymmetricKey(password, encSalt, KEY_HASH_ROUNDS);
+            const encKey = yield this.crypto.deriveSymmetricKey(password, encSalt, constants_1.KEY_HASH_ROUNDS);
             const clientCreds = yield this.crypto.decryptString(encClient, encKey);
             let storageConfig = this.Storage.Config.fromObject(clientCreds);
             storageConfig.apiUrl = this.api.apiUrl;
@@ -128,7 +133,7 @@ class Account {
                 // If we updated the storage config, update the storage client
                 storageClient = new this.Storage.Client(storageConfig);
             }
-            return new Client(clientApi, profile.account, profile.profile, storageClient);
+            return new client_1.default(clientApi, profile.account, profile.profile, storageClient);
         });
     }
     /**
@@ -143,16 +148,16 @@ class Account {
      */
     register(name, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            validateEmail(email);
+            utils_1.validateEmail(email);
             const encSalt = yield this.crypto.randomBytes(16);
             const authSalt = yield this.crypto.randomBytes(16);
             const paperEncSalt = yield this.crypto.randomBytes(16);
             const paperAuthSalt = yield this.crypto.randomBytes(16);
-            const paperKey = niceware.generatePassphrase(12).join('-');
-            const encKey = yield this.crypto.deriveSymmetricKey(password, encSalt, KEY_HASH_ROUNDS);
-            const authKeypair = yield this.crypto.deriveSigningKey(password, authSalt, KEY_HASH_ROUNDS);
-            const paperEncKey = yield this.crypto.deriveSymmetricKey(paperKey, paperEncSalt, KEY_HASH_ROUNDS);
-            const paperAuthKeypair = yield this.crypto.deriveSigningKey(paperKey, paperAuthSalt, KEY_HASH_ROUNDS);
+            const paperKey = niceware_1.default.generatePassphrase(12).join('-');
+            const encKey = yield this.crypto.deriveSymmetricKey(password, encSalt, constants_1.KEY_HASH_ROUNDS);
+            const authKeypair = yield this.crypto.deriveSigningKey(password, authSalt, constants_1.KEY_HASH_ROUNDS);
+            const paperEncKey = yield this.crypto.deriveSymmetricKey(paperKey, paperEncSalt, constants_1.KEY_HASH_ROUNDS);
+            const paperAuthKeypair = yield this.crypto.deriveSigningKey(paperKey, paperAuthSalt, constants_1.KEY_HASH_ROUNDS);
             // Set up user profile
             let profile = {
                 name,
@@ -184,9 +189,9 @@ class Account {
             };
             const registration = yield this.api.register(profile, account);
             // Set up client API with token and refresh
-            const clientToken = new Token(registration.token);
+            const clientToken = new token_1.default(registration.token);
             const clientApi = this.api.clone();
-            clientToken.refresher = new Refresher(clientApi, this.crypto, authKeypair, email);
+            clientToken.refresher = new refresher_1.default(clientApi, this.crypto, authKeypair, email);
             clientApi.setToken(clientToken);
             // Set up client config and client
             const clientConfig = new this.Storage.Config(registration.account.client.client_id, registration.account.client.api_key_id, registration.account.client.api_secret, clientEncKeys.publicKey, clientEncKeys.privateKey, clientSigKeys.publicKey, clientSigKeys.privateKey, this.api.apiUrl);
@@ -201,7 +206,7 @@ class Account {
                 paperBackup: paperEncQueenCreds,
             });
             // Return the client object and the paper key
-            const client = new Client(clientApi, registration.account, registration.profile, storageClient);
+            const client = new client_1.default(clientApi, registration.account, registration.profile, storageClient);
             return {
                 paperKey,
                 client,
@@ -239,18 +244,18 @@ class Account {
      */
     changeAccountPassword(password, accountToken) {
         return __awaiter(this, void 0, void 0, function* () {
-            const tok = new Token(accountToken);
+            const tok = new token_1.default(accountToken);
             const clientApi = this.api.clone();
             clientApi.setToken(tok);
             const encSalt = yield this.crypto.randomBytes(16);
             const authSalt = yield this.crypto.randomBytes(16);
             const paperEncSalt = yield this.crypto.randomBytes(16);
             const paperAuthSalt = yield this.crypto.randomBytes(16);
-            const paperKey = niceware.generatePassphrase(12).join('-');
-            const encKey = yield this.crypto.deriveSymmetricKey(password, encSalt, KEY_HASH_ROUNDS);
-            const authKeypair = yield this.crypto.deriveSigningKey(password, authSalt, KEY_HASH_ROUNDS);
-            const paperEncKey = yield this.crypto.deriveSymmetricKey(paperKey, paperEncSalt, KEY_HASH_ROUNDS);
-            const paperAuthKeypair = yield this.crypto.deriveSigningKey(paperKey, paperAuthSalt, KEY_HASH_ROUNDS);
+            const paperKey = niceware_1.default.generatePassphrase(12).join('-');
+            const encKey = yield this.crypto.deriveSymmetricKey(password, encSalt, constants_1.KEY_HASH_ROUNDS);
+            const authKeypair = yield this.crypto.deriveSigningKey(password, authSalt, constants_1.KEY_HASH_ROUNDS);
+            const paperEncKey = yield this.crypto.deriveSymmetricKey(paperKey, paperEncSalt, constants_1.KEY_HASH_ROUNDS);
+            const paperAuthKeypair = yield this.crypto.deriveSigningKey(paperKey, paperAuthSalt, constants_1.KEY_HASH_ROUNDS);
             // Set up user profile
             let profile = {
                 auth_salt: yield this.crypto.platform.b64URLEncode(authSalt),
@@ -265,7 +270,7 @@ class Account {
                 },
             };
             const updatedProfile = yield clientApi.updateProfile(profile);
-            tok.refresher = new Refresher(clientApi, this.crypto, authKeypair, updatedProfile.profile.email);
+            tok.refresher = new refresher_1.default(clientApi, this.crypto, authKeypair, updatedProfile.profile.email);
             clientApi.setToken(tok);
             // backup client
             const clientEncKeys = yield this.crypto.generateKeypair();
@@ -290,7 +295,7 @@ class Account {
                 backupClient: encQueenCreds,
                 paperBackup: paperEncQueenCreds,
             });
-            const newQueenClient = new Client(clientApi, updatedProfile.account, updatedProfile.profile, storageClient);
+            const newQueenClient = new client_1.default(clientApi, updatedProfile.account, updatedProfile.profile, storageClient);
             return {
                 paperKey,
                 newQueenClient,
@@ -329,11 +334,11 @@ class Account {
             api = new API(obj.api.apiUrl);
             // If a token for the API is available, create it.
             if (obj.api.token && typeof obj.api.token === 'object') {
-                token = new Token(obj.api.token.token, obj.api.token.created);
+                token = new token_1.default(obj.api.token.token, obj.api.token.created);
                 // If a refresher for the token is available, create it.
                 if (obj.api.token.refresher &&
                     typeof obj.api.token.refresher === 'object') {
-                    token.refresher = new Refresher(api, this.crypto, obj.api.token.refresher.keys, obj.api.token.refresher.username);
+                    token.refresher = new refresher_1.default(api, this.crypto, obj.api.token.refresher.keys, obj.api.token.refresher.username);
                 }
                 api.setToken(token);
             }
@@ -346,7 +351,7 @@ class Account {
         const clientConfig = this.Storage.Config.fromObject(obj.storageClient);
         const queenClient = new this.Storage.Client(clientConfig);
         // Create a new client object with the provided values.
-        return new Client(api, obj.account, obj.profile, queenClient);
+        return new client_1.default(api, obj.account, obj.profile, queenClient);
     }
 }
-module.exports = Account;
+exports.default = Account;

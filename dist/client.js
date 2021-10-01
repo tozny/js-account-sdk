@@ -8,19 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { validateStorageClient } = require('./utils');
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
+const utils_1 = require("./utils");
 const API = require('./api').default;
-const { KEY_HASH_ROUNDS } = require('./utils/constants');
-const { AccountBillingStatus, RegistrationToken, Realm, Realms, Identity, ClientInfo, ClientInfoList, Role, Group, GroupRoleMapping, } = require('./types');
-const Refresher = require('./api/refresher');
-const Token = require('./api/token');
+const constants_1 = require("./utils/constants");
+const types_1 = require("./types");
+const refresher_1 = __importDefault(require("./api/refresher"));
+const token_1 = __importDefault(require("./api/token"));
 const BasicIdentity = require('./types/basicIdentity').default;
-const ListIdentitiesResult = require('./types/listIdentitiesResult');
-const DetailedIdentity = require('./types/detailedIdentity');
+const listIdentitiesResult_1 = __importDefault(require("./types/listIdentitiesResult"));
+const detailedIdentity_1 = __importDefault(require("./types/detailedIdentity"));
+/**
+ * The client for Tozny's Account API.
+ */
 class Client {
     constructor(api, account, profile, queenClient) {
         this.api = API.validateInstance(api);
-        this._queenClient = validateStorageClient(queenClient);
+        this._queenClient = utils_1.validateStorageClient(queenClient);
         this.account = account;
         this.profile = profile;
     }
@@ -31,7 +39,7 @@ class Client {
         return __awaiter(this, void 0, void 0, function* () {
             const crypto = this._queenClient.crypto;
             const authSalt = yield crypto.platform.b64URLDecode(this.profile.auth_salt);
-            const keypair = yield crypto.deriveSigningKey(password, authSalt, KEY_HASH_ROUNDS);
+            const keypair = yield crypto.deriveSigningKey(password, authSalt, constants_1.KEY_HASH_ROUNDS);
             const signingKey = this.profile.signing_key;
             return keypair.publicKey === signingKey.ed25519;
         });
@@ -49,8 +57,8 @@ class Client {
                 // Generate new salts and keys
                 const encSalt = yield crypto.randomBytes(16);
                 const authSalt = yield crypto.randomBytes(16);
-                const encKey = yield crypto.deriveSymmetricKey(newPassword, encSalt, KEY_HASH_ROUNDS);
-                const authKeypair = yield crypto.deriveSigningKey(newPassword, authSalt, KEY_HASH_ROUNDS);
+                const encKey = yield crypto.deriveSymmetricKey(newPassword, encSalt, constants_1.KEY_HASH_ROUNDS);
+                const authKeypair = yield crypto.deriveSigningKey(newPassword, authSalt, constants_1.KEY_HASH_ROUNDS);
                 // Make new Profile and update existing profile.
                 const b64AuthSalt = yield crypto.platform.b64URLEncode(authSalt);
                 const b64EncSalt = yield crypto.platform.b64URLEncode(encSalt);
@@ -72,10 +80,10 @@ class Client {
                     paperBackup: currentProfileMeta.paperBackup,
                 });
                 // Update the refresher with new signing keys
-                const clientToken = new Token(this.api._token._token);
+                const clientToken = new token_1.default(this.api._token._token);
                 const clientApi = this.api.clone();
                 const username = this.profile.email;
-                clientToken.refresher = new Refresher(clientApi, this._queenClient.crypto, authKeypair, username);
+                clientToken.refresher = new refresher_1.default(clientApi, this._queenClient.crypto, authKeypair, username);
                 this.api.setToken(clientToken);
                 // Return the updated profile.
                 return response;
@@ -88,7 +96,7 @@ class Client {
     billingStatus() {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.getBillingStatus(this._queenClient);
-            return AccountBillingStatus.decode(rawResponse);
+            return types_1.AccountBillingStatus.decode(rawResponse);
         });
     }
     updateAccountBilling(stripeToken) {
@@ -115,13 +123,13 @@ class Client {
     listClientInfo(nextToken = 0, perPage = 50) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listClients(this.queenClient, nextToken, perPage);
-            return ClientInfoList.decode(rawResponse);
+            return types_1.ClientInfoList.decode(rawResponse);
         });
     }
     getClientInfo(clientId) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.getClient(this.queenClient, clientId);
-            return ClientInfo.decode(rawResponse);
+            return types_1.ClientInfo.decode(rawResponse);
         });
     }
     setClientEnabled(clientId, enabled) {
@@ -148,7 +156,7 @@ class Client {
     registrationTokens() {
         return __awaiter(this, void 0, void 0, function* () {
             const tokens = yield this.api.listTokens();
-            return tokens.map(RegistrationToken.decode);
+            return tokens.map(types_1.RegistrationToken.decode);
         });
     }
     /**
@@ -163,7 +171,7 @@ class Client {
     newRegistrationToken(name, permissions = {}, totalUsesAllowed) {
         return __awaiter(this, void 0, void 0, function* () {
             const token = yield this.api.writeToken(name, permissions, totalUsesAllowed);
-            return RegistrationToken.decode(token);
+            return types_1.RegistrationToken.decode(token);
         });
     }
     /**
@@ -254,7 +262,7 @@ class Client {
     createRealm(realmName, sovereignName, realmRegistrationToken = '') {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.createRealm(this.queenClient, realmName, sovereignName, realmRegistrationToken);
-            return Realm.decode(rawResponse);
+            return types_1.Realm.decode(rawResponse);
         });
     }
     /**
@@ -265,7 +273,7 @@ class Client {
     listRealms() {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listRealms(this.queenClient);
-            return Realms.decode(rawResponse);
+            return types_1.Realms.decode(rawResponse);
         });
     }
     /**
@@ -290,7 +298,7 @@ class Client {
     createRealmGroup(realmName, group) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.createRealmGroup(this.queenClient, realmName, group);
-            return Group.decode(rawResponse);
+            return types_1.Group.decode(rawResponse);
         });
     }
     /**
@@ -303,7 +311,7 @@ class Client {
     describeRealmGroup(realmName, groupId) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.describeRealmGroup(this.queenClient, realmName, groupId);
-            return Group.decode(rawResponse);
+            return types_1.Group.decode(rawResponse);
         });
     }
     /**
@@ -317,7 +325,7 @@ class Client {
     updateRealmGroup(realmName, groupId, group) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.updateRealmGroup(this.queenClient, realmName, groupId, group);
-            return Group.decode(rawResponse);
+            return types_1.Group.decode(rawResponse);
         });
     }
     /**
@@ -329,7 +337,7 @@ class Client {
     listRealmGroups(realmName) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listRealmGroups(this.queenClient, realmName);
-            return rawResponse.map(Group.decode);
+            return rawResponse.map(types_1.Group.decode);
         });
     }
     /**
@@ -354,7 +362,7 @@ class Client {
     createRealmRole(realmName, role) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.createRealmRole(this.queenClient, realmName, role);
-            return Role.decode(rawResponse);
+            return types_1.Role.decode(rawResponse);
         });
     }
     /**
@@ -367,7 +375,7 @@ class Client {
     updateRealmRole(realmName, role) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.updateRealmRole(this.queenClient, realmName, role);
-            return Role.decode(rawResponse);
+            return types_1.Role.decode(rawResponse);
         });
     }
     /**
@@ -403,7 +411,7 @@ class Client {
     listRealmRoles(realmName) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listRealmRoles(this.queenClient, realmName);
-            return rawResponse.map(Role.decode);
+            return rawResponse.map(types_1.Role.decode);
         });
     }
     /**
@@ -417,7 +425,7 @@ class Client {
     createRealmApplicationRole(realmName, applicationId, role) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.createRealmApplicationRole(this.queenClient, realmName, applicationId, role);
-            return Role.decode(rawResponse);
+            return types_1.Role.decode(rawResponse);
         });
     }
     /**
@@ -432,7 +440,7 @@ class Client {
     updateRealmApplicationRole(realmName, applicationId, originalRoleName, role) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.updateRealmApplicationRole(this.queenClient, realmName, applicationId, originalRoleName, role);
-            return Role.decode(rawResponse);
+            return types_1.Role.decode(rawResponse);
         });
     }
     /**
@@ -471,7 +479,7 @@ class Client {
     listRealmApplicationRoles(realmName, applicationId) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listRealmApplicationRoles(this.queenClient, realmName, applicationId);
-            return rawResponse.map(Role.decode);
+            return rawResponse.map(types_1.Role.decode);
         });
     }
     /**
@@ -484,7 +492,7 @@ class Client {
     listGroupRoleMappings(realmName, groupId) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listGroupRoleMappings(this.queenClient, realmName, groupId);
-            return GroupRoleMapping.decode(rawResponse);
+            return types_1.GroupRoleMapping.decode(rawResponse);
         });
     }
     /**
@@ -541,7 +549,7 @@ class Client {
     groupMembership(realmName, identityId) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.groupMembership(this.queenClient, realmName, identityId);
-            return rawResponse.map(Group.decode);
+            return rawResponse.map(types_1.Group.decode);
         });
     }
     /**
@@ -592,7 +600,7 @@ class Client {
     listDefaultRealmGroups(realmName) {
         return __awaiter(this, void 0, void 0, function* () {
             const rawResponse = yield this.api.listDefaultRealmGroups(this.queenClient, realmName);
-            return rawResponse.map(Group.decode);
+            return rawResponse.map(types_1.Group.decode);
         });
     }
     /**
@@ -688,7 +696,7 @@ class Client {
             rawResponse.identity.private_signing_key = {
                 ed25519: signingKeyPair.privateKey,
             };
-            return Identity.decode(rawResponse.identity);
+            return types_1.Identity.decode(rawResponse.identity);
         });
     }
     /**
@@ -707,7 +715,7 @@ class Client {
      * @return {ListIdentitiesResult} A object usable for making paginated queries.
      */
     listIdentities(realmName, max, next) {
-        return new ListIdentitiesResult(this, realmName, max, next);
+        return new listIdentitiesResult_1.default(this, realmName, max, next);
     }
     /**
      * Internal method which queries to get a specific page of basic identities
@@ -734,18 +742,18 @@ class Client {
     identityDetails(realmName, username) {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield this.api.identityDetails(this.queenClient, realmName, username);
-            return DetailedIdentity.decode(response);
+            return detailedIdentity_1.default.decode(response);
         });
     }
-    /*
-      refreshProfile users internal logic in the api token refresher
-      to update the user's profile info from the backend.
-      Currently, this is used to allow a user to verify their email,
-      hit refresh in an already open window, and continue with an
-      updated accountClient on the frontend.
-  
-      This will likely be replaced by a call to GET the account profile.
-    */
+    /**
+     * refreshProfile users internal logic in the api token refresher
+     * to update the user's profile info from the backend.
+     * Currently, this is used to allow a user to verify their email,
+     * hit refresh in an already open window, and continue with an
+     * updated accountClient on the frontend.
+     *
+     * This will likely be replaced by a call to GET the account profile.
+     */
     refreshProfile() {
         return __awaiter(this, void 0, void 0, function* () {
             const fetched = yield this.api._token._refresher.profile();
@@ -771,4 +779,4 @@ class Client {
         };
     }
 }
-module.exports = Client;
+exports.default = Client;

@@ -1,15 +1,16 @@
+// @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 /**
  * Account connection operations, including setting up the SDK and API URL
  */
 
-const Client = require('./client')
+import Client from './client'
 // a quirk of importing ts into js is that it exports as an object with a `default` property
 const API = require('./api').default
-const Token = require('./api/token')
-const Refresher = require('./api/refresher')
-const { validatePlatformSDK, validateEmail } = require('./utils')
-const { DEFAULT_API_URL, KEY_HASH_ROUNDS } = require('./utils/constants')
-const niceware = require('niceware')
+import Token from './api/token'
+import Refresher from './api/refresher'
+import { validatePlatformSDK, validateEmail } from './utils'
+import { DEFAULT_API_URL, KEY_HASH_ROUNDS } from './utils/constants'
+import niceware from 'niceware'
 
 /**
  * Account creates connections to a specific Tozny account
@@ -486,4 +487,4 @@ class Account {
   }
 }
 
-module.exports = Account
+export default Account
