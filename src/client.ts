@@ -172,7 +172,7 @@ class Client {
    * @return {Promise<Array.<RegistrationToken>>}
    */
 
-  async registrationTokens() {
+  async registrationTokens(): Promise<Array<RegistrationToken>> {
     const tokens = await this.api.listTokens()
     return tokens.map(RegistrationToken.decode)
   }
@@ -186,7 +186,11 @@ class Client {
    *
    * @return {Promise<RegistrationToken>} The created registration token.
    */
-  async newRegistrationToken(name, permissions = {}, totalUsesAllowed) {
+  async newRegistrationToken(
+    name: string,
+    permissions: object = {},
+    totalUsesAllowed: number
+  ): Promise<RegistrationToken> {
     const token = await this.api.writeToken(name, permissions, totalUsesAllowed)
     return RegistrationToken.decode(token)
   }
@@ -197,7 +201,7 @@ class Client {
    *
    * @returns {Promise<boolean>} True if the operation succeeds.
    */
-  async deleteRegistrationToken(token) {
+  async deleteRegistrationToken(token: Token): Promise<boolean> {
     return this.api.deleteToken(token.token)
   }
 
@@ -207,7 +211,7 @@ class Client {
    * @return {Promise<Array.<Webhook>>}
    */
 
-  async webhooks() {
+  async webhooks(): Promise<Array<Webhook>> {
     const webhooks = await this.api.listWebhooks(this.queenClient)
     // TODO: Add type and type checking
     return webhooks
@@ -221,7 +225,7 @@ class Client {
    *
    * @return {Promise<Webhook>} The created webhook.
    */
-  async newWebhook(webhook_url, triggers) {
+  async newWebhook(webhook_url: string, triggers: object): Promise<Webhook> {
     const webhook = await this.api.createWebhook(
       this.queenClient,
       webhook_url,
@@ -237,7 +241,7 @@ class Client {
    *
    * @returns {Promise<boolean>} True if the operation succeeds.
    */
-  async deleteWebhook(webhookId) {
+  async deleteWebhook(webhookId): Promise<boolean> {
     return this.api.deleteWebhook(this.queenClient, webhookId)
   }
 
@@ -251,7 +255,12 @@ class Client {
    * @returns {Object} request response object
    */
 
-  async getRequests(startTime, endTime, nextToken, endpointsToExclude) {
+  async getRequests(
+    startTime: string,
+    endTime: string,
+    nextToken: number,
+    endpointsToExclude
+  ): object {
     const accountId = this.profile.id
     return this.api.getRequests(
       this.queenClient,
@@ -271,7 +280,7 @@ class Client {
    * @returns {Object} aggregations response object
    */
 
-  async getAggregations(startTime, endTime) {
+  async getAggregations(startTime: string, endTime: string): object {
     const accountId = this.profile.id
     return this.api.getAggregations(
       this.queenClient,
@@ -288,7 +297,11 @@ class Client {
    *
    * @returns {Promise<Realm>} The representation of the created realm returned by the server.
    */
-  async createRealm(realmName, sovereignName, realmRegistrationToken = '') {
+  async createRealm(
+    realmName: string,
+    sovereignName: string,
+    realmRegistrationToken = ''
+  ): Promise<Realm> {
     const rawResponse = await this.api.createRealm(
       this.queenClient,
       realmName,
@@ -303,7 +316,7 @@ class Client {
    *
    * @returns {Promise<Realms>} The listed realm representations returned by the server.
    */
-  async listRealms() {
+  async listRealms(): Promise<Realms> {
     const rawResponse = await this.api.listRealms(this.queenClient)
     return Realms.decode(rawResponse)
   }
@@ -315,7 +328,7 @@ class Client {
    *
    * @returns {Promise<Object>} Empty object.
    */
-  async deleteRealm(realmName) {
+  async deleteRealm(realmName: string): Promise<object> {
     return this.api.deleteRealm(this.queenClient, realmName)
   }
 
@@ -326,7 +339,7 @@ class Client {
    * @param {object} group     Object containing `name` of group.
    * @returns {Promise<Group>} The newly created group.
    */
-  async createRealmGroup(realmName, group) {
+  async createRealmGroup(realmName: string, group: object): Promise<Group> {
     const rawResponse = await this.api.createRealmGroup(
       this.queenClient,
       realmName,
@@ -342,7 +355,7 @@ class Client {
    * @param {string} groupId   Id of group to describe.
    * @returns {Promise<Group>}
    */
-  async describeRealmGroup(realmName, groupId) {
+  async describeRealmGroup(realmName: string, groupId: string): Promise<Group> {
     const rawResponse = await this.api.describeRealmGroup(
       this.queenClient,
       realmName,
@@ -360,7 +373,11 @@ class Client {
    * @param {Group} group      Updated attributes of the group
    * @returns {Promise<Group>}
    */
-  async updateRealmGroup(realmName, groupId, group) {
+  async updateRealmGroup(
+    realmName: string,
+    groupId: string,
+    group: Group
+  ): Promise<Group> {
     const rawResponse = await this.api.updateRealmGroup(
       this.queenClient,
       realmName,
@@ -376,7 +393,7 @@ class Client {
    * @param {string} realmName  Name of realm.
    * @returns {Promise<Group[]>} List of all groups at realm.
    */
-  async listRealmGroups(realmName) {
+  async listRealmGroups(realmName: string): Promise<Group[]> {
     const rawResponse = await this.api.listRealmGroups(
       this.queenClient,
       realmName
@@ -391,7 +408,7 @@ class Client {
    * @param {string} groupId     The id of the group to delete.
    * @returns {Promise<boolean>} True if successful.
    */
-  async deleteRealmGroup(realmName, groupId) {
+  async deleteRealmGroup(realmName: string, groupId: string): Promise<boolean> {
     return this.api.deleteRealmGroup(this.queenClient, realmName, groupId)
   }
 
@@ -402,7 +419,7 @@ class Client {
    * @param {object} role       Object with `name` and `description` of role.
    * @returns {Promise<Role>}   The newly created role.
    */
-  async createRealmRole(realmName, role) {
+  async createRealmRole(realmName: string, role: object): Promise<Role> {
     const rawResponse = await this.api.createRealmRole(
       this.queenClient,
       realmName,
@@ -418,7 +435,7 @@ class Client {
    * @param {role} role        Updated attributes of the role.
    * @returns {Promise<Role>}
    */
-  async updateRealmRole(realmName, role) {
+  async updateRealmRole(realmName: string, role: role): Promise<Role> {
     const rawResponse = await this.api.updateRealmRole(
       this.queenClient,
       realmName,
@@ -434,7 +451,7 @@ class Client {
    * @param {string} roleId Id of role to delete.
    * @returns {Promise<boolean>} True if successful.
    */
-  async deleteRealmRole(realmName, roleId) {
+  async deleteRealmRole(realmName: string, roleId: string): Promise<boolean> {
     return this.api.deleteRealmRole(this.queenClient, realmName, roleId)
   }
 
@@ -445,7 +462,7 @@ class Client {
    * @param {string} roleId    Id of role to describe.
    * @returns {Promise<Role>}
    */
-  async describeRealmRole(realmName, roleId) {
+  async describeRealmRole(realmName: string, roleId: string): Promise<Role> {
     return this.api.describeRealmRole(this.queenClient, realmName, roleId)
   }
 
@@ -455,7 +472,7 @@ class Client {
    * @param {string} realmName  Name of realm.
    * @returns {Promise<Role[]>} List of all roles at realm.
    */
-  async listRealmRoles(realmName) {
+  async listRealmRoles(realmName: string): Promise<Role[]> {
     const rawResponse = await this.api.listRealmRoles(
       this.queenClient,
       realmName
@@ -471,7 +488,11 @@ class Client {
    * @param {object} role           Object with `name` and `description` of role.
    * @returns {Promise<Role>}       The newly created role.
    */
-  async createRealmApplicationRole(realmName, applicationId, role) {
+  async createRealmApplicationRole(
+    realmName: string,
+    applicationId: string,
+    role: object
+  ): Promise<Role> {
     const rawResponse = await this.api.createRealmApplicationRole(
       this.queenClient,
       realmName,
@@ -491,11 +512,11 @@ class Client {
    * @returns {Promise<Role>}
    */
   async updateRealmApplicationRole(
-    realmName,
-    applicationId,
-    originalRoleName,
-    role
-  ) {
+    realmName: string,
+    applicationId: string,
+    originalRoleName: string,
+    role: role
+  ): Promise<Role> {
     const rawResponse = await this.api.updateRealmApplicationRole(
       this.queenClient,
       realmName,
@@ -514,7 +535,11 @@ class Client {
    * @param {string} roleName       Name of role to delete.
    * @returns {Promise<boolean>}    True if successful.
    */
-  async deleteRealmApplicationRole(realmName, applicationId, roleName) {
+  async deleteRealmApplicationRole(
+    realmName: string,
+    applicationId: string,
+    roleName: string
+  ): Promise<boolean> {
     return this.api.deleteRealmApplicationRole(
       this.queenClient,
       realmName,
@@ -531,7 +556,11 @@ class Client {
    * @param {string} roleName       Name of role to describe.
    * @returns {Promise<Role>}
    */
-  async describeRealmApplicationRole(realmName, applicationId, roleName) {
+  async describeRealmApplicationRole(
+    realmName: string,
+    applicationId: string,
+    roleName: string
+  ): Promise<Role> {
     return this.api.describeRealmApplicationRole(
       this.queenClient,
       realmName,
@@ -547,7 +576,10 @@ class Client {
    * @param {string} applicationId  Id of client application.
    * @returns {Promise<Role[]>}     List of all roles for application.
    */
-  async listRealmApplicationRoles(realmName, applicationId) {
+  async listRealmApplicationRoles(
+    realmName: string,
+    applicationId: string
+  ): Promise<Role[]> {
     const rawResponse = await this.api.listRealmApplicationRoles(
       this.queenClient,
       realmName,
@@ -563,7 +595,10 @@ class Client {
    * @param {string} groupId              Id of group for which to list role mappings.
    * @returns {Promise<GroupRoleMapping>} List of all roles at realm.
    */
-  async listGroupRoleMappings(realmName, groupId) {
+  async listGroupRoleMappings(
+    realmName: string,
+    groupId: string
+  ): Promise<GroupRoleMapping> {
     const rawResponse = await this.api.listGroupRoleMappings(
       this.queenClient,
       realmName,
@@ -596,7 +631,11 @@ class Client {
    *   { realm: [fridgeAccessRole] }
    * )
    */
-  async addGroupRoleMappings(realmName, groupId, groupRoleMapping) {
+  async addGroupRoleMappings(
+    realmName: string,
+    groupId: string,
+    groupRoleMapping: GroupRoleMapping
+  ): Promise<boolean> {
     return this.api.addGroupRoleMappings(
       this.queenClient,
       realmName,
@@ -613,7 +652,11 @@ class Client {
    * @param {GroupRoleMapping} groupRoleMapping The map of roles to remove to group's mapping.
    * @returns {Promise<boolean>} True if successful
    */
-  async removeGroupRoleMappings(realmName, groupId, groupRoleMapping) {
+  async removeGroupRoleMappings(
+    realmName: string,
+    groupId: string,
+    groupRoleMapping: GroupRoleMapping
+  ): Promise<boolean> {
     return this.api.removeGroupRoleMappings(
       this.queenClient,
       realmName,
@@ -630,7 +673,7 @@ class Client {
    *
    * @returns {Promise<Group>}  If successful
    */
-  async groupMembership(realmName, identityId) {
+  async groupMembership(realmName: string, identityId: string): Promise<Group> {
     const rawResponse = await this.api.groupMembership(
       this.queenClient,
       realmName,
@@ -646,7 +689,11 @@ class Client {
    * @param {Group} groups The map of groupIds to update.
    * @returns {Promise<boolean>} True if successful
    */
-  async updateGroupMembership(realmName, identityId, groups) {
+  async updateGroupMembership(
+    realmName: string,
+    identityId: string,
+    groups: Group
+  ): Promise<boolean> {
     return this.api.updateGroupMembership(
       this.queenClient,
       realmName,
@@ -662,7 +709,11 @@ class Client {
    * @param {Group} groups The map of groupIds to join.
    * @returns {Promise<boolean>} True if successful
    */
-  async joinGroups(realmName, identityId, groups) {
+  async joinGroups(
+    realmName: string,
+    identityId: string,
+    groups: Group
+  ): Promise<boolean> {
     return this.api.joinGroups(this.queenClient, realmName, identityId, groups)
   }
   /**
@@ -673,7 +724,11 @@ class Client {
    * @param {Group} groups The map of groupIds to leave.
    * @returns {Promise<boolean>} True if successful
    */
-  async leaveGroups(realmName, identityId, groups) {
+  async leaveGroups(
+    realmName: string,
+    identityId: string,
+    groups: Group
+  ): Promise<boolean> {
     return this.api.leaveGroups(this.queenClient, realmName, identityId, groups)
   }
   /**
@@ -682,7 +737,7 @@ class Client {
    * @param {string} realmName  Name of realm.
    * @returns {Promise<Group[]>} List of all groups at realm.
    */
-  async listDefaultRealmGroups(realmName) {
+  async listDefaultRealmGroups(realmName: string): Promise<Group[]> {
     const rawResponse = await this.api.listDefaultRealmGroups(
       this.queenClient,
       realmName
@@ -696,7 +751,10 @@ class Client {
    * @param {Group} groups The map of groupIds to set as new default.
    * @returns {Promise<void>}
    */
-  async replaceDefaultRealmGroups(realmName, groups) {
+  async replaceDefaultRealmGroups(
+    realmName: string,
+    groups: Group
+  ): Promise<void> {
     return this.api.replaceDefaultRealmGroups(
       this.queenClient,
       realmName,
@@ -710,7 +768,7 @@ class Client {
    * @param {Group} groups The map of groupIds to add.
    * @returns {Promise<void>}
    */
-  async addDefaultRealmGroups(realmName, groups) {
+  async addDefaultRealmGroups(realmName: string, groups: Group): Promise<void> {
     return this.api.addDefaultRealmGroups(this.queenClient, realmName, groups)
   }
   /**
@@ -720,7 +778,10 @@ class Client {
    * @param {Group} groups The map of groupIds to remove.
    * @returns {Promise<void>}
    */
-  async removeDefaultRealmGroups(realmName, groups) {
+  async removeDefaultRealmGroups(
+    realmName: string,
+    groups: Group
+  ): Promise<void> {
     return this.api.removeDefaultRealmGroups(
       this.queenClient,
       realmName,
@@ -736,7 +797,11 @@ class Client {
    * @param {ToznyAPIIdentity} identity Configuration for the new identity
    * @returns {Promise<Identity>}
    */
-  async registerIdentity(realmName, registrationToken, identity) {
+  async registerIdentity(
+    realmName: string,
+    registrationToken: string,
+    identity: ToznyAPIIdentity
+  ): Promise<Identity> {
     const crypto = this._queenClient.crypto
     const encryptionKeyPair = await crypto.generateKeypair()
     const signingKeyPair = await crypto.generateSigningKeypair()
@@ -752,7 +817,10 @@ class Client {
    * @param {string} identityId Id of identity
    * @returns {Promise<boolean>} True if successful
    */
-  async deleteIdentity(realmName, identityId) {
+  async deleteIdentity(
+    realmName: string,
+    identityId: string
+  ): Promise<boolean> {
     return this.api.deleteIdentity(this.queenClient, realmName, identityId)
   }
   /**
@@ -761,7 +829,10 @@ class Client {
    * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.
    * @return {Promise<Identity>} The broker identity for the realm.
    */
-  async registerRealmBrokerIdentity(realmName, registrationToken) {
+  async registerRealmBrokerIdentity(
+    realmName: string,
+    registrationToken: string
+  ): Promise<Identity> {
     // Generate key material for the broker Identity
     const crypto = this.queenClient.crypto
     const encryptionKeyPair = await crypto.generateKeypair()
@@ -794,7 +865,7 @@ class Client {
    *
    * @return {Promise<object>} The hosted broker public info.
    */
-  async hostedBrokerInfo() {
+  async hostedBrokerInfo(): Promise<object> {
     return this.api.getHostedBrokerInfo()
   }
 
@@ -803,7 +874,7 @@ class Client {
    *
    * @return {ListIdentitiesResult} A object usable for making paginated queries.
    */
-  listIdentities(realmName, max, next) {
+  listIdentities(realmName, max, next): ListIdentitiesResult {
     return new ListIdentitiesResult(this, realmName, max, next)
   }
 
@@ -812,7 +883,11 @@ class Client {
    *
    * @return {Promise<Array<BasicIdentity>>} A list of basic identity info.
    */
-  async _listIdentities(realmName, max, next) {
+  private async _listIdentities(
+    realmName,
+    max,
+    next
+  ): Promise<Array<BasicIdentity>> {
     const response = await this.api.listIdentities(
       this.queenClient,
       realmName,
@@ -835,7 +910,7 @@ class Client {
    *
    * @return {ListIdentitiesResult} A object usable for making paginated queries.
    */
-  async identityDetails(realmName, username) {
+  async identityDetails(realmName, username): ListIdentitiesResult {
     const response = await this.api.identityDetails(
       this.queenClient,
       realmName,

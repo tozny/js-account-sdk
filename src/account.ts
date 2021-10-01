@@ -28,7 +28,7 @@ class Account {
    * @param {Tozny} sdk An instance of a Tozny client SDK.
    * @param {string} apiUrl The URL of the Tozny Platform instance to connect to.
    */
-  constructor(sdk, apiUrl = DEFAULT_API_URL) {
+  constructor(sdk: Tozny, apiUrl: string = DEFAULT_API_URL) {
     this.api = new API(apiUrl)
     this._sdk = validatePlatformSDK(sdk)
   }
@@ -38,7 +38,7 @@ class Account {
    *
    * @return {Crypto}
    */
-  get crypto() {
+  get crypto(): Crypto {
     return this._sdk.crypto
   }
 
@@ -47,7 +47,7 @@ class Account {
    *
    * @return {Function} The Storage constructor
    */
-  get Storage() {
+  get Storage(): Function {
     return this._sdk.storage
   }
 
@@ -56,7 +56,7 @@ class Account {
    *
    * @return {Function}
    */
-  get Identity() {
+  get Identity(): Function {
     return this._sdk.identity
   }
 
@@ -65,7 +65,7 @@ class Account {
    *
    * @return {Object} All of the Tozny client SDK defined types.
    */
-  get toznyTypes() {
+  get toznyTypes(): object {
     return this._sdk.types
   }
 
@@ -78,7 +78,11 @@ class Account {
    *
    * @return {Promise<Client>} The Client instance for the provided credentials.
    */
-  async login(username, password, type = 'standard') {
+  async login(
+    username: string,
+    password: string,
+    type: string = 'standard'
+  ): Promise<Client> {
     const challenge = await this.api.getChallenge(username)
     const b64AuthSalt =
       type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt
@@ -174,7 +178,11 @@ class Account {
    *                           `object[paperKey]` and the client instance associated
    *                           with the new client at `object[client]`.
    */
-  async register(name, email, password) {
+  async register(
+    name: string,
+    email: string,
+    password: string
+  ): Promise<object> {
     validateEmail(email)
     const encSalt = await this.crypto.randomBytes(16)
     const authSalt = await this.crypto.randomBytes(16)
@@ -293,7 +301,7 @@ class Account {
    *
    * @param {string} email The email address associate with the account.
    */
-  async initiateRecoverAccount(email) {
+  async initiateRecoverAccount(email: string) {
     return this.api.initiateRecoverAccount(email)
   }
 
@@ -304,7 +312,7 @@ class Account {
    * @param {string} otp The recovery one time password for recovery
    * @return The recovery object for the account
    */
-  async verifyRecoverAccountChallenge(id, otp) {
+  async verifyRecoverAccountChallenge(id: string, otp: string) {
     return this.api.verifyRecoverAccountChallenge(id, otp)
   }
 
@@ -315,7 +323,10 @@ class Account {
    * @param {string} accountToken The token for making account requests.
    * @return {Promise<object>} An object with the new queen client and paper key.
    */
-  async changeAccountPassword(password, accountToken) {
+  async changeAccountPassword(
+    password: string,
+    accountToken: string
+  ): Promise<object> {
     const tok = new Token(accountToken)
 
     const clientApi = this.api.clone()
@@ -437,7 +448,7 @@ class Account {
    *
    * @returns response
    */
-  async verifyEmail(id, otp) {
+  async verifyEmail(id: string, otp: string) {
     return this.api.verifyEmail(id, otp)
   }
 
@@ -453,7 +464,7 @@ class Account {
    *
    * @return {Client} A new Client created with all provided values from the object.
    */
-  fromObject(obj) {
+  fromObject(obj: object): Client {
     let token, api
     // If an API is available, create it.
     if (obj.api && typeof obj.api === 'object') {

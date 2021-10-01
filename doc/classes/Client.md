@@ -16,7 +16,6 @@ The client for Tozny's Account API.
 
 ### Methods
 
-- [\_listIdentities](Client.md#_listidentities)
 - [addBillingCoupon](Client.md#addbillingcoupon)
 - [addDefaultRealmGroups](Client.md#adddefaultrealmgroups)
 - [addGroupRoleMappings](Client.md#addgrouprolemappings)
@@ -92,7 +91,7 @@ The client for Tozny's Account API.
 
 #### Defined in
 
-[client.ts:27](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L27)
+[client.ts:27](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L27)
 
 ## Accessors
 
@@ -106,35 +105,9 @@ The client for Tozny's Account API.
 
 #### Defined in
 
-[client.ts:34](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L34)
+[client.ts:34](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L34)
 
 ## Methods
-
-### \_listIdentities
-
-▸ **_listIdentities**(`realmName`, `max`, `next`): `Promise`<`any`\>
-
-Internal method which queries to get a specific page of basic identities
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `realmName` | `any` |
-| `max` | `any` |
-| `next` | `any` |
-
-#### Returns
-
-`Promise`<`any`\>
-
-A list of basic identity info.
-
-#### Defined in
-
-[client.ts:815](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L815)
-
-___
 
 ### addBillingCoupon
 
@@ -152,13 +125,13 @@ ___
 
 #### Defined in
 
-[client.ts:129](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L129)
+[client.ts:129](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L129)
 
 ___
 
 ### addDefaultRealmGroups
 
-▸ **addDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`any`\>
+▸ **addDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`void`\>
 
 Add default groups for the request realm.
 
@@ -166,22 +139,22 @@ Add default groups for the request realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `groups` | `any` | The map of groupIds to add. |
+| `realmName` | `string` | Name of realm. |
+| `groups` | `Group` | The map of groupIds to add. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`void`\>
 
 #### Defined in
 
-[client.ts:713](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L713)
+[client.ts:771](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L771)
 
 ___
 
 ### addGroupRoleMappings
 
-▸ **addGroupRoleMappings**(`realmName`, `groupId`, `groupRoleMapping`): `Promise`<`any`\>
+▸ **addGroupRoleMappings**(`realmName`, `groupId`, `groupRoleMapping`): `Promise`<`boolean`\>
 
 Adds a set of realm/client roles to a group's role mapping
 
@@ -205,19 +178,19 @@ await client.addGroupRoleMappings(
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `groupId` | `any` | Id of realm group. |
-| `groupRoleMapping` | `any` | The map of roles to add to group's mapping. |
+| `realmName` | `string` | Name of realm. |
+| `groupId` | `string` | Id of realm group. |
+| `groupRoleMapping` | `GroupRoleMapping` | The map of roles to add to group's mapping. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if successful
 
 #### Defined in
 
-[client.ts:599](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L599)
+[client.ts:634](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L634)
 
 ___
 
@@ -231,7 +204,7 @@ ___
 
 #### Defined in
 
-[client.ts:119](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L119)
+[client.ts:119](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L119)
 
 ___
 
@@ -251,13 +224,13 @@ ___
 
 #### Defined in
 
-[client.ts:50](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L50)
+[client.ts:50](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L50)
 
 ___
 
 ### createRealm
 
-▸ **createRealm**(`realmName`, `sovereignName`, `realmRegistrationToken?`): `Promise`<`fn`\>
+▸ **createRealm**(`realmName`, `sovereignName`, `realmRegistrationToken?`): `Promise`<`Realm`\>
 
 Requests the creation of a new TozID Realm.
 
@@ -265,19 +238,19 @@ Requests the creation of a new TozID Realm.
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `realmName` | `any` | `undefined` | The user defined name for the realm to create. |
-| `sovereignName` | `any` | `undefined` | The user defined name for the ruler of the realm to create. |
+| `realmName` | `string` | `undefined` | The user defined name for the realm to create. |
+| `sovereignName` | `string` | `undefined` | The user defined name for the ruler of the realm to create. |
 | `realmRegistrationToken` | `string` | `''` | - |
 
 #### Returns
 
-`Promise`<`fn`\>
+`Promise`<`Realm`\>
 
 The representation of the created realm returned by the server.
 
 #### Defined in
 
-[client.ts:291](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L291)
+[client.ts:300](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L300)
 
 ___
 
@@ -291,9 +264,9 @@ Creates a new application role for a realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `applicationId` | `any` | Id of client application. |
-| `role` | `any` | Object with `name` and `description` of role. |
+| `realmName` | `string` | Name of realm. |
+| `applicationId` | `string` | Id of client application. |
+| `role` | `object` | Object with `name` and `description` of role. |
 
 #### Returns
 
@@ -303,7 +276,7 @@ The newly created role.
 
 #### Defined in
 
-[client.ts:474](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L474)
+[client.ts:491](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L491)
 
 ___
 
@@ -317,8 +290,8 @@ Creates a new group in the realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `group` | `any` | Object containing `name` of group. |
+| `realmName` | `string` | Name of realm. |
+| `group` | `object` | Object containing `name` of group. |
 
 #### Returns
 
@@ -328,7 +301,7 @@ The newly created group.
 
 #### Defined in
 
-[client.ts:329](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L329)
+[client.ts:342](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L342)
 
 ___
 
@@ -342,8 +315,8 @@ Creates a new role for a realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `role` | `any` | Object with `name` and `description` of role. |
+| `realmName` | `string` | Name of realm. |
+| `role` | `object` | Object with `name` and `description` of role. |
 
 #### Returns
 
@@ -353,13 +326,13 @@ The newly created role.
 
 #### Defined in
 
-[client.ts:405](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L405)
+[client.ts:422](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L422)
 
 ___
 
 ### deleteIdentity
 
-▸ **deleteIdentity**(`realmName`, `identityId`): `Promise`<`any`\>
+▸ **deleteIdentity**(`realmName`, `identityId`): `Promise`<`boolean`\>
 
 Removes an identity in the given realm.
 
@@ -367,24 +340,24 @@ Removes an identity in the given realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `identityId` | `any` | Id of identity |
+| `realmName` | `string` | Name of realm. |
+| `identityId` | `string` | Id of identity |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if successful
 
 #### Defined in
 
-[client.ts:755](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L755)
+[client.ts:820](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L820)
 
 ___
 
 ### deleteRealm
 
-▸ **deleteRealm**(`realmName`): `Promise`<`any`\>
+▸ **deleteRealm**(`realmName`): `Promise`<`object`\>
 
 Requests the deletion of a named TozID Realm belonging to the account.
 
@@ -392,23 +365,23 @@ Requests the deletion of a named TozID Realm belonging to the account.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | The name for the realm to delete. |
+| `realmName` | `string` | The name for the realm to delete. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`object`\>
 
 Empty object.
 
 #### Defined in
 
-[client.ts:318](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L318)
+[client.ts:331](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L331)
 
 ___
 
 ### deleteRealmApplicationRole
 
-▸ **deleteRealmApplicationRole**(`realmName`, `applicationId`, `roleName`): `Promise`<`any`\>
+▸ **deleteRealmApplicationRole**(`realmName`, `applicationId`, `roleName`): `Promise`<`boolean`\>
 
 Deletes a realm application role by id.
 
@@ -416,25 +389,25 @@ Deletes a realm application role by id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `applicationId` | `any` | Id of client application. |
-| `roleName` | `any` | Name of role to delete. |
+| `realmName` | `string` | Name of realm. |
+| `applicationId` | `string` | Id of client application. |
+| `roleName` | `string` | Name of role to delete. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if successful.
 
 #### Defined in
 
-[client.ts:517](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L517)
+[client.ts:538](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L538)
 
 ___
 
 ### deleteRealmGroup
 
-▸ **deleteRealmGroup**(`realmName`, `groupId`): `Promise`<`any`\>
+▸ **deleteRealmGroup**(`realmName`, `groupId`): `Promise`<`boolean`\>
 
 Deletes a group in the named realm by id.
 
@@ -442,24 +415,24 @@ Deletes a group in the named realm by id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | The name of the realm containing the group. |
-| `groupId` | `any` | The id of the group to delete. |
+| `realmName` | `string` | The name of the realm containing the group. |
+| `groupId` | `string` | The id of the group to delete. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if successful.
 
 #### Defined in
 
-[client.ts:394](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L394)
+[client.ts:411](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L411)
 
 ___
 
 ### deleteRealmRole
 
-▸ **deleteRealmRole**(`realmName`, `roleId`): `Promise`<`any`\>
+▸ **deleteRealmRole**(`realmName`, `roleId`): `Promise`<`boolean`\>
 
 Deletes a realm role by id.
 
@@ -467,24 +440,24 @@ Deletes a realm role by id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `roleId` | `any` | Id of role to delete. |
+| `realmName` | `string` | Name of realm. |
+| `roleId` | `string` | Id of role to delete. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if successful.
 
 #### Defined in
 
-[client.ts:437](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L437)
+[client.ts:454](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L454)
 
 ___
 
 ### deleteRegistrationToken
 
-▸ **deleteRegistrationToken**(`token`): `Promise`<`any`\>
+▸ **deleteRegistrationToken**(`token`): `Promise`<`boolean`\>
 
 Removes a token object from the accounts available tokens.
 
@@ -492,23 +465,23 @@ Removes a token object from the accounts available tokens.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `token` | `any` | The token to remove from the account. |
+| `token` | `Token` | The token to remove from the account. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if the operation succeeds.
 
 #### Defined in
 
-[client.ts:200](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L200)
+[client.ts:204](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L204)
 
 ___
 
 ### deleteWebhook
 
-▸ **deleteWebhook**(`webhookId`): `Promise`<`any`\>
+▸ **deleteWebhook**(`webhookId`): `Promise`<`boolean`\>
 
 Removes a webhook object from the accounts available webhooks.
 
@@ -520,19 +493,19 @@ Removes a webhook object from the accounts available webhooks.
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if the operation succeeds.
 
 #### Defined in
 
-[client.ts:240](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L240)
+[client.ts:244](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L244)
 
 ___
 
 ### describeRealmApplicationRole
 
-▸ **describeRealmApplicationRole**(`realmName`, `applicationId`, `roleName`): `Promise`<`any`\>
+▸ **describeRealmApplicationRole**(`realmName`, `applicationId`, `roleName`): `Promise`<`Role`\>
 
 Describe a realm application role by id.
 
@@ -540,17 +513,17 @@ Describe a realm application role by id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `applicationId` | `any` | Id of client application. |
-| `roleName` | `any` | Name of role to describe. |
+| `realmName` | `string` | Name of realm. |
+| `applicationId` | `string` | Id of client application. |
+| `roleName` | `string` | Name of role to describe. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Role`\>
 
 #### Defined in
 
-[client.ts:534](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L534)
+[client.ts:559](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L559)
 
 ___
 
@@ -564,8 +537,8 @@ Describe a realm group by id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `groupId` | `any` | Id of group to describe. |
+| `realmName` | `string` | Name of realm. |
+| `groupId` | `string` | Id of group to describe. |
 
 #### Returns
 
@@ -573,13 +546,13 @@ Describe a realm group by id.
 
 #### Defined in
 
-[client.ts:345](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L345)
+[client.ts:358](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L358)
 
 ___
 
 ### describeRealmRole
 
-▸ **describeRealmRole**(`realmName`, `roleId`): `Promise`<`any`\>
+▸ **describeRealmRole**(`realmName`, `roleId`): `Promise`<`Role`\>
 
 Describe a realm role by id.
 
@@ -587,22 +560,22 @@ Describe a realm role by id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `roleId` | `any` | Id of role to describe. |
+| `realmName` | `string` | Name of realm. |
+| `roleId` | `string` | Id of role to describe. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Role`\>
 
 #### Defined in
 
-[client.ts:448](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L448)
+[client.ts:465](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L465)
 
 ___
 
 ### getAggregations
 
-▸ **getAggregations**(`startTime`, `endTime`): `Promise`<`any`\>
+▸ **getAggregations**(`startTime`, `endTime`): `object`
 
 Gets aggregations for the api calls made in a given time frame.
 
@@ -610,18 +583,18 @@ Gets aggregations for the api calls made in a given time frame.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `startTime` | `any` | Start time for range of requests |
-| `endTime` | `any` | End time for range of requests |
+| `startTime` | `string` | Start time for range of requests |
+| `endTime` | `string` | End time for range of requests |
 
 #### Returns
 
-`Promise`<`any`\>
+`object`
 
 aggregations response object
 
 #### Defined in
 
-[client.ts:274](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L274)
+[client.ts:283](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L283)
 
 ___
 
@@ -641,13 +614,13 @@ ___
 
 #### Defined in
 
-[client.ts:150](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L150)
+[client.ts:150](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L150)
 
 ___
 
 ### getRequests
 
-▸ **getRequests**(`startTime`, `endTime`, `nextToken`, `endpointsToExclude`): `Promise`<`any`\>
+▸ **getRequests**(`startTime`, `endTime`, `nextToken`, `endpointsToExclude`): `object`
 
 Gets the api request history using provided params.
 
@@ -655,26 +628,26 @@ Gets the api request history using provided params.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `startTime` | `any` | Start time for range of requests |
-| `endTime` | `any` | End time for range of requests |
-| `nextToken` | `any` | allows backend to paginate requests |
+| `startTime` | `string` | Start time for range of requests |
+| `endTime` | `string` | End time for range of requests |
+| `nextToken` | `number` | allows backend to paginate requests |
 | `endpointsToExclude` | `any` | - |
 
 #### Returns
 
-`Promise`<`any`\>
+`object`
 
 request response object
 
 #### Defined in
 
-[client.ts:254](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L254)
+[client.ts:258](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L258)
 
 ___
 
 ### groupMembership
 
-▸ **groupMembership**(`realmName`, `identityId`): `Promise`<`any`\>
+▸ **groupMembership**(`realmName`, `identityId`): `Promise`<`Group`\>
 
 List all realm groups for an identity
 
@@ -682,42 +655,42 @@ List all realm groups for an identity
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `identityId` | `any` | Id of identity |
+| `realmName` | `string` | Name of realm. |
+| `identityId` | `string` | Id of identity |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Group`\>
 
 If successful
 
 #### Defined in
 
-[client.ts:633](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L633)
+[client.ts:676](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L676)
 
 ___
 
 ### hostedBrokerInfo
 
-▸ **hostedBrokerInfo**(): `Promise`<`any`\>
+▸ **hostedBrokerInfo**(): `Promise`<`object`\>
 
 Gets the public info about the Tozny hosted broker
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`object`\>
 
 The hosted broker public info.
 
 #### Defined in
 
-[client.ts:797](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L797)
+[client.ts:868](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L868)
 
 ___
 
 ### identityDetails
 
-▸ **identityDetails**(`realmName`, `username`): `Promise`<`fn`\>
+▸ **identityDetails**(`realmName`, `username`): `ListIdentitiesResult`
 
 Set up the pagination result for listing identities
 
@@ -730,19 +703,19 @@ Set up the pagination result for listing identities
 
 #### Returns
 
-`Promise`<`fn`\>
+`ListIdentitiesResult`
 
 A object usable for making paginated queries.
 
 #### Defined in
 
-[client.ts:838](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L838)
+[client.ts:913](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L913)
 
 ___
 
 ### joinGroups
 
-▸ **joinGroups**(`realmName`, `identityId`, `groups`): `Promise`<`any`\>
+▸ **joinGroups**(`realmName`, `identityId`, `groups`): `Promise`<`boolean`\>
 
 Join a list of Realm groups for an identity
 
@@ -750,25 +723,25 @@ Join a list of Realm groups for an identity
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `identityId` | `any` | Id of identity |
-| `groups` | `any` | The map of groupIds to join. |
+| `realmName` | `string` | Name of realm. |
+| `identityId` | `string` | Id of identity |
+| `groups` | `Group` | The map of groupIds to join. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if successful
 
 #### Defined in
 
-[client.ts:665](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L665)
+[client.ts:712](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L712)
 
 ___
 
 ### leaveGroups
 
-▸ **leaveGroups**(`realmName`, `identityId`, `groups`): `Promise`<`any`\>
+▸ **leaveGroups**(`realmName`, `identityId`, `groups`): `Promise`<`boolean`\>
 
 Leave a list of Realm Groups for an identity
 
@@ -776,19 +749,19 @@ Leave a list of Realm Groups for an identity
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `identityId` | `any` | Id of identity |
-| `groups` | `any` | The map of groupIds to leave. |
+| `realmName` | `string` | Name of realm. |
+| `identityId` | `string` | Id of identity |
+| `groups` | `Group` | The map of groupIds to leave. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if successful
 
 #### Defined in
 
-[client.ts:676](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L676)
+[client.ts:727](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L727)
 
 ___
 
@@ -809,13 +782,13 @@ ___
 
 #### Defined in
 
-[client.ts:141](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L141)
+[client.ts:141](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L141)
 
 ___
 
 ### listDefaultRealmGroups
 
-▸ **listDefaultRealmGroups**(`realmName`): `Promise`<`any`\>
+▸ **listDefaultRealmGroups**(`realmName`): `Promise`<`Group`[]\>
 
 Lists all default groups for the request realm.
 
@@ -823,17 +796,17 @@ Lists all default groups for the request realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
+| `realmName` | `string` | Name of realm. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Group`[]\>
 
 List of all groups at realm.
 
 #### Defined in
 
-[client.ts:685](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L685)
+[client.ts:740](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L740)
 
 ___
 
@@ -847,8 +820,8 @@ Gets realm & client (application) roles that are mapped to a particular realm gr
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `groupId` | `any` | Id of group for which to list role mappings. |
+| `realmName` | `string` | Name of realm. |
+| `groupId` | `string` | Id of group for which to list role mappings. |
 
 #### Returns
 
@@ -858,7 +831,7 @@ List of all roles at realm.
 
 #### Defined in
 
-[client.ts:566](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L566)
+[client.ts:598](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L598)
 
 ___
 
@@ -884,13 +857,13 @@ A object usable for making paginated queries.
 
 #### Defined in
 
-[client.ts:806](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L806)
+[client.ts:877](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L877)
 
 ___
 
 ### listRealmApplicationRoles
 
-▸ **listRealmApplicationRoles**(`realmName`, `applicationId`): `Promise`<`any`\>
+▸ **listRealmApplicationRoles**(`realmName`, `applicationId`): `Promise`<`Role`[]\>
 
 Lists all realm application roles for a realm.
 
@@ -898,24 +871,24 @@ Lists all realm application roles for a realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `applicationId` | `any` | Id of client application. |
+| `realmName` | `string` | Name of realm. |
+| `applicationId` | `string` | Id of client application. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Role`[]\>
 
 List of all roles for application.
 
 #### Defined in
 
-[client.ts:550](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L550)
+[client.ts:579](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L579)
 
 ___
 
 ### listRealmGroups
 
-▸ **listRealmGroups**(`realmName`): `Promise`<`any`\>
+▸ **listRealmGroups**(`realmName`): `Promise`<`Group`[]\>
 
 Lists all realm groups for a realm.
 
@@ -923,23 +896,23 @@ Lists all realm groups for a realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
+| `realmName` | `string` | Name of realm. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Group`[]\>
 
 List of all groups at realm.
 
 #### Defined in
 
-[client.ts:379](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L379)
+[client.ts:396](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L396)
 
 ___
 
 ### listRealmRoles
 
-▸ **listRealmRoles**(`realmName`): `Promise`<`any`\>
+▸ **listRealmRoles**(`realmName`): `Promise`<`Role`[]\>
 
 Lists all realm roles for a realm.
 
@@ -947,41 +920,41 @@ Lists all realm roles for a realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
+| `realmName` | `string` | Name of realm. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Role`[]\>
 
 List of all roles at realm.
 
 #### Defined in
 
-[client.ts:458](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L458)
+[client.ts:475](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L475)
 
 ___
 
 ### listRealms
 
-▸ **listRealms**(): `Promise`<`fn`\>
+▸ **listRealms**(): `Promise`<`Realms`\>
 
 Lists all Realms belonging to the account.
 
 #### Returns
 
-`Promise`<`fn`\>
+`Promise`<`Realms`\>
 
 The listed realm representations returned by the server.
 
 #### Defined in
 
-[client.ts:306](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L306)
+[client.ts:319](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L319)
 
 ___
 
 ### newRegistrationToken
 
-▸ **newRegistrationToken**(`name`, `permissions?`, `totalUsesAllowed`): `Promise`<`fn`\>
+▸ **newRegistrationToken**(`name`, `permissions?`, `totalUsesAllowed`): `Promise`<`RegistrationToken`\>
 
 Create a new registration token for the account.
 
@@ -989,19 +962,19 @@ Create a new registration token for the account.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `any` | The user defined name for the new token. Not unique. |
-| `permissions` | `Object` | A set of key-value pair of permissions for the token. |
-| `totalUsesAllowed` | `any` | The number of uses the token is allowed. If                                  not set, unlimited uses are allowed. |
+| `name` | `string` | The user defined name for the new token. Not unique. |
+| `permissions` | `object` | A set of key-value pair of permissions for the token. |
+| `totalUsesAllowed` | `number` | The number of uses the token is allowed. If                                  not set, unlimited uses are allowed. |
 
 #### Returns
 
-`Promise`<`fn`\>
+`Promise`<`RegistrationToken`\>
 
 The created registration token.
 
 #### Defined in
 
-[client.ts:189](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L189)
+[client.ts:189](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L189)
 
 ___
 
@@ -1015,8 +988,8 @@ Create a new webhook for the account.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `webhook_url` | `any` | The payload url |
-| `triggers` | `any` | A list of triggers to associate with the webhook                                  not set, unlimited uses are allowed. |
+| `webhook_url` | `string` | The payload url |
+| `triggers` | `object` | A list of triggers to associate with the webhook                                  not set, unlimited uses are allowed. |
 
 #### Returns
 
@@ -1026,7 +999,7 @@ The created webhook.
 
 #### Defined in
 
-[client.ts:224](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L224)
+[client.ts:228](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L228)
 
 ___
 
@@ -1048,13 +1021,13 @@ This will likely be replaced by a call to GET the account profile.
 
 #### Defined in
 
-[client.ts:857](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L857)
+[client.ts:932](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L932)
 
 ___
 
 ### registerIdentity
 
-▸ **registerIdentity**(`realmName`, `registrationToken`, `identity`): `Promise`<`any`\>
+▸ **registerIdentity**(`realmName`, `registrationToken`, `identity`): `Promise`<`Identity`\>
 
 Registers an identity with the specified realm using the specified parameters,returning the created identity and error (if any).
 
@@ -1062,17 +1035,17 @@ Registers an identity with the specified realm using the specified parameters,re
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `registrationToken` | `any` | the token for the realm |
+| `realmName` | `string` | Name of realm. |
+| `registrationToken` | `string` | the token for the realm |
 | `identity` | `any` | Configuration for the new identity |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Identity`\>
 
 #### Defined in
 
-[client.ts:739](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L739)
+[client.ts:800](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L800)
 
 ___
 
@@ -1086,8 +1059,8 @@ registerRealmBrokerIdentity registers an identity to be the broker for a realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | The name of the realm to register the broker identity with. |
-| `registrationToken` | `any` | A registration for the account that has permissions for registering clients of type broker. |
+| `realmName` | `string` | The name of the realm to register the broker identity with. |
+| `registrationToken` | `string` | A registration for the account that has permissions for registering clients of type broker. |
 
 #### Returns
 
@@ -1097,29 +1070,29 @@ The broker identity for the realm.
 
 #### Defined in
 
-[client.ts:764](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L764)
+[client.ts:832](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L832)
 
 ___
 
 ### registrationTokens
 
-▸ **registrationTokens**(): `Promise`<`any`\>
+▸ **registrationTokens**(): `Promise`<`RegistrationToken`[]\>
 
 Get a list of the current registration tokens for an account.
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`RegistrationToken`[]\>
 
 #### Defined in
 
-[client.ts:175](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L175)
+[client.ts:175](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L175)
 
 ___
 
 ### removeDefaultRealmGroups
 
-▸ **removeDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`any`\>
+▸ **removeDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`void`\>
 
 Remove groups for the request realm.
 
@@ -1127,22 +1100,22 @@ Remove groups for the request realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `groups` | `any` | The map of groupIds to remove. |
+| `realmName` | `string` | Name of realm. |
+| `groups` | `Group` | The map of groupIds to remove. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`void`\>
 
 #### Defined in
 
-[client.ts:723](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L723)
+[client.ts:781](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L781)
 
 ___
 
 ### removeGroupRoleMappings
 
-▸ **removeGroupRoleMappings**(`realmName`, `groupId`, `groupRoleMapping`): `Promise`<`any`\>
+▸ **removeGroupRoleMappings**(`realmName`, `groupId`, `groupRoleMapping`): `Promise`<`boolean`\>
 
 Removes a set of realm/client roles from a group's role mapping.
 
@@ -1150,25 +1123,25 @@ Removes a set of realm/client roles from a group's role mapping.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `groupId` | `any` | Id of realm group. |
-| `groupRoleMapping` | `any` | The map of roles to remove to group's mapping. |
+| `realmName` | `string` | Name of realm. |
+| `groupId` | `string` | Id of realm group. |
+| `groupRoleMapping` | `GroupRoleMapping` | The map of roles to remove to group's mapping. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if successful
 
 #### Defined in
 
-[client.ts:616](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L616)
+[client.ts:655](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L655)
 
 ___
 
 ### replaceDefaultRealmGroups
 
-▸ **replaceDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`any`\>
+▸ **replaceDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`void`\>
 
 Replace default groups for the request realm.
 
@@ -1176,16 +1149,16 @@ Replace default groups for the request realm.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `groups` | `any` | The map of groupIds to set as new default. |
+| `realmName` | `string` | Name of realm. |
+| `groups` | `Group` | The map of groupIds to set as new default. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`void`\>
 
 #### Defined in
 
-[client.ts:699](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L699)
+[client.ts:754](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L754)
 
 ___
 
@@ -1201,7 +1174,7 @@ Requests Tozny account email verification be resent.
 
 #### Defined in
 
-[client.ts:867](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L867)
+[client.ts:942](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L942)
 
 ___
 
@@ -1222,7 +1195,7 @@ ___
 
 #### Defined in
 
-[client.ts:872](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L872)
+[client.ts:947](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L947)
 
 ___
 
@@ -1243,7 +1216,7 @@ ___
 
 #### Defined in
 
-[client.ts:155](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L155)
+[client.ts:155](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L155)
 
 ___
 
@@ -1257,7 +1230,7 @@ ___
 
 #### Defined in
 
-[client.ts:133](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L133)
+[client.ts:133](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L133)
 
 ___
 
@@ -1271,7 +1244,7 @@ ___
 
 #### Defined in
 
-[client.ts:137](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L137)
+[client.ts:137](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L137)
 
 ___
 
@@ -1291,13 +1264,13 @@ ___
 
 #### Defined in
 
-[client.ts:124](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L124)
+[client.ts:124](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L124)
 
 ___
 
 ### updateGroupMembership
 
-▸ **updateGroupMembership**(`realmName`, `identityId`, `groups`): `Promise`<`any`\>
+▸ **updateGroupMembership**(`realmName`, `identityId`, `groups`): `Promise`<`boolean`\>
 
 Update group membership
 
@@ -1305,19 +1278,19 @@ Update group membership
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `identityId` | `any` | Id of identity |
-| `groups` | `any` | The map of groupIds to update. |
+| `realmName` | `string` | Name of realm. |
+| `identityId` | `string` | Id of identity |
+| `groups` | `Group` | The map of groupIds to update. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`boolean`\>
 
 True if successful
 
 #### Defined in
 
-[client.ts:649](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L649)
+[client.ts:692](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L692)
 
 ___
 
@@ -1337,7 +1310,7 @@ ___
 
 #### Defined in
 
-[client.ts:164](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L164)
+[client.ts:164](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L164)
 
 ___
 
@@ -1351,9 +1324,9 @@ Update an existing application role in the realm given the original role name.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `applicationId` | `any` | Id of client application. |
-| `originalRoleName` | `any` | Name of the role being updated. |
+| `realmName` | `string` | Name of realm. |
+| `applicationId` | `string` | Id of client application. |
+| `originalRoleName` | `string` | Name of the role being updated. |
 | `role` | `any` | Updated attributes of the role. |
 
 #### Returns
@@ -1362,7 +1335,7 @@ Update an existing application role in the realm given the original role name.
 
 #### Defined in
 
-[client.ts:493](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L493)
+[client.ts:514](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L514)
 
 ___
 
@@ -1376,9 +1349,9 @@ Update an existing group in the realm given a group id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
-| `groupId` | `any` | Id of group to update. |
-| `group` | `any` | Updated attributes of the group |
+| `realmName` | `string` | Name of realm. |
+| `groupId` | `string` | Id of group to update. |
+| `group` | `Group` | Updated attributes of the group |
 
 #### Returns
 
@@ -1386,7 +1359,7 @@ Update an existing group in the realm given a group id.
 
 #### Defined in
 
-[client.ts:363](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L363)
+[client.ts:376](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L376)
 
 ___
 
@@ -1400,7 +1373,7 @@ Update an existing role in the realm given a role id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `realmName` | `any` | Name of realm. |
+| `realmName` | `string` | Name of realm. |
 | `role` | `any` | Updated attributes of the role. |
 
 #### Returns
@@ -1409,7 +1382,7 @@ Update an existing role in the realm given a role id.
 
 #### Defined in
 
-[client.ts:421](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L421)
+[client.ts:438](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L438)
 
 ___
 
@@ -1429,20 +1402,20 @@ ___
 
 #### Defined in
 
-[client.ts:38](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L38)
+[client.ts:38](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L38)
 
 ___
 
 ### webhooks
 
-▸ **webhooks**(): `Promise`<`any`\>
+▸ **webhooks**(): `Promise`<`any`[]\>
 
 Get a list of the current webhooks for an account.
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`any`[]\>
 
 #### Defined in
 
-[client.ts:210](https://github.com/tozny/js-account-sdk/blob/da7eb1a/src/client.ts#L210)
+[client.ts:214](https://github.com/tozny/js-account-sdk/blob/3434a0c/src/client.ts#L214)
