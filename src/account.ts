@@ -4,8 +4,7 @@
  */
 
 import Client from './client'
-// a quirk of importing ts into js is that it exports as an object with a `default` property
-const API = require('./api').default
+import API from './api'
 import Token from './api/token'
 import Refresher from './api/refresher'
 import { validatePlatformSDK, validateEmail } from './utils'
@@ -73,7 +72,7 @@ class Account {
    * Use the normal login flow to create a connection to a Tozny account.
    *
    * @param {string} username The username for the account.
-   * @param {string} password The secrete password for the account.
+   * @param {string} password The secret password for the account.
    * @param {string} type Either standard or paper depending on the password type.
    *
    * @return {Promise<Client>} The Client instance for the provided credentials.

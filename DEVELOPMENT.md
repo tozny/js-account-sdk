@@ -8,6 +8,10 @@ To contribute to the Tozny Platform Admin JS SDK, review these guidelines carefu
 
 Code linting is provided by ES Lint, and coding style is managed with Prettier. Ensure all code is lint free and formatted code before submitting it to the Tozny Platform Admin JS SDK.
 
+In addition to automated linting, some things should be kept in mind when designing new APIs:
+* use `camelCase` for all object keys
+  * though the underlying web api uses snake_case, we should do our best to not expose this in our js abstraction. we've adopted camelCase as our coding style, and we should avoid mixing case types whenever possible. camelCase should be converted to snake_case at the request layer, and responses should be converted back to camelCase before being returned.
+
 ### Types
 
 In general, new types need to be added for any API return values. The exception is if the return is a collection of a defined type. In that instance, the return can be an array or typed objects. After defining a new type module, make sure it is added to the index.js file in the `/types/` folder so it is consumable by end users.

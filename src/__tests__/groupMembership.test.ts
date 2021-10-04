@@ -103,9 +103,9 @@ describe('Identity Group Membership', () => {
     await client.leaveGroups(realmName, identity_id, { groups: [group1.id] })
 
     // Check group membership expected to be 0
-    const epmty = await client.groupMembership(realmName, identity_id)
-    expect(epmty).toBeInstanceOf(Array)
-    expect(epmty).toHaveLength(0)
+    const empty = await client.groupMembership(realmName, identity_id)
+    expect(empty).toBeInstanceOf(Array)
+    expect(empty).toHaveLength(0)
 
     // Create 2 new groups
     const group2 = await client.createRealmGroup(realmName, { name: 'ToznyHR' })

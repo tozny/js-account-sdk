@@ -940,7 +940,7 @@ class API {
     queenClient: ToznyClient,
     realmName: string,
     identityId: string,
-    groups: ToznyAPIGroup[]
+    groups: (Group | Group['id'])[]
   ): Promise<void> {
     return leaveGroups(
       { realmName, identityId, groups },

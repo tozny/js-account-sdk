@@ -1,4 +1,4 @@
-const Account = require('../account')
+const Account = require('../account').default
 const Tozny = require('@toznysecure/sdk/node')
 const { v4: uuidv4 } = require('uuid')
 const BasicIdentity = require('../types/basicIdentity').default

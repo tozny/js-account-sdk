@@ -17,8 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = __importDefault(require("./client"));
-// a quirk of importing ts into js is that it exports as an object with a `default` property
-const API = require('./api').default;
+const api_1 = __importDefault(require("./api"));
 const token_1 = __importDefault(require("./api/token"));
 const refresher_1 = __importDefault(require("./api/refresher"));
 const utils_1 = require("./utils");
@@ -41,7 +40,7 @@ class Account {
      * @param {string} apiUrl The URL of the Tozny Platform instance to connect to.
      */
     constructor(sdk, apiUrl = constants_1.DEFAULT_API_URL) {
-        this.api = new API(apiUrl);
+        this.api = new api_1.default(apiUrl);
         this._sdk = utils_1.validatePlatformSDK(sdk);
     }
     /**
@@ -80,7 +79,7 @@ class Account {
      * Use the normal login flow to create a connection to a Tozny account.
      *
      * @param {string} username The username for the account.
-     * @param {string} password The secrete password for the account.
+     * @param {string} password The secret password for the account.
      * @param {string} type Either standard or paper depending on the password type.
      *
      * @return {Promise<Client>} The Client instance for the provided credentials.
@@ -331,7 +330,7 @@ class Account {
         let token, api;
         // If an API is available, create it.
         if (obj.api && typeof obj.api === 'object') {
-            api = new API(obj.api.apiUrl);
+            api = new api_1.default(obj.api.apiUrl);
             // If a token for the API is available, create it.
             if (obj.api.token && typeof obj.api.token === 'object') {
                 token = new token_1.default(obj.api.token.token, obj.api.token.created);

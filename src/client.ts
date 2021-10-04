@@ -1,6 +1,6 @@
 // @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 import { validateStorageClient } from './utils'
-const API = require('./api').default
+import API from './api'
 import { KEY_HASH_ROUNDS } from './utils/constants'
 import {
   AccountBillingStatus,
@@ -14,16 +14,37 @@ import {
   Group,
   GroupRoleMapping,
 } from './types'
+import { GroupsInput } from './types/group'
 import Refresher from './api/refresher'
 import Token from './api/token'
-const BasicIdentity = require('./types/basicIdentity').default
+import BasicIdentity from './types/basicIdentity'
 import ListIdentitiesResult from './types/listIdentitiesResult'
 import DetailedIdentity from './types/detailedIdentity'
+import Account from '.'
 
 /**
  * The client for Tozny's Account API.
+ *
+ * This documentation is automatically generated from the code. It is currently a work in progress
+ * as we refine our type definitions & document more and more of the API.
+ *
+ * @example
+ * ```js
+ * const { Account } = require('@toznysecure/account-sdk')
+ * const Tozny = require('@toznysecure/sdk/node')
+ *
+ * const accountFactory = new Account(Tozny, TOZNY_PLATFORM_API_URL)
+ *
+ * // must be used inside an async function for access to `await`
+ * const account = await accountFactory.login(USERNAME, PASSWORD)
+ * const accountClient = account.client
+ * ```
  */
 class Client {
+  api: API
+  account: Account
+  private _queenClient: any
+
   constructor(api, account, profile, queenClient) {
     this.api = API.validateInstance(api)
     this._queenClient = validateStorageClient(queenClient)
@@ -157,10 +178,10 @@ class Client {
     return enabled
   }
 
-  /*
-  Allows user to update the name and email on their account.
-  Profile param contains a name and email for the user.
-*/
+  /**
+   * Allows user to update the name and email on their account.
+   * Profile param contains a name and email for the user.
+   */
   async updateProfile(profile) {
     const response = await this.api.updateProfile(profile)
     return response
@@ -616,6 +637,7 @@ class Client {
    * @returns {Promise<boolean>} True if successful
    *
    * @example
+   * ```js
    * const realmName = 'kitchen'
    * const chefGroup = await client.createRealmGroup(realmName, { name: 'Chefs' })
    * const fridgeAccessRole = await client.createRealmRole(realmName, {
@@ -630,6 +652,7 @@ class Client {
    *   chefGroup.id,
    *   { realm: [fridgeAccessRole] }
    * )
+   * ```
    */
   async addGroupRoleMappings(
     realmName: string,
@@ -667,13 +690,20 @@ class Client {
   /**
    * List all realm groups for an identity
    *
+   * @example
+   * ```js
+   * const identity = await accountClient.identityDetails(realmName, username)
+   * const groupList = await client.groupMembership(realmName, identity.toznyId)
+   * ```
    *
    * @param {string} realmName Name of realm.
-   * @param {string} identityId Id of identity
-   *
-   * @returns {Promise<Group>}  If successful
+   * @param {string} identityId Id of Tozny identity
+   * @returns {Promise<Group[]>}
    */
-  async groupMembership(realmName: string, identityId: string): Promise<Group> {
+  async groupMembership(
+    realmName: string,
+    identityId: string
+  ): Promise<Group[]> {
     const rawResponse = await this.api.groupMembership(
       this.queenClient,
       realmName,
@@ -684,15 +714,24 @@ class Client {
   /**
    * Update group membership
    *
+   * @example
+   * ```js
+   *   const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+   *   name: 'ToznyEngineers',
+   * })
+   * await client.updateGroupMembership(realmName, identityId, {
+   *   groups: [toznyEngineersGroup.id],
+   * })
+   * ```
    * @param {string} realmName Name of realm.
-   *  @param {string} identityId Id of identity
-   * @param {Group} groups The map of groupIds to update.
+   * @param {string} identityId Id of Tozny identity
+   * @param {GroupsInput} groups List of groups or group ids to update in an object on the `groups` key
    * @returns {Promise<boolean>} True if successful
    */
   async updateGroupMembership(
     realmName: string,
     identityId: string,
-    groups: Group
+    groups: GroupsInput
   ): Promise<boolean> {
     return this.api.updateGroupMembership(
       this.queenClient,
@@ -704,36 +743,63 @@ class Client {
   /**
    * Join a list of Realm groups for an identity
    *
+   * @example
+   * ```js
+   * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+   *   name: 'ToznyEngineers',
+   * })
+   * await client.joinGroups(realmName, identityId, {
+   *   groups: [toznyEngineersGroup.id],
+   * })
+   * ```
+   *
    * @param {string} realmName Name of realm.
-   * @param {string} identityId Id of identity
-   * @param {Group} groups The map of groupIds to join.
+   * @param {string} identityId Id of Tozny identity
+   * @param {GroupsInput} groups List of groups or group ids to join in an object on the `groups` key
    * @returns {Promise<boolean>} True if successful
    */
   async joinGroups(
     realmName: string,
     identityId: string,
-    groups: Group
+    groups: GroupsInput
   ): Promise<boolean> {
     return this.api.joinGroups(this.queenClient, realmName, identityId, groups)
   }
   /**
    * Leave a list of Realm Groups for an identity
    *
+   * @example
+   * ```js
+   * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+   *   name: 'ToznyEngineers',
+   * })
+   * await client.joinGroups(realmName, identityId, {
+   *   groups: [toznyEngineersGroup.id],
+   * })
+   * await client.leaveGroups(realmName, identityId, {
+   *   groups: [toznyEngineersGroup.id],
+   * })
+   * ```
+   *
    * @param {string} realmName Name of realm.
-   * @param {string} identityId Id of identity
-   * @param {Group} groups The map of groupIds to leave.
+   * @param {string} identityId Id of Tozny identity
+   * @param {GroupsInput} groups List of groups or group ids to leave in an object on the `groups` key
    * @returns {Promise<boolean>} True if successful
    */
   async leaveGroups(
     realmName: string,
     identityId: string,
-    groups: Group
+    groups: GroupsInput
   ): Promise<boolean> {
     return this.api.leaveGroups(this.queenClient, realmName, identityId, groups)
   }
   /**
    * Lists all default groups for the request realm.
    *
+   * @example
+   * ```js
+   * const groupList = await client.listDefaultRealmGroups(realmName)
+   * ```
    * @param {string} realmName  Name of realm.
    * @returns {Promise<Group[]>} List of all groups at realm.
    */
@@ -746,14 +812,25 @@ class Client {
   }
   /**
    * Replace default groups for the request realm.
+   * _note: when default realm groups changed existing users groups are not updated_
+   *
+   * @example
+   * ```js
+   * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+   *   name: 'ToznyEngineers',
+   * })
+   * await client.replaceDefaultRealmGroups(realmName, {
+   *   groups: [toznyEngineersGroup.id],
+   * })
+   * ```
    *
    * @param {string} realmName  Name of realm.
-   * @param {Group} groups The map of groupIds to set as new default.
+   * @param {GroupsInput} groups List of groups or group ids to leave in an object on the `groups` key
    * @returns {Promise<void>}
    */
   async replaceDefaultRealmGroups(
     realmName: string,
-    groups: Group
+    groups: GroupsInput
   ): Promise<void> {
     return this.api.replaceDefaultRealmGroups(
       this.queenClient,
@@ -763,24 +840,51 @@ class Client {
   }
   /**
    * Add default groups for the request realm.
+   * _note: when default realm groups change, existing users groups are not updated_
+   *
+   * @example
+   * ```js
+   * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+   *   name: 'ToznyEngineers',
+   * })
+   * await client.addDefaultRealmGroups(realmName, {
+   *   groups: [toznyEngineersGroup.id],
+   * })
+   * ```
    *
    * @param {string} realmName  Name of realm.
-   * @param {Group} groups The map of groupIds to add.
+   * @param {GroupsInput} groups List of groups or group ids in an object on the `groups` key
    * @returns {Promise<void>}
    */
-  async addDefaultRealmGroups(realmName: string, groups: Group): Promise<void> {
+  async addDefaultRealmGroups(
+    realmName: string,
+    groups: GroupsInput
+  ): Promise<void> {
     return this.api.addDefaultRealmGroups(this.queenClient, realmName, groups)
   }
   /**
    * Remove groups for the request realm.
    *
+   * @example
+   * ```js
+   * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+   *   name: 'ToznyEngineers',
+   * })
+   * await client.addDefaultRealmGroups(realmName, {
+   *   groups: [toznyEngineersGroup.id],
+   * })
+   * await client.removeDefaultRealmGroups(realmName, {
+   *   groups: [toznyEngineersGroup.id],
+   * })
+   * ```
+   *
    * @param {string} realmName  Name of realm.
-   * @param {Group} groups The map of groupIds to remove.
+   * @param {GroupsInput} groups List of groups or group ids in an object on the `groups` key
    * @returns {Promise<void>}
    */
   async removeDefaultRealmGroups(
     realmName: string,
-    groups: Group
+    groups: GroupsInput
   ): Promise<void> {
     return this.api.removeDefaultRealmGroups(
       this.queenClient,
@@ -792,15 +896,35 @@ class Client {
   /**
    * Registers an identity with the specified realm using the specified parameters,returning the created identity and error (if any).
    *
+   * Note that the `identity` input takes snake_case values.
+   *
+   * @example
+   * ```js
+   * // Create a token
+   * const token = await accountClient.newRegistrationToken(tokenName, permissions)
+   * const identity = {
+   *   name: 'identityName',
+   *   email: 'identity@example.com',
+   *   first_name: 'firstName',
+   *   last_name: 'lastName',
+   * }
+   * // Register Identity
+   * const identityResponse = await accountClient.registerIdentity(
+   *   realmName,
+   *   token.token,
+   *   identity
+   * )
+   * ```
+   *
    * @param {string} realmName Name of realm.
    * @param {string} registrationToken the token for the realm
-   * @param {ToznyAPIIdentity} identity Configuration for the new identity
+   * @param identity Configuration for the new identity
    * @returns {Promise<Identity>}
    */
   async registerIdentity(
     realmName: string,
     registrationToken: string,
-    identity: ToznyAPIIdentity
+    identity
   ): Promise<Identity> {
     const crypto = this._queenClient.crypto
     const encryptionKeyPair = await crypto.generateKeypair()
@@ -813,8 +937,16 @@ class Client {
   /**
    * Removes an identity in the given realm.
    *
+   * @example
+   * ```js
+   * // Get the identityId you wish to delete
+   * const identity = accountClient.identityDetails(realmName, username)
+   *
+   * // Delete identity
+   * await accountClient.deleteIdentity(realmName, identity.toznyId)
+   * ```
    * @param {string} realmName Name of realm.
-   * @param {string} identityId Id of identity
+   * @param {string} identityId Id of Tozny identity
    * @returns {Promise<boolean>} True if successful
    */
   async deleteIdentity(

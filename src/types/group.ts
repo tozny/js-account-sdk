@@ -1,5 +1,12 @@
 export type RealmGroupAttributes = { [prop: string]: any }
 
+// our client funcs that take a list of groups do so on an object w/ a `groups` key
+/** GroupsInput is the input type for functions that require a list of Groups */
+export type GroupsInput = {
+  /** the list of groups or group ids */
+  groups: (Group | Group['id'])[]
+}
+
 /**
  * Information about a group in an identity realm.
  */

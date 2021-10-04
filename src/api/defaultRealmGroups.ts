@@ -1,10 +1,8 @@
-import { ToznyAPIGroup } from '../types/group'
+import Group, { ToznyAPIGroup } from '../types/group'
 import { checkStatus, validateRequestAsJSON } from '../utils'
 import { APIContext } from './context'
 
-type GroupsInput = {
-  groups: string
-}
+type GroupsInput = { groups: (Group | Group['id'])[] }
 
 type ListDefaultRealmGroupsData = { realmName: string }
 type ListDefaultRealmGroupsResponse = { groups: ToznyAPIGroup[] }
@@ -24,7 +22,7 @@ export async function listDefaultRealmGroups(
 
 type ReplaceDefaultRealmGroupsData = {
   realmName: string
-  groups: GroupsInput[]
+  groups: GroupsInput
 }
 export async function replaceDefaultRealmGroups(
   { realmName, groups }: ReplaceDefaultRealmGroupsData,
@@ -41,7 +39,7 @@ export async function replaceDefaultRealmGroups(
   return
 }
 
-type AddDefaultRealmGroupsData = { realmName: string; groups: GroupsInput[] }
+type AddDefaultRealmGroupsData = { realmName: string; groups: GroupsInput }
 export async function addDefaultRealmGroups(
   { realmName, groups }: AddDefaultRealmGroupsData,
   { apiUrl, queenClient }: APIContext
@@ -57,7 +55,7 @@ export async function addDefaultRealmGroups(
   return
 }
 
-type RemoveDefaultRealmGroupsData = { realmName: string; groups: GroupsInput[] }
+type RemoveDefaultRealmGroupsData = { realmName: string; groups: GroupsInput }
 export async function removeDefaultRealmGroups(
   { realmName, groups }: RemoveDefaultRealmGroupsData,
   { apiUrl, queenClient }: APIContext

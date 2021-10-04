@@ -365,7 +365,7 @@ const identity = {
   last_name: 'lastName',
 }
 // Register Identity
-const identityResponse = await accountClient.registerIdentity(
+const registeredIdentity = await accountClient.registerIdentity(
   realmName,
   token.token,
   identity
@@ -404,8 +404,8 @@ for (let clientRole in details.roles.client.kingGuard) {
 **Get Identity Group membership**
 
 ```js
-let identityId = identity.storage.config.clientId
-const groupList = await client.groupMembership(realmName, identityId)
+const identity = await accountClient.identityDetails(realmName, username)
+const groupList = await client.groupMembership(realmName, identity.toznyId)
 ```
 
 **Update Identity Group membership**
