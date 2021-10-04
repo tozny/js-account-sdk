@@ -29,7 +29,9 @@ afterAll(async () => {
 
 describe('Group Role Mappings', () => {
   it('adds, lists, removes group role mappings', async () => {
+    // Create a Realm Group
     const group = await client.createRealmGroup(realmName, { name: 'Chefs' })
+    // Create 2 Realm Role
     const role1 = await client.createRealmRole(realmName, {
       name: 'FridgeAccess',
       description: 'Grants access to the secrets of the fridge.',
@@ -39,14 +41,14 @@ describe('Group Role Mappings', () => {
       description: 'They can turn on the stove.',
     })
 
-    // there are no mapped roles to start
+    // Expected there are no mapped roles to start
     const roleMappings = await client.listGroupRoleMappings(realmName, group.id)
 
     expect(roleMappings.client).toEqual({})
     expect(roleMappings.realm).toBeInstanceOf(Array)
     expect(roleMappings.realm).toHaveLength(0)
 
-    // add a mapping!
+    // add a mapping to the group
     const addResponse = await client.addGroupRoleMappings(realmName, group.id, {
       realm: [
         // use minimal set of inputs
@@ -63,7 +65,7 @@ describe('Group Role Mappings', () => {
       group.id
     )
 
-    // now there are mapped roles!
+    // Expected to be 2 mapped roles now
     expect(mappingsAfterAdd.realm).toHaveLength(2)
     expect(
       mappingsAfterAdd.realm.find((r: Role) => r.id === role1.id)
@@ -72,7 +74,7 @@ describe('Group Role Mappings', () => {
       mappingsAfterAdd.realm.find((r: Role) => r.id === role2.id)
     ).toMatchObject(role2)
 
-    // the day chefs lost access to the fridge
+    //  Remove One Role from the group mappings
     const removeResponse = await client.removeGroupRoleMappings(
       realmName,
       group.id,
@@ -80,7 +82,7 @@ describe('Group Role Mappings', () => {
     )
 
     expect(removeResponse).toBeTruthy()
-
+    // Expected to have one group role
     const mappingsAfterRemove = await client.listGroupRoleMappings(
       realmName,
       group.id

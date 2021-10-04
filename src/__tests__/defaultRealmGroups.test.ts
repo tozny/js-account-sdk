@@ -46,31 +46,33 @@ describe('Default Realm Groups', () => {
     expect(groups).toHaveLength(1)
     expect(groups[0].id).toBe(adminGroup.id)
     expect(groups[0].name).toBe('Admins')
-    // Create one more group
+    // Create one more  default group
     const veggies = await client.createRealmGroup(realmName, {
       name: 'Vegetables',
     })
-    // Replace Default Groups
+    // Replace Default Groups for the Realm
     await client.replaceDefaultRealmGroups(realmName, {
       groups: [adminGroup.id, veggies.id],
     })
-    // List Default Groups expected to have 2
+    // List Default Groups expected to have 2 groups
     const groups2 = await client.listDefaultRealmGroups(realmName)
     expect(groups2).toHaveLength(2)
     expect(groups2[0].id).toBe(adminGroup.id)
+    // Expected to be Admins
     expect(groups2[0].name).toBe('Admins')
     expect(groups2[1].id).toBe(veggies.id)
+    // Expected to be Vegetables
     expect(groups2[1].name).toBe('Vegetables')
-    // Remove Default Group
+    // Remove Admin as a Default Group
     await client.removeDefaultRealmGroups(realmName, {
       groups: [adminGroup.id],
     })
-    // List Default Groups expected to have one
+    // List Default Groups expected to have only Vegetables
     const groups3 = await client.listDefaultRealmGroups(realmName)
     expect(groups3).toHaveLength(1)
     expect(groups3[0].id).toBe(veggies.id)
     expect(groups3[0].name).toBe('Vegetables')
-    // Replace Default Group with Admins
+    // Replace Current Default Group with  OnlyAdmins
     await client.replaceDefaultRealmGroups(realmName, {
       groups: [adminGroup.id],
     })

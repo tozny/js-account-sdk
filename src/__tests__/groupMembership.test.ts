@@ -66,7 +66,7 @@ describe('Identity Group Membership', () => {
   it('adds, lists, removes identity group membership', async () => {
     let identity_id = identity.storage.config.clientId
 
-    // This identity should have no groups
+    // This identity should currently have no groups
     const responseEmptyGroups = await client.groupMembership(
       realmName,
       identity_id
@@ -88,7 +88,7 @@ describe('Identity Group Membership', () => {
       groups: [group1.id],
     })
 
-    // List out the groups the identity is in
+    // List out the groups the identity is in, expected only ToznyEngineers
     const responseToznyEngineers = await client.groupMembership(
       realmName,
       identity_id
@@ -121,7 +121,7 @@ describe('Identity Group Membership', () => {
       groups: [group1.id, group2.id, group3.id],
     })
 
-    // Check membership
+    // Check membership for all 3 groups
     const allGroups = await client.groupMembership(realmName, identity_id)
     expect(allGroups).toBeInstanceOf(Array)
     expect(allGroups).toHaveLength(3)
