@@ -29,7 +29,7 @@ afterAll(async () => {
 
 describe('Realm Roles', () => {
   it('creates, updates, lists, & deletes roles', async () => {
-    // creating
+    // create a realm role
     const superhuman = await client.createRealmRole(realmName, {
       name: 'Superhuman',
       description: 'Someone really great at things',
@@ -43,19 +43,22 @@ describe('Realm Roles', () => {
     // gets id from server
     expect(superhuman.id).toBeTruthy()
 
+    // Create another realm role
     const chef = await client.createRealmRole(realmName, {
       name: 'Chef',
       description: 'They cook things.',
     })
 
-    // listing
+    // List all current realm roles
     const realmRoles: Role[] = await client.listRealmRoles(realmName)
     // there are two default roles plus the two created above
     expect(realmRoles).toHaveLength(4)
 
     const roleNames = realmRoles.map(r => r.name)
+    // 2 default realm roles
     expect(roleNames).toContain('offline_access')
     expect(roleNames).toContain('uma_authorization')
+    // Realm roles created
     expect(roleNames).toContain(superhuman.name)
     expect(roleNames).toContain(chef.name)
 
@@ -63,7 +66,7 @@ describe('Realm Roles', () => {
     expect(roleIds).toContain(superhuman.id)
     expect(roleIds).toContain(chef.id)
 
-    // update
+    // update realm role
     chef.name = 'Updated Name'
     chef.description = 'Updated Description'
     const updatedChef = await client.updateRealmRole(realmName, chef)

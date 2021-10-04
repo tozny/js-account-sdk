@@ -42,14 +42,14 @@ describe('Realm Groups', () => {
     expect(adminGroup.attributes.key1).toBe('value1')
     expect(adminGroup.attributes.key2).toBe('value2')
 
-    // list groups
+    // list groups expected to have Admins
     const groups = await client.listRealmGroups(realmName)
 
     expect(groups).toHaveLength(1)
     expect(groups[0].id).toBe(adminGroup.id)
     expect(groups[0].name).toBe('Admins')
 
-    // updates a group
+    // updates current realm groups to new group named updated
     const updatedGroup = await client.updateRealmGroup(
       realmName,
       adminGroup.id,
@@ -79,6 +79,7 @@ describe('Realm Groups', () => {
   })
 
   it('describes a group by id', async () => {
+    // Create a realm group
     const veggies = await client.createRealmGroup(realmName, {
       name: 'Vegetables',
     })

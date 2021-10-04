@@ -30,6 +30,7 @@ afterAll(async () => {
 
 describe('Identity', () => {
   it('Registers and Deletes an Identity from a realm ', async () => {
+    // Create a token with Identity permissions
     const tokenName = 'example token'
     const permissions = {
       enabled: true,
@@ -53,6 +54,7 @@ describe('Identity', () => {
     expect(identityResponse.identity.name).toBe(identity.name)
     expect(identityResponse.identity.first_name).toBe(identity.first_name)
     expect(identityResponse.identity.last_name).toBe(identity.last_name)
+
     // List all identities in realm, Expected new identity and sovereign
     const idList = await client.listIdentities(realmName, 1000)
     let identities
@@ -64,8 +66,10 @@ describe('Identity', () => {
     expect(identities[0].username).toBe(identity.name)
     expect(identities[0].firstName).toBe(identity.first_name)
     expect(identities[0].lastName).toBe(identity.last_name)
+
     // Delete new identity
     await client.deleteIdentity(realmName, identityResponse.identity.tozny_id)
+
     // List identities, expected only sovereign
     const idList2 = await client.listIdentities(realmName, 1000)
     let identities2
