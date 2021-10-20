@@ -1007,9 +1007,7 @@ class Client {
    * @return {ListIdentitiesResult} A object usable for making paginated queries.
    */
   listIdentities(realmName, max, next): ListIdentitiesResult {
-    const result = new ListIdentitiesResult(this, realmName, max, next)
-    console.log('in the client right before test', result)
-    return result
+    return new ListIdentitiesResult(this, realmName, max, next)
   }
 
   /**
@@ -1028,7 +1026,6 @@ class Client {
       max,
       next
     )
-    console.log(response)
     // Make sure that identities has come back as an array
     if (!Array.isArray(response.identities)) {
       response.identities = []

@@ -8,13 +8,15 @@ class BasicIdentity {
   lastName: string
   active: string
   federated: string
+  email: string
   constructor(
     id: string,
     username: string,
     firstName: string,
     lastName: string,
     active: string,
-    federated: string
+    federated: string,
+    email: string
   ) {
     this.id = id
     this.username = username
@@ -22,6 +24,7 @@ class BasicIdentity {
     this.lastName = lastName
     this.active = active
     this.federated = federated
+    this.email = email
   }
 
   /**
@@ -36,6 +39,7 @@ class BasicIdentity {
    *   lsat_name: 'Smith',
    *   active: true,
    *   federated: false,
+   *   email: 'john@sample.com'
    * })
    * <code>
    *
@@ -50,7 +54,8 @@ class BasicIdentity {
       json.first_name,
       json.last_name,
       json.active,
-      json.federated
+      json.federated,
+      json.email
     )
   }
 }
@@ -62,5 +67,6 @@ export type ToznyAPIBasicIdentity = {
   last_name: string
   active: string
   federated: string
+  email: string
 }
 export default BasicIdentity

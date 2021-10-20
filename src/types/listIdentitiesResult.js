@@ -26,12 +26,10 @@ class ListIdentitiesResult {
       this.max,
       this.nextToken
     )
-    console.log('We are in the js result list identity type: ', response)
     // If we've reached the last page, keep track and exit
     if (response.next === -1 || response.identities.length < this.max) {
       this.done = true
     }
-    console.log('this is the next token', response.next)
     this.nextToken = response.next
 
     return response.identities
