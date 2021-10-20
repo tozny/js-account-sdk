@@ -56,16 +56,21 @@ describe('Identity', () => {
     expect(identityResponse.identity.last_name).toBe(identity.last_name)
 
     // List all identities in realm, Expected new identity and sovereign
-    const idList = await client.listIdentities(realmName, 1000)
-    let identities
-    while (!idList.done) {
-      identities = await idList.next()
-    }
+    const idList = client.listIdentities(realmName)
+    console.log(idList)
+    let identities = await idList.next()
+    console.log('first identity', identities)
     expect(identities).toBeInstanceOf(Array)
-    expect(identities).toHaveLength(2)
+    expect(identities).toHaveLength(1)
     expect(identities[0].username).toBe(identity.name)
     expect(identities[0].firstName).toBe(identity.first_name)
     expect(identities[0].lastName).toBe(identity.last_name)
+
+    identities = await idList.next()
+    console.log('second identity', identities)
+    expect(identities).toBeInstanceOf(Array)
+    expect(identities).toHaveLength(1)
+    expect(identities[0].username).toBe(sovereignName)
 
     // Delete new identity
     await client.deleteIdentity(realmName, identityResponse.identity.tozny_id)
