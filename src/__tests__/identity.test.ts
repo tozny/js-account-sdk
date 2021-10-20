@@ -56,16 +56,22 @@ describe('Identity', () => {
     expect(identityResponse.identity.last_name).toBe(identity.last_name)
 
     // List all identities in realm, Expected new identity and sovereign
-    const idList = await client.listIdentities(realmName, 1000)
-    let identities
-    while (!idList.done) {
-      identities = await idList.next()
-    }
+    // Set max page size to 1 in order to test paging
+    const idList = client.listIdentities(realmName, 1)
+    let identities = await idList.next()
     expect(identities).toBeInstanceOf(Array)
-    expect(identities).toHaveLength(2)
+    expect(identities).toHaveLength(1)
     expect(identities[0].username).toBe(identity.name)
     expect(identities[0].firstName).toBe(identity.first_name)
     expect(identities[0].lastName).toBe(identity.last_name)
+    expect(identities[0].email).toBe(`identity-${seed}@example.com`)
+
+    // second identity should be sovereign client
+    // second page
+    identities = await idList.next()
+    expect(identities).toBeInstanceOf(Array)
+    expect(identities).toHaveLength(1)
+    expect(identities[0].username).toBe(sovereignName)
 
     // Delete new identity
     await client.deleteIdentity(realmName, identityResponse.identity.tozny_id)
