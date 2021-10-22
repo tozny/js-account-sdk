@@ -28,7 +28,6 @@ type RealmInfoData = {
 type RealmInfoResponse = {
   domain: string
   name: string
-  domamain: string
 }
 export async function realmInfo({
   realm_name,
@@ -94,6 +93,51 @@ export async function deleteIdentity(
       headers: {
         'Content-Type': 'application/json',
       },
+    }
+  )
+  checkStatus(response)
+  return
+}
+
+type RealmSettingData = {
+  realm_name: string
+  apiUrl: string
+  secretsEnabled: boolean
+  mfaAvailable: []
+  emailLookupsEnabled: boolean
+  tozIDFederationEnabled: boolean
+  mpcEnabled: boolean
+}
+
+export async function updateRealmSettings(
+  {
+    realm_name,
+    secretsEnabled,
+    mfaAvailable,
+    emailLookupsEnabled,
+    tozIDFederationEnabled,
+    mpcEnabled,
+  }: RealmSettingData,
+  { apiUrl, queenClient }: APIContext
+): Promise<void> {
+  // Get the Realm Domain
+  const info = await realmInfo({ realm_name, apiUrl })
+  const payload = {
+    secrets_enabled: secretsEnabled,
+    mfa_available: mfaAvailable,
+    email_lookups_enabled: emailLookupsEnabled,
+    tozid_federation_enabled: tozIDFederationEnabled,
+    mpc_enabled: mpcEnabled,
+  }
+  // Update Realm Settings
+  const response = await queenClient.authenticator.tsv1Fetch(
+    `${apiUrl}/v1/identity/admin/realm/info/${info.domain}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
     }
   )
   checkStatus(response)

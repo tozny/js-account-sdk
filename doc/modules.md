@@ -17,4 +17,8 @@
 
 ### default
 
-Renames and re-exports [Account](classes/Account.md)
+• **default**: `Object`
+
+#### Defined in
+
+[index.ts:1](https://github.com/tozny/js-account-sdk/blob/8282972/src/index.ts#L1)

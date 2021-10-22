@@ -21,6 +21,7 @@ import BasicIdentity from './types/basicIdentity'
 import ListIdentitiesResult from './types/listIdentitiesResult'
 import DetailedIdentity from './types/detailedIdentity'
 import Account from '.'
+import AccessPolicy from './types/accessPolicy'
 
 /**
  * The client for Tozny's Account API.
@@ -1102,6 +1103,41 @@ class Client {
   async resendVerificationEmail() {
     const email = this.profile.email
     return this.api.resendVerificationEmail(email)
+  }
+
+  /**
+   * Lists the Current Access Policies for the Group Ids sent.
+   *
+   * @param {string} realmName Name of realm.
+   * @param {Array} groupIds  The IDs for the Tozny Groups
+   * @returns {Promise<ListAccessPolicyResponse>}
+   */
+  async listAccessPolicies(
+    realmName: string,
+    groupIds: []
+  ): Promise<ListAccessPolicyResponse> {
+    return this.api.listAccessPolicies(this.queenClient, realmName, groupIds)
+  }
+
+  /**
+   *  Creating or Updating an Access Policy for a Group
+   *
+   * @param {string} realmName Name of realm.
+   * @param {string} groupId The ID of the Group in Tozny
+   * @param {AccessPolicy[]} accessPolicies Configuration for the new identity
+   * @returns {Promise<ListAccessPolicyResponse>}
+   */
+  async upsertAccessPolicies(
+    realmName: string,
+    groupId: string,
+    accessPolicies: AccessPolicy[]
+  ): Promise<Identity> {
+    return this.api.UpsertAccessPolicies(
+      this.queenClient,
+      realmName,
+      groupId,
+      accessPolicies
+    )
   }
 
   serialize() {
