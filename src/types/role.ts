@@ -64,5 +64,30 @@ export type ToznyAPIRole = {
   client_role: boolean
   container_id: string
 }
+type RoleData = {
+  id: string
+  name: string
+  description: string
+  composite: boolean
+  clientRole: boolean
+  containerId: string
+}
 
+export function roleToAPI({
+  id,
+  name,
+  description,
+  composite,
+  clientRole,
+  containerId,
+}: RoleData): ToznyAPIRole {
+  return {
+    id,
+    name,
+    description,
+    composite,
+    client_role: clientRole,
+    container_id: containerId,
+  }
+}
 export default Role

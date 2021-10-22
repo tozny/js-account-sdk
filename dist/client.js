@@ -890,6 +890,31 @@ class Client {
             return this.api.resendVerificationEmail(email);
         });
     }
+    /**
+     * Lists the Current Access Policies for the Group Ids sent.
+     *
+     * @param {string} realmName Name of realm.
+     * @param {Array} groupIds  The IDs for the Tozny Groups
+     * @returns {Promise<ListAccessPolicyResponse>}
+     */
+    listAccessPolicies(realmName, groupIds) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.listAccessPolicies(this.queenClient, realmName, groupIds);
+        });
+    }
+    /**
+     *  Creating or Updating an Access Policy for a Group
+     *
+     * @param {string} realmName Name of realm.
+     * @param {string} groupId The ID of the Group in Tozny
+     * @param {AccessPolicy[]} accessPolicies Configuration for the new identity
+     * @returns {Promise<ListAccessPolicyResponse>}
+     */
+    upsertAccessPolicies(realmName, groupId, accessPolicies) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.UpsertAccessPolicies(this.queenClient, realmName, groupId, accessPolicies);
+        });
+    }
     serialize() {
         return {
             api: this.api.serialize(),
