@@ -41,7 +41,7 @@ class Account {
      */
     constructor(sdk, apiUrl = constants_1.DEFAULT_API_URL) {
         this.api = new api_1.default(apiUrl);
-        this._sdk = utils_1.validatePlatformSDK(sdk);
+        this._sdk = (0, utils_1.validatePlatformSDK)(sdk);
     }
     /**
      * gets the current crypto implementation provided by the Tozny client SDK.
@@ -147,7 +147,7 @@ class Account {
      */
     register(name, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            utils_1.validateEmail(email);
+            (0, utils_1.validateEmail)(email);
             const encSalt = yield this.crypto.randomBytes(16);
             const authSalt = yield this.crypto.randomBytes(16);
             const paperEncSalt = yield this.crypto.randomBytes(16);

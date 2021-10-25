@@ -20,7 +20,7 @@ function realmInfo({ realm_name, apiUrl, }) {
                 'Content-Type': 'application/json',
             },
         });
-        const realmInfo = (yield utils_1.validateRequestAsJSON(response));
+        const realmInfo = (yield (0, utils_1.validateRequestAsJSON)(response));
         return realmInfo;
     });
 }
@@ -49,7 +49,7 @@ function registerIdentity({ realm_name, realm_registration_token, identity }, { 
             },
             body: JSON.stringify(payload),
         });
-        const identityResponse = (yield utils_1.validateRequestAsJSON(request));
+        const identityResponse = (yield (0, utils_1.validateRequestAsJSON)(request));
         return identityResponse;
     });
 }
@@ -62,7 +62,7 @@ function deleteIdentity({ realmName, identityId }, { apiUrl, queenClient }) {
                 'Content-Type': 'application/json',
             },
         });
-        utils_1.checkStatus(response);
+        (0, utils_1.checkStatus)(response);
         return;
     });
 }

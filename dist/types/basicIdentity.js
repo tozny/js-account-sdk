@@ -4,13 +4,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Basic information about a registered Identity for a Tozny realm.
  */
 class BasicIdentity {
-    constructor(id, username, firstName, lastName, active, federated) {
+    constructor(id, username, firstName, lastName, active, federated, email) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.active = active;
         this.federated = federated;
+        this.email = email;
     }
     /**
      * Specify how an already unserialized JSON array should be marshaled into
@@ -24,6 +25,7 @@ class BasicIdentity {
      *   lsat_name: 'Smith',
      *   active: true,
      *   federated: false,
+     *   email: 'john@sample.com'
      * })
      * <code>
      *
@@ -32,7 +34,7 @@ class BasicIdentity {
      * @return {<BasicIdentity>}
      */
     static decode(json) {
-        return new BasicIdentity(json.subject_id, json.username, json.first_name, json.last_name, json.active, json.federated);
+        return new BasicIdentity(json.subject_id, json.username, json.first_name, json.last_name, json.active, json.federated, json.email);
     }
 }
 exports.default = BasicIdentity;

@@ -43,7 +43,7 @@ const detailedIdentity_1 = __importDefault(require("./types/detailedIdentity"));
 class Client {
     constructor(api, account, profile, queenClient) {
         this.api = api_1.default.validateInstance(api);
-        this._queenClient = utils_1.validateStorageClient(queenClient);
+        this._queenClient = (0, utils_1.validateStorageClient)(queenClient);
         this.account = account;
         this.profile = profile;
     }
