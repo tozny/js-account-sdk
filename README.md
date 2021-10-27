@@ -341,16 +341,20 @@ await accountClient.deleteRealmApplicationRole(realmName, applicationId, roleNam
 
 **List identities in a realm**
 
+
+
 ```js
 const realmName = 'westeros'
 // list identities in westeros 10 at a time
-const idList = accountClient.listIdentities(realmName, 10)
+const max = 10
+const idList = accountClient.listIdentities(realmName, max)
 while (!idList.done) {
   const identities = await idList.next()
   for (let identity of identities) {
     console.log(identity.username)
   }
 }
+// Note: If the value of max is higher than the maximum allowed by the server, idList.next() will only return up to the number of identities allowed by the server
 ```
 
 **Register an Identity in a Realm**

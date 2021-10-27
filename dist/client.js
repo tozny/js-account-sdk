@@ -832,7 +832,31 @@ class Client {
     /**
      * Set up the pagination result for listing identities
      *
-     * @return {ListIdentitiesResult} A object usable for making paginated queries.
+     * Each page is returned when the next() function is invoked on the
+     * ListIdentitiesResult object.
+  
+     *
+     * @example
+     * ```js
+     * const realmName = 'westeros'
+     * // list identities in westeros 10 at a time
+     * const idList = accountClient.listIdentities(realmName, 10)
+     * // Must call idList.next() to receive results
+     * while (!idList.done) {
+     *    const identities = await idList.next()
+     *    for (let identity of identities) {
+     *        console.log(identity.username)
+     *    }
+     * }
+     * ```
+     * Note: If the value of max is higher than the maximum allowed by
+     * the server, idList.next() will only return up to the number of
+     * identities allowed by the server
+     *
+     * @param {string} realmName            Name of realm.
+     * @param {number} max                  The maximum number of identities per page. Up to the max allowed by the server.
+     * @param {number} next                 The next token, used for paging. Default is 0.
+     * @return {ListIdentitiesResult}       A object usable for making paginated queries.
      */
     listIdentities(realmName, max, next) {
         return new listIdentitiesResult_1.default(this, realmName, max, next);

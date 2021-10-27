@@ -32,7 +32,7 @@ class ListIdentitiesResult {
             }
             let response = yield this.client._listIdentities(this.realmName, this.max, this.nextToken);
             // If we've reached the last page, keep track and exit
-            if (response.next === -1 || response.identities.length < this.max) {
+            if (response.next === -1) {
                 this.done = true;
             }
             this.nextToken = response.next;
