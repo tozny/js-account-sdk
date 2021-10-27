@@ -1030,7 +1030,11 @@ class Client {
    * @param {number} next                 The next token, used for paging. Default is 0.
    * @return {ListIdentitiesResult}       A object usable for making paginated queries.
    */
-  listIdentities(realmName, max, next): ListIdentitiesResult {
+  listIdentities(
+    realmName: string,
+    max: number,
+    next: number
+  ): ListIdentitiesResult {
     return new ListIdentitiesResult(this, realmName, max, next)
   }
 
