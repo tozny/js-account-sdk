@@ -24,7 +24,7 @@ Internal documentation makes for a significantly superior developer experience w
 
 Originally, this project used vanilla ES6 javascript that is natively available in Node 6+. Beginning in July 2021, we started a process of migrating to typescript for the added type safety and error checking. Transition to to typescript is a work in progress. All new code added to this library should be written in typescript. Existing modules are converted as needed.
 
-Source code in `src/` is compiled from ts/js to ES6 js in `dist/`. The compiled files are committed into source control in an effort to allow consumers to install only production dependencies. The `package.json` points to `dist/index.js`, so no build/compilation on install is required. Eventually this might not be the case (see below), but for now **you must compile the code & commit the compiled code in `dist`.
+Source code in `src/` is compiled from ts/js to ES6 js in `dist/`. The compiled files are committed into source control in an effort to allow consumers to install only production dependencies. The `package.json` points to `dist/index.js`, so no build/compilation on install is required. Eventually this might not be the case (see below), but for now **you must compile the code & commit the compiled code in `dist`**.
 
 To compile updated or altered code from js/ts to the build directory, ensure all build dependencies are installed:
 ```sh
