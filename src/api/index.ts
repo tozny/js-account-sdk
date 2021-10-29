@@ -22,9 +22,7 @@ import {
   describeRealmGroup,
   listRealmGroups,
 } from './realmGroups'
-import GroupRoleMapping, {
-  ToznyAPIGroupRoleMapping,
-} from '../types/groupRoleMapping'
+import { ToznyAPIGroupRoleMapping } from '../types/groupRoleMapping'
 import {
   addGroupRoleMappings,
   GroupRoleMappingInput,
@@ -52,6 +50,8 @@ import {
 } from './defaultRealmGroups'
 import { deleteIdentity, registerIdentity } from './identity'
 import Identity, { ToznyAPIIdentity } from '../types/identity'
+import RealmSettings from '../types/realmSettings'
+import { updateRealmSettings } from './realmSettings'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -598,6 +598,7 @@ class API {
     )
     return validateRequestAsJSON(response)
   }
+
   /**
    * Requests the creation of a new TozID Realm.
    *
@@ -661,6 +662,20 @@ class API {
       }
     )
     return validateRequestAsJSON(response)
+  }
+
+  /** Updates the settings for the given realm. */
+  async updateRealmSettings(
+    queenClient: ToznyClient,
+    realmName: string,
+    settings: RealmSettings
+  ): Promise<RealmSettings> {
+    await updateRealmSettings(
+      { realmName, settings },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+    // no error means it worked
+    return settings
   }
 
   async getAggregations(queenClient, accountId, startTime, endTime) {
@@ -1048,15 +1063,15 @@ class API {
   }
 
   /**
-   *
+   * Registers a new identity with the realm
    */
   async registerIdentity(
-    realm_name: string,
-    realm_registration_token: string,
+    realmName: string,
+    realmRegistrationToken: string,
     identity: ToznyAPIIdentity
   ): Promise<void> {
     return registerIdentity(
-      { realm_name, realm_registration_token, identity },
+      { realmName, realmRegistrationToken, identity },
       { apiUrl: this.apiUrl }
     )
   }

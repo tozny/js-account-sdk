@@ -1,6 +1,5 @@
 import { validateRequestAsJSON, checkStatus } from '../utils'
 import { APIContext } from './context'
-import { ToznyAPIRole } from '../types/role'
 import AccessPolicy, { ToznyAPIAccessPolicy } from '../types/accessPolicy'
 import { roleToAPI } from '../types/role'
 
@@ -54,7 +53,7 @@ type UpsertPolicyData = {
   groupId: string
   accessPolicies: AccessPolicy[]
 }
-export async function UpsertAccessPolicies(
+export async function upsertAccessPolicies(
   { realmName, groupId, accessPolicies }: UpsertPolicyData,
   { apiUrl, queenClient }: APIContext
 ): Promise<void> {

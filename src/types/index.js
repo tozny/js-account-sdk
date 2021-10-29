@@ -2,6 +2,7 @@
  * Exposes the various defined types used in the Account SDK for easy consumption.
  */
 
+const AccessPolicy = require('./accessPolicy').default
 const AccountBillingStatus = require('./accountBillingStatus')
 const BasicIdentity = require('./basicIdentity').default
 const ClientInfo = require('./clientInfo')
@@ -18,6 +19,7 @@ const Role = require('./role').default
 const Sovereign = require('./sovereign')
 
 module.exports = {
+  AccessPolicy,
   AccountBillingStatus,
   BasicIdentity,
   ClientInfo,

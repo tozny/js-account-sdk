@@ -1,6 +1,7 @@
 import { ToznyAPIIdentity } from '../types/identity'
 import { validateRequestAsJSON, checkStatus } from '../utils'
 import { APIContext } from './context'
+import { getRealmInfo } from './realmSettings'
 
 type IdentityRegistrationData = {
   name: string
@@ -11,8 +12,8 @@ type IdentityRegistrationData = {
   signing_key: string
 }
 type RegisterIdentityData = {
-  realm_name: string
-  realm_registration_token: string
+  realmName: string
+  realmRegistrationToken: string
   identity: IdentityRegistrationData
 }
 
@@ -21,39 +22,14 @@ type RegisterIdentityResponse = {
   realm_broker_identity_tozny_id: string
 }
 
-type RealmInfoData = {
-  realm_name: string
-  apiUrl: string
-}
-type RealmInfoResponse = {
-  domain: string
-  name: string
-}
-export async function realmInfo({
-  realm_name,
-  apiUrl,
-}: RealmInfoData): Promise<RealmInfoResponse> {
-  let lowerCasedRealmName = realm_name.toLowerCase()
-  const response = await fetch(
-    `${apiUrl}/v1/identity/info/realm/${lowerCasedRealmName}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-  const realmInfo = (await validateRequestAsJSON(response)) as RealmInfoResponse
-  return realmInfo
-}
 export async function registerIdentity(
-  { realm_name, realm_registration_token, identity }: RegisterIdentityData,
-  { apiUrl }: APIContext
+  { realmName, realmRegistrationToken, identity }: RegisterIdentityData,
+  ctx: APIContext
 ): Promise<RegisterIdentityResponse> {
-  const info = await realmInfo({ realm_name, apiUrl })
-  let username = identity.name.toLowerCase()
+  const info = await getRealmInfo({ realmName }, ctx)
+  const username = identity.name.toLowerCase()
   const payload = {
-    realm_registration_token: realm_registration_token,
+    realm_registration_token: realmRegistrationToken,
     realm_name: info.domain,
     identity: {
       realm_name: info.domain,
@@ -65,7 +41,7 @@ export async function registerIdentity(
       email: identity.email,
     },
   }
-  const request = await fetch(apiUrl + '/v1/identity/register', {
+  const request = await fetch(ctx.apiUrl + '/v1/identity/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -93,51 +69,6 @@ export async function deleteIdentity(
       headers: {
         'Content-Type': 'application/json',
       },
-    }
-  )
-  checkStatus(response)
-  return
-}
-
-type RealmSettingData = {
-  realm_name: string
-  apiUrl: string
-  secretsEnabled: boolean
-  mfaAvailable: []
-  emailLookupsEnabled: boolean
-  tozIDFederationEnabled: boolean
-  mpcEnabled: boolean
-}
-
-export async function updateRealmSettings(
-  {
-    realm_name,
-    secretsEnabled,
-    mfaAvailable,
-    emailLookupsEnabled,
-    tozIDFederationEnabled,
-    mpcEnabled,
-  }: RealmSettingData,
-  { apiUrl, queenClient }: APIContext
-): Promise<void> {
-  // Get the Realm Domain
-  const info = await realmInfo({ realm_name, apiUrl })
-  const payload = {
-    secrets_enabled: secretsEnabled,
-    mfa_available: mfaAvailable,
-    email_lookups_enabled: emailLookupsEnabled,
-    tozid_federation_enabled: tozIDFederationEnabled,
-    mpc_enabled: mpcEnabled,
-  }
-  // Update Realm Settings
-  const response = await queenClient.authenticator.tsv1Fetch(
-    `${apiUrl}/v1/identity/admin/realm/info/${info.domain}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
     }
   )
   checkStatus(response)

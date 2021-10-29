@@ -21,4 +21,4 @@
 
 #### Defined in
 
-[index.ts:1](https://github.com/tozny/js-account-sdk/blob/8282972/src/index.ts#L1)
+[index.ts:1](https://github.com/tozny/js-account-sdk/blob/6d09977/src/index.ts#L1)

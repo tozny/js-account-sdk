@@ -22,6 +22,7 @@ import ListIdentitiesResult from './types/listIdentitiesResult'
 import DetailedIdentity from './types/detailedIdentity'
 import Account from '.'
 import AccessPolicy from './types/accessPolicy'
+import RealmSettings from './types/realmSettings'
 
 /**
  * The client for Tozny's Account API.
@@ -352,6 +353,21 @@ class Client {
    */
   async deleteRealm(realmName: string): Promise<object> {
     return this.api.deleteRealm(this.queenClient, realmName)
+  }
+
+  /**
+   * Updates settings for the realm.
+   * Some of these features enabled by these settings are experimental and may be subject
+   * to change.
+   * @param {string} realmName Name of realm.
+   * @param {RealmSettings} settings Object containing settings to enable.
+   * @returns Updated realm settings.
+   */
+  async updateRealmSettings(
+    realmName: string,
+    settings: RealmSettings
+  ): Promise<RealmSettings> {
+    return this.api.updateRealmSettings(this.queenClient, realmName, settings)
   }
 
   /**
@@ -1110,7 +1126,7 @@ class Client {
    *
    * @param {string} realmName Name of realm.
    * @param {Array} groupIds  The IDs for the Tozny Groups
-   * @returns {Promise<ListAccessPolicyResponse>}
+   * @returns {Promise<AccessPolicy>}
    */
   async listAccessPolicies(
     realmName: string,
@@ -1132,7 +1148,7 @@ class Client {
     groupId: string,
     accessPolicies: AccessPolicy[]
   ): Promise<Identity> {
-    return this.api.UpsertAccessPolicies(
+    return this.api.upsertAccessPolicies(
       this.queenClient,
       realmName,
       groupId,
