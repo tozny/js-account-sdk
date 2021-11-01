@@ -4,54 +4,63 @@
  */
 import fetch from 'isomorphic-fetch'
 import {
-  createRealmRole,
-  updateRealmRole,
-  deleteRealmRole,
-  describeRealmRole,
-  listRealmRoles,
-} from './realmRoles'
-import Token from './token'
-import Role, { ToznyAPIRole } from '../types/role'
-import { validateRequestAsJSON, checkStatus } from '../utils'
-import { DEFAULT_API_URL } from '../utils/constants'
+  AccessPolicyData,
+  ToznyAPIGroupAccessPolicies,
+} from '../types/accessPolicy'
 import { ToznyAPIGroup } from '../types/group'
-import {
-  createRealmGroup,
-  updateRealmGroup,
-  deleteRealmGroup,
-  describeRealmGroup,
-  listRealmGroups,
-} from './realmGroups'
 import { ToznyAPIGroupRoleMapping } from '../types/groupRoleMapping'
+import Identity, { ToznyAPIIdentity } from '../types/identity'
+import { ToznyAPIListAccessPoliciesResponse } from '../types/listAccessPoliciesResponse'
+import RealmSettings from '../types/realmSettings'
+import { MinimumRoleData, MinimumRoleWithId, ToznyAPIRole } from '../types/role'
+import { checkStatus, validateRequestAsJSON } from '../utils'
+import { DEFAULT_API_URL } from '../utils/constants'
+import {
+  addDefaultRealmGroups,
+  listDefaultRealmGroups,
+  removeDefaultRealmGroups,
+  replaceDefaultRealmGroups,
+} from './defaultRealmGroups'
+import {
+  groupMembership,
+  joinGroups,
+  leaveGroups,
+  updateGroupMembership,
+} from './groupMembership'
 import {
   addGroupRoleMappings,
   GroupRoleMappingInput,
   listGroupRoleMappings,
   removeGroupRoleMappings,
 } from './groupRoleMappings'
+import { deleteIdentity, registerIdentity } from './identity'
 import {
-  leaveGroups,
-  joinGroups,
-  updateGroupMembership,
-  groupMembership,
-} from './groupMembership'
+  listAccessPoliciesForGroups,
+  upsertAccessPoliciesForGroup,
+} from './pam'
 import {
   createRealmApplicationRole,
-  updateRealmApplicationRole,
   deleteRealmApplicationRole,
   describeRealmApplicationRole,
   listRealmApplicationRoles,
+  updateRealmApplicationRole,
 } from './realmApplicationRoles'
 import {
-  listDefaultRealmGroups,
-  replaceDefaultRealmGroups,
-  addDefaultRealmGroups,
-  removeDefaultRealmGroups,
-} from './defaultRealmGroups'
-import { deleteIdentity, registerIdentity } from './identity'
-import Identity, { ToznyAPIIdentity } from '../types/identity'
-import RealmSettings from '../types/realmSettings'
+  createRealmGroup,
+  deleteRealmGroup,
+  describeRealmGroup,
+  listRealmGroups,
+  updateRealmGroup,
+} from './realmGroups'
+import {
+  createRealmRole,
+  deleteRealmRole,
+  describeRealmRole,
+  listRealmRoles,
+  updateRealmRole,
+} from './realmRoles'
 import { updateRealmSettings } from './realmSettings'
+import Token from './token'
 
 // this is a placeholder until we have real types from js-sdk
 type ToznyClient = any
@@ -770,7 +779,7 @@ class API {
   async createRealmRole(
     queenClient: ToznyClient,
     realmName: string,
-    role: Role
+    role: MinimumRoleData
   ): Promise<ToznyAPIRole> {
     return createRealmRole(
       { realmName, role },
@@ -784,7 +793,7 @@ class API {
   async updateRealmRole(
     queenClient: ToznyClient,
     realmName: string,
-    role: { name: string; description: string }
+    role: MinimumRoleWithId
   ): Promise<ToznyAPIRole> {
     return updateRealmRole(
       { realmName, role },
@@ -838,7 +847,7 @@ class API {
     queenClient: ToznyClient,
     realmName: string,
     applicationId: string,
-    role: Role
+    role: MinimumRoleData
   ): Promise<ToznyAPIRole> {
     return createRealmApplicationRole(
       { realmName, applicationId, role },
@@ -854,7 +863,7 @@ class API {
     realmName: string,
     applicationId: string,
     originalRoleName: string,
-    role: { name: string; description: string }
+    role: MinimumRoleWithId
   ): Promise<ToznyAPIRole> {
     return updateRealmApplicationRole(
       { realmName, applicationId, originalRoleName, role },
@@ -1172,6 +1181,29 @@ class API {
       }
     )
     return validateRequestAsJSON(response)
+  }
+
+  async listAccessPoliciesForGroups(
+    queenClient: ToznyClient,
+    realmName: string,
+    groupIds: string[]
+  ): Promise<ToznyAPIListAccessPoliciesResponse> {
+    return listAccessPoliciesForGroups(
+      { realmName, groupIds },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  async upsertAccessPoliciesForGroup(
+    queenClient: ToznyClient,
+    realmName: string,
+    groupId: string,
+    accessPolicies: AccessPolicyData[]
+  ): Promise<ToznyAPIGroupAccessPolicies> {
+    return upsertAccessPoliciesForGroup(
+      { realmName, groupId, accessPolicies },
+      { apiUrl: this.apiUrl, queenClient }
+    )
   }
 }
 

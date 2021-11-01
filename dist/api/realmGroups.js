@@ -27,7 +27,7 @@ function createRealmGroup({ realmName, group }, { apiUrl, queenClient }) {
             method: 'POST',
             body: JSON.stringify(transformAttributesForApi(group)),
         });
-        return (0, utils_1.validateRequestAsJSON)(response);
+        return utils_1.validateRequestAsJSON(response);
     });
 }
 exports.createRealmGroup = createRealmGroup;
@@ -37,14 +37,14 @@ function updateRealmGroup({ realmName, groupId, group }, { apiUrl, queenClient }
             method: 'PUT',
             body: JSON.stringify(transformAttributesForApi(group)),
         });
-        return (0, utils_1.validateRequestAsJSON)(response);
+        return utils_1.validateRequestAsJSON(response);
     });
 }
 exports.updateRealmGroup = updateRealmGroup;
 function deleteRealmGroup({ realmName, groupId }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}`, { method: 'DELETE' });
-        (0, utils_1.checkStatus)(response);
+        utils_1.checkStatus(response);
         return;
     });
 }
@@ -52,14 +52,14 @@ exports.deleteRealmGroup = deleteRealmGroup;
 function describeRealmGroup({ realmName, groupId }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}`, { method: 'GET' });
-        return (0, utils_1.validateRequestAsJSON)(response);
+        return utils_1.validateRequestAsJSON(response);
     });
 }
 exports.describeRealmGroup = describeRealmGroup;
 function listRealmGroups({ realmName }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/group`, { method: 'GET' });
-        const { groups } = (yield (0, utils_1.validateRequestAsJSON)(response));
+        const { groups } = (yield utils_1.validateRequestAsJSON(response));
         return groups;
     });
 }

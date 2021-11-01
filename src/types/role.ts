@@ -5,17 +5,17 @@ class Role {
   id: string
   name: string
   description: string
-  composite: boolean
-  clientRole: boolean
-  containerId: string
+  composite?: boolean
+  clientRole?: boolean
+  containerId?: string
 
   constructor(
     id: string,
     name: string,
     description: string,
-    composite: boolean,
-    clientRole: boolean,
-    containerId: string
+    composite?: boolean,
+    clientRole?: boolean,
+    containerId?: string
   ) {
     this.id = id
     this.name = name
@@ -60,18 +60,21 @@ export type ToznyAPIRole = {
   id: string
   name: string
   description: string
-  composite: boolean
-  client_role: boolean
-  container_id: string
+  composite?: boolean
+  client_role?: boolean
+  container_id?: string
 }
 type RoleData = {
   id: string
   name: string
   description: string
-  composite: boolean
-  clientRole: boolean
-  containerId: string
+  composite?: boolean
+  clientRole?: boolean
+  containerId?: string
 }
+
+export type MinimumRoleData = { name: string; description: string }
+export type MinimumRoleWithId = { id: string } & MinimumRoleData
 
 export function roleToAPI({
   id,

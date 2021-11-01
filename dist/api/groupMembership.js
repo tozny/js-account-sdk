@@ -16,7 +16,7 @@ function groupMembership({ realmName, identityId }, { apiUrl, queenClient }) {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/identity/${identityId}/groups`, {
             method: 'GET',
         });
-        const { groups } = (yield (0, utils_1.validateRequestAsJSON)(response));
+        const { groups } = (yield utils_1.validateRequestAsJSON(response));
         return groups;
     });
 }
@@ -27,7 +27,7 @@ function updateGroupMembership({ realmName, identityId, groups }, { apiUrl, quee
             method: 'PUT',
             body: JSON.stringify(groups),
         });
-        (0, utils_1.checkStatus)(response);
+        utils_1.checkStatus(response);
         return;
     });
 }
@@ -38,7 +38,7 @@ function joinGroups({ realmName, identityId, groups }, { apiUrl, queenClient }) 
             method: 'PATCH',
             body: JSON.stringify(groups),
         });
-        (0, utils_1.checkStatus)(response);
+        utils_1.checkStatus(response);
         return;
     });
 }
@@ -49,7 +49,7 @@ function leaveGroups({ realmName, identityId, groups }, { apiUrl, queenClient })
             method: 'DELETE',
             body: JSON.stringify(groups),
         });
-        (0, utils_1.checkStatus)(response);
+        utils_1.checkStatus(response);
         return;
     });
 }

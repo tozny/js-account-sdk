@@ -1,63 +1,121 @@
-import Account from '../account'
 // @ts-ignore no type defs exist for js-sdk
 import Tozny from '@toznysecure/sdk/node'
-import { v4 as uuidv4 } from 'uuid'
-import { cleanupRealms } from './utils'
-import { Role } from '../types'
+import { Account, Client } from '..'
+import { cleanupRealms, createTestRealm } from './utils'
 
 const accountFactory = new Account(Tozny, process.env.API_URL)
-let client: any = null
+let client: Client
 let realmName: string
-let seed: string
-let sovereignName: string
 
 beforeAll(async () => {
-  // Create an account to re-use across test cases
-  seed = uuidv4()
-  const name = `Test Account ${seed}`
-  const email = `test+${seed}@tozny.com`
-  const password = uuidv4()
-  const registration: any = await accountFactory.register(name, email, password)
-  client = registration.client
-
-  realmName = `TestRealm${seed.split('-')[0]}`
-  sovereignName = 'yassqueen'
-  await client.createRealm(realmName, sovereignName)
+  const data = await createTestRealm(accountFactory)
+  client = data.client
+  realmName = data.realmName
 })
 
 afterAll(async () => {
   await cleanupRealms(client)
 })
 
-describe('Identity', () => {
-  it('Can Create and list a Access Policy', async () => {
-    // creation of group
-    const adminGroup = await client.createRealmGroup(realmName, {
+describe('Access Policies', () => {
+  it('Can create, update, & list access policies', async () => {
+    // setup
+    const group = await client.createRealmGroup(realmName, {
       name: 'Admins',
-      attributes: {
-        key1: 'value1',
-        key2: 'value2',
-      },
+    })
+    const role = await client.createRealmRole(realmName, {
+      name: 'approver-role',
+      description: 'It will be the role approvers must have.',
+    })
+    const otherRole = await client.createRealmRole(realmName, {
+      name: 'approver-role-2',
+      description: 'A different role for approvers.',
     })
 
-    expect(adminGroup.id).toBeTruthy()
-    expect(adminGroup.name).toBe('Admins')
-    expect(adminGroup.attributes.key1).toBe('value1')
-    expect(adminGroup.attributes.key2).toBe('value2')
-    // list groups expected to have Admins
-    const groups = await client.listRealmGroups(realmName)
-    expect(groups).toHaveLength(1)
-    expect(groups[0].id).toBe(adminGroup.id)
-    expect(groups[0].name).toBe('Admins')
+    // arrange
+    // enable MPC for realm
+    await client.updateRealmSettings(realmName, { mpcEnabled: true })
+    const initialAccessPolicyData = {
+      approvalRoles: [role],
+      requiredApprovals: 1,
+      maxAccessDurationSeconds: 3600 * 60,
+    }
 
-    // List all current realm roles
-    const realmRoles: Role[] = await client.listRealmRoles(realmName)
-    // there are two default roles plus the two created above
-    expect(realmRoles).toHaveLength(4)
-    const roleNames = realmRoles.map(r => r.name)
-    // 2 default realm roles
-    expect(roleNames).toContain('offline_access')
-    expect(roleNames).toContain('uma_authorization')
-    // TODO Need to update Realm Settings
+    // act
+    //fetch policies
+    const initial = await client.listAccessPoliciesForGroups(realmName, [
+      group.id,
+    ])
+    // create new access policy
+    const groupAccessPolicies = await client.upsertAccessPoliciesForGroup(
+      realmName,
+      group.id,
+      [initialAccessPolicyData]
+    )
+    // fetch policies
+    const afterCreate = await client.listAccessPoliciesForGroups(realmName, [
+      group.id,
+    ])
+    const policyId = afterCreate.groupAccessPolicies[0].accessPolicies[0].id
+    // update access policy
+    const updated = Object.assign(initialAccessPolicyData, {
+      id: policyId,
+      approvalRoles: [otherRole],
+    })
+    const updatedGroupAccessPolicies = await client.upsertAccessPoliciesForGroup(
+      realmName,
+      group.id,
+      [updated]
+    )
+    // remove access policy
+    const removedGroupAccessPolicies = await client.upsertAccessPoliciesForGroup(
+      realmName,
+      group.id,
+      []
+    )
+    // final fetch
+    const afterRemove = await client.listAccessPoliciesForGroups(realmName, [
+      group.id,
+    ])
+
+    // assert
+    expect(initial.groupAccessPolicies).toHaveLength(1)
+    expect(initial.groupAccessPolicies[0].id).toEqual(group.id)
+    expect(initial.groupAccessPolicies[0].accessPolicies).toHaveLength(0)
+    expect(initial.settings.mpcEnabledForRealm).toBeTruthy()
+    expect(initial.settings.defaultRequiredApprovals).toBeGreaterThan(0)
+    expect(initial.settings.defaultAccessDurationSeconds).toBeGreaterThan(0)
+
+    expect(groupAccessPolicies.id).toEqual(group.id)
+    expect(groupAccessPolicies.accessPolicies).toHaveLength(1)
+    expect(groupAccessPolicies.accessPolicies[0].id).toBeTruthy()
+    expect(groupAccessPolicies.accessPolicies[0].approvalRoles).toHaveLength(1)
+    expect(groupAccessPolicies.accessPolicies[0].approvalRoles[0].id).toEqual(
+      role.id
+    )
+
+    expect(afterCreate.groupAccessPolicies).toHaveLength(1)
+    expect(afterCreate.groupAccessPolicies[0].id).toEqual(group.id)
+    expect(afterCreate.groupAccessPolicies[0].accessPolicies).toHaveLength(1)
+    expect(afterCreate.groupAccessPolicies[0].accessPolicies[0].id).toEqual(
+      policyId
+    )
+
+    expect(updatedGroupAccessPolicies.id).toEqual(group.id)
+    expect(updatedGroupAccessPolicies.accessPolicies).toHaveLength(1)
+    expect(updatedGroupAccessPolicies.accessPolicies[0].id).toBe(policyId)
+    expect(
+      updatedGroupAccessPolicies.accessPolicies[0].approvalRoles
+    ).toHaveLength(1)
+    expect(
+      updatedGroupAccessPolicies.accessPolicies[0].approvalRoles[0].id
+    ).toEqual(otherRole.id)
+
+    expect(removedGroupAccessPolicies.id).toEqual(group.id)
+    expect(removedGroupAccessPolicies.accessPolicies).toHaveLength(0)
+
+    expect(afterRemove.groupAccessPolicies).toHaveLength(1)
+    expect(afterRemove.groupAccessPolicies[0].id).toEqual(group.id)
+    expect(afterRemove.groupAccessPolicies[0].accessPolicies).toHaveLength(0)
   })
 })

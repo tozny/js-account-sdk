@@ -53,7 +53,7 @@ export async function updateRealmSettings(
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/admin/realm/info/${info.domain}`,
     {
-      method: 'GET',
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }

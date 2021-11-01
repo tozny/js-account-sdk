@@ -17,7 +17,7 @@ function createRealmRole({ realmName, role }, { apiUrl, queenClient }) {
             method: 'POST',
             body: JSON.stringify(role),
         });
-        return (0, utils_1.validateRequestAsJSON)(response);
+        return utils_1.validateRequestAsJSON(response);
     });
 }
 exports.createRealmRole = createRealmRole;
@@ -27,14 +27,14 @@ function updateRealmRole({ realmName, role }, { apiUrl, queenClient }) {
             method: 'PUT',
             body: JSON.stringify(role),
         });
-        return (0, utils_1.validateRequestAsJSON)(response);
+        return utils_1.validateRequestAsJSON(response);
     });
 }
 exports.updateRealmRole = updateRealmRole;
 function deleteRealmRole({ realmName, roleId }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/role/${roleId}`, { method: 'DELETE' });
-        (0, utils_1.checkStatus)(response);
+        utils_1.checkStatus(response);
         return;
     });
 }
@@ -42,14 +42,14 @@ exports.deleteRealmRole = deleteRealmRole;
 function describeRealmRole({ realmName, roleId }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/role/${roleId}`, { method: 'GET' });
-        return (0, utils_1.validateRequestAsJSON)(response);
+        return utils_1.validateRequestAsJSON(response);
     });
 }
 exports.describeRealmRole = describeRealmRole;
 function listRealmRoles({ realmName }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/role`, { method: 'GET' });
-        const { roles } = (yield (0, utils_1.validateRequestAsJSON)(response));
+        const { roles } = (yield utils_1.validateRequestAsJSON(response));
         return roles;
     });
 }

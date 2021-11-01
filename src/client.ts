@@ -13,6 +13,7 @@ import {
   Role,
   Group,
   GroupRoleMapping,
+  ListAccessPoliciesResponse,
 } from './types'
 import { GroupsInput } from './types/group'
 import Refresher from './api/refresher'
@@ -21,8 +22,12 @@ import BasicIdentity from './types/basicIdentity'
 import ListIdentitiesResult from './types/listIdentitiesResult'
 import DetailedIdentity from './types/detailedIdentity'
 import Account from '.'
-import AccessPolicy from './types/accessPolicy'
+import AccessPolicy, {
+  AccessPolicyData,
+  GroupAccessPolicies,
+} from './types/accessPolicy'
 import RealmSettings from './types/realmSettings'
+import { MinimumRoleData, MinimumRoleWithId } from './types/role'
 
 /**
  * The client for Tozny's Account API.
@@ -453,11 +458,16 @@ class Client {
   /**
    * Creates a new role for a realm.
    *
-   * @param {string} realmName  Name of realm.
-   * @param {object} role       Object with `name` and `description` of role.
-   * @returns {Promise<Role>}   The newly created role.
+   * @param {string} realmName Name of realm.
+   * @param {MinimumRoleData} role Object with `name` and `description` of role.
+   * @param {string} role.name Name of new role.
+   * @param {string} role.description Description of new role.
+   * @returns {Promise<Role>} The newly created role.
    */
-  async createRealmRole(realmName: string, role: object): Promise<Role> {
+  async createRealmRole(
+    realmName: string,
+    role: MinimumRoleData
+  ): Promise<Role> {
     const rawResponse = await this.api.createRealmRole(
       this.queenClient,
       realmName,
@@ -470,10 +480,16 @@ class Client {
    * Update an existing role in the realm given a role id.
    *
    * @param {string} realmName Name of realm.
-   * @param {role} role        Updated attributes of the role.
-   * @returns {Promise<Role>}
+   * @param {MinimumRoleWithId} role Updated attributes of the role.
+   * @param {string} role.id Id of the role.
+   * @param {string} role.name Updated name of role.
+   * @param {string} role.description Updated description of the role.
+   * @returns {Promise<Role>} The updated role
    */
-  async updateRealmRole(realmName: string, role: role): Promise<Role> {
+  async updateRealmRole(
+    realmName: string,
+    role: MinimumRoleWithId
+  ): Promise<Role> {
     const rawResponse = await this.api.updateRealmRole(
       this.queenClient,
       realmName,
@@ -1125,14 +1141,19 @@ class Client {
    * Lists the Current Access Policies for the Group Ids sent.
    *
    * @param {string} realmName Name of realm.
-   * @param {Array} groupIds  The IDs for the Tozny Groups
-   * @returns {Promise<AccessPolicy>}
+   * @param {string[]} groupIds The IDs for the Tozny Groups
+   * @returns {Promise<ListAccessPoliciesResponse>}
    */
-  async listAccessPolicies(
+  async listAccessPoliciesForGroups(
     realmName: string,
-    groupIds: []
-  ): Promise<ListAccessPolicyResponse> {
-    return this.api.listAccessPolicies(this.queenClient, realmName, groupIds)
+    groupIds: string[]
+  ): Promise<ListAccessPoliciesResponse> {
+    const res = await this.api.listAccessPoliciesForGroups(
+      this.queenClient,
+      realmName,
+      groupIds
+    )
+    return ListAccessPoliciesResponse.decode(res)
   }
 
   /**
@@ -1143,17 +1164,21 @@ class Client {
    * @param {AccessPolicy[]} accessPolicies Configuration for the new identity
    * @returns {Promise<ListAccessPolicyResponse>}
    */
-  async upsertAccessPolicies(
+  async upsertAccessPoliciesForGroup(
     realmName: string,
     groupId: string,
-    accessPolicies: AccessPolicy[]
-  ): Promise<Identity> {
-    return this.api.upsertAccessPolicies(
+    accessPolicies: AccessPolicyData[]
+  ): Promise<GroupAccessPolicies> {
+    const res = await this.api.upsertAccessPoliciesForGroup(
       this.queenClient,
       realmName,
       groupId,
       accessPolicies
     )
+    return {
+      id: res.id,
+      accessPolicies: res.access_policies.map(AccessPolicy.decode),
+    }
   }
 
   serialize() {

@@ -17,16 +17,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Account level API request definitions.
  */
 const isomorphic_fetch_1 = __importDefault(require("isomorphic-fetch"));
-const realmRoles_1 = require("./realmRoles");
-const token_1 = __importDefault(require("./token"));
 const utils_1 = require("../utils");
 const constants_1 = require("../utils/constants");
-const realmGroups_1 = require("./realmGroups");
-const groupRoleMappings_1 = require("./groupRoleMappings");
-const groupMembership_1 = require("./groupMembership");
-const realmApplicationRoles_1 = require("./realmApplicationRoles");
 const defaultRealmGroups_1 = require("./defaultRealmGroups");
+const groupMembership_1 = require("./groupMembership");
+const groupRoleMappings_1 = require("./groupRoleMappings");
 const identity_1 = require("./identity");
+const pam_1 = require("./pam");
+const realmApplicationRoles_1 = require("./realmApplicationRoles");
+const realmGroups_1 = require("./realmGroups");
+const realmRoles_1 = require("./realmRoles");
+const realmSettings_1 = require("./realmSettings");
+const token_1 = __importDefault(require("./token"));
 /**
  * API abstracts over the actual API calls made for various account-level operations.
  */
@@ -119,14 +121,14 @@ class API {
             const body = JSON.stringify({
                 email: username,
             });
-            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/challenge', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/challenge', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body,
             });
-            return (0, utils_1.validateRequestAsJSON)(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -140,7 +142,7 @@ class API {
      */
     completeChallenge(username, challenge, response, keyType) {
         return __awaiter(this, void 0, void 0, function* () {
-            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/auth', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/auth', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,7 +154,7 @@ class API {
                     keyid: keyType,
                 }),
             });
-            return (0, utils_1.validateRequestAsJSON)(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -165,11 +167,11 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/profile/meta', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile/meta', {
                 method: 'GET',
                 headers,
             });
-            return (0, utils_1.validateRequestAsJSON)(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -182,12 +184,12 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/profile/meta', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile/meta', {
                 method: 'PUT',
                 headers,
                 body: JSON.stringify(metaMap),
             });
-            return (0, utils_1.checkStatus)(request);
+            return utils_1.checkStatus(request);
         });
     }
     /**
@@ -201,14 +203,14 @@ class API {
                 profile: profile,
                 account: account,
             });
-            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/profile', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body,
             });
-            return (0, utils_1.validateRequestAsJSON)(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -233,7 +235,7 @@ class API {
                 },
                 body,
             });
-            return (0, utils_1.validateRequestAsJSON)(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /** requests email verification for a tozny account
@@ -248,10 +250,10 @@ class API {
      */
     verifyEmail(id, otp) {
         return __awaiter(this, void 0, void 0, function* () {
-            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/profile/verified?id=${id}&otp=${otp}`, {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/profile/verified?id=${id}&otp=${otp}`, {
                 method: 'GET',
             });
-            return (0, utils_1.checkStatus)(request);
+            return utils_1.checkStatus(request);
         });
     }
     /** requests email verification for Tozny account be resent
@@ -264,7 +266,7 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/profile', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile', {
                 method: 'PATCH',
                 headers,
                 body: JSON.stringify({
@@ -273,27 +275,27 @@ class API {
                     },
                 }),
             });
-            return (0, utils_1.checkStatus)(request);
+            return utils_1.checkStatus(request);
         });
     }
     initiateRecoverAccount(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/challenge/email/reset', {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/challenge/email/reset', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email: email,
                 }),
             });
-            return (0, utils_1.checkStatus)(response);
+            return utils_1.checkStatus(response);
         });
     }
     verifyRecoverAccountChallenge(id, otp) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/profile/authenticate?id=${id}&otp=${otp}`, {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/profile/authenticate?id=${id}&otp=${otp}`, {
                 method: 'GET',
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     rollQueen(client) {
@@ -301,12 +303,12 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/e3db/clients/queen`, {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/e3db/clients/queen`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({ client }),
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     getBillingStatus(queenClient) {
@@ -314,7 +316,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + '/v1/billing/subscription/status', {
                 method: 'GET',
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     addBillingCoupon(queenClient, couponCode) {
@@ -324,7 +326,7 @@ class API {
                 'Content-Type': 'application/json',
                 body: JSON.stringify({ coupon_code: couponCode }),
             });
-            return (0, utils_1.checkStatus)(response);
+            return utils_1.checkStatus(response);
         });
     }
     updateAccountBilling(account) {
@@ -332,14 +334,14 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/profile', {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile', {
                 method: 'PATCH',
                 headers: headers,
                 body: JSON.stringify({
                     account: account,
                 }),
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     subscribe(queenClient) {
@@ -347,7 +349,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + '/v1/billing/resubscribe', {
                 method: 'GET',
             });
-            return (0, utils_1.checkStatus)(response);
+            return utils_1.checkStatus(response);
         });
     }
     unsubscribe(queenClient) {
@@ -355,7 +357,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + '/v1/billing/unsubscribe', {
                 method: 'GET',
             });
-            return (0, utils_1.checkStatus)(response);
+            return utils_1.checkStatus(response);
         });
     }
     listClients(queenClient, nextToken, perPage = 50) {
@@ -363,7 +365,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(`${this.apiUrl}/v1/client/admin?next=${nextToken}&limit=${perPage}`, {
                 method: 'GET',
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     getClient(queenClient, clientId) {
@@ -371,7 +373,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + `/v1/client/admin/${clientId}`, {
                 method: 'GET',
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     setClientEnabled(queenClient, clientId, enabled) {
@@ -380,7 +382,7 @@ class API {
                 method: 'PATCH',
                 body: JSON.stringify({ enabled }),
             });
-            return (0, utils_1.checkStatus)(request);
+            return utils_1.checkStatus(request);
         });
     }
     updateProfile(profile) {
@@ -388,12 +390,12 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/profile', {
+            const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile', {
                 method: 'PATCH',
                 headers,
                 body: JSON.stringify({ profile: profile }),
             });
-            return (0, utils_1.validateRequestAsJSON)(request);
+            return utils_1.validateRequestAsJSON(request);
         });
     }
     /**
@@ -406,11 +408,11 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/tokens`, {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/tokens`, {
                 method: 'GET',
                 headers,
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -433,12 +435,12 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/tokens`, {
+            const response = yield isomorphic_fetch_1.default(this.apiUrl + `/v1/account/tokens`, {
                 method: 'POST',
                 headers,
                 body,
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -453,11 +455,11 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield (0, isomorphic_fetch_1.default)(`${this.apiUrl}/v1/account/tokens/${token}`, {
+            const response = yield isomorphic_fetch_1.default(`${this.apiUrl}/v1/account/tokens/${token}`, {
                 method: 'DELETE',
                 headers,
             });
-            yield (0, utils_1.checkStatus)(response);
+            yield utils_1.checkStatus(response);
             return true;
         });
     }
@@ -471,7 +473,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + `/v1/hook`, {
                 method: 'GET',
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -498,7 +500,7 @@ class API {
                 method: 'POST',
                 body,
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -513,7 +515,7 @@ class API {
             const response = yield queenClient.authenticator.tokenFetch(this.apiUrl + `/v1/hook/${webhookId}`, {
                 method: 'DELETE',
             });
-            yield (0, utils_1.checkStatus)(response);
+            yield utils_1.checkStatus(response);
             return true;
         });
     }
@@ -534,7 +536,7 @@ class API {
                 method: 'POST',
                 body: body,
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -557,7 +559,7 @@ class API {
                 method: 'POST',
                 body: JSON.stringify(createRealmRequest),
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -572,7 +574,7 @@ class API {
             const response = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + '/v1/identity/realm', {
                 method: 'GET',
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -588,7 +590,15 @@ class API {
             const response = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + `/v1/identity/realm/${realmName}`, {
                 method: 'DELETE',
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
+        });
+    }
+    /** Updates the settings for the given realm. */
+    updateRealmSettings(queenClient, realmName, settings) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield realmSettings_1.updateRealmSettings({ realmName, settings }, { apiUrl: this.apiUrl, queenClient });
+            // no error means it worked
+            return settings;
         });
     }
     getAggregations(queenClient, accountId, startTime, endTime) {
@@ -604,7 +614,7 @@ class API {
                 method: 'POST',
                 body: body,
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -612,7 +622,7 @@ class API {
      */
     createRealmGroup(queenClient, realmName, group) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmGroups_1.createRealmGroup)({ realmName, group }, { apiUrl: this.apiUrl, queenClient });
+            return realmGroups_1.createRealmGroup({ realmName, group }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -620,7 +630,7 @@ class API {
      */
     updateRealmGroup(queenClient, realmName, groupId, group) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmGroups_1.updateRealmGroup)({ realmName, groupId, group }, { apiUrl: this.apiUrl, queenClient });
+            return realmGroups_1.updateRealmGroup({ realmName, groupId, group }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -628,7 +638,7 @@ class API {
      */
     deleteRealmGroup(queenClient, realmName, groupId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield (0, realmGroups_1.deleteRealmGroup)({ realmName, groupId }, { apiUrl: this.apiUrl, queenClient });
+            yield realmGroups_1.deleteRealmGroup({ realmName, groupId }, { apiUrl: this.apiUrl, queenClient });
             return true;
         });
     }
@@ -637,7 +647,7 @@ class API {
      */
     describeRealmGroup(queenClient, realmName, groupId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmGroups_1.describeRealmGroup)({ realmName, groupId }, { apiUrl: this.apiUrl, queenClient });
+            return realmGroups_1.describeRealmGroup({ realmName, groupId }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -645,7 +655,7 @@ class API {
      */
     listRealmGroups(queenClient, realmName) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmGroups_1.listRealmGroups)({ realmName }, { apiUrl: this.apiUrl, queenClient });
+            return realmGroups_1.listRealmGroups({ realmName }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -653,7 +663,7 @@ class API {
      */
     createRealmRole(queenClient, realmName, role) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmRoles_1.createRealmRole)({ realmName, role }, { apiUrl: this.apiUrl, queenClient });
+            return realmRoles_1.createRealmRole({ realmName, role }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -661,7 +671,7 @@ class API {
      */
     updateRealmRole(queenClient, realmName, role) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmRoles_1.updateRealmRole)({ realmName, role }, { apiUrl: this.apiUrl, queenClient });
+            return realmRoles_1.updateRealmRole({ realmName, role }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -669,7 +679,7 @@ class API {
      */
     deleteRealmRole(queenClient, realmName, roleId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield (0, realmRoles_1.deleteRealmRole)({ realmName, roleId }, { apiUrl: this.apiUrl, queenClient });
+            yield realmRoles_1.deleteRealmRole({ realmName, roleId }, { apiUrl: this.apiUrl, queenClient });
             return true;
         });
     }
@@ -678,7 +688,7 @@ class API {
      */
     describeRealmRole(queenClient, realmName, roleId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmRoles_1.describeRealmRole)({ realmName, roleId }, { apiUrl: this.apiUrl, queenClient });
+            return realmRoles_1.describeRealmRole({ realmName, roleId }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -686,7 +696,7 @@ class API {
      */
     listRealmRoles(queenClient, realmName) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmRoles_1.listRealmRoles)({ realmName }, { apiUrl: this.apiUrl, queenClient });
+            return realmRoles_1.listRealmRoles({ realmName }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -694,7 +704,7 @@ class API {
      */
     createRealmApplicationRole(queenClient, realmName, applicationId, role) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmApplicationRoles_1.createRealmApplicationRole)({ realmName, applicationId, role }, { apiUrl: this.apiUrl, queenClient });
+            return realmApplicationRoles_1.createRealmApplicationRole({ realmName, applicationId, role }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -702,7 +712,7 @@ class API {
      */
     updateRealmApplicationRole(queenClient, realmName, applicationId, originalRoleName, role) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmApplicationRoles_1.updateRealmApplicationRole)({ realmName, applicationId, originalRoleName, role }, { apiUrl: this.apiUrl, queenClient });
+            return realmApplicationRoles_1.updateRealmApplicationRole({ realmName, applicationId, originalRoleName, role }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -710,7 +720,7 @@ class API {
      */
     deleteRealmApplicationRole(queenClient, realmName, applicationId, roleName) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield (0, realmApplicationRoles_1.deleteRealmApplicationRole)({ realmName, applicationId, roleName }, { apiUrl: this.apiUrl, queenClient });
+            yield realmApplicationRoles_1.deleteRealmApplicationRole({ realmName, applicationId, roleName }, { apiUrl: this.apiUrl, queenClient });
             return true;
         });
     }
@@ -719,7 +729,7 @@ class API {
      */
     describeRealmApplicationRole(queenClient, realmName, applicationId, roleName) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmApplicationRoles_1.describeRealmApplicationRole)({ realmName, applicationId, roleName }, { apiUrl: this.apiUrl, queenClient });
+            return realmApplicationRoles_1.describeRealmApplicationRole({ realmName, applicationId, roleName }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -727,7 +737,7 @@ class API {
      */
     listRealmApplicationRoles(queenClient, realmName, applicationId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, realmApplicationRoles_1.listRealmApplicationRoles)({ realmName, applicationId }, { apiUrl: this.apiUrl, queenClient });
+            return realmApplicationRoles_1.listRealmApplicationRoles({ realmName, applicationId }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -735,7 +745,7 @@ class API {
      */
     groupMembership(queenClient, realmName, identityId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, groupMembership_1.groupMembership)({ realmName, identityId }, { apiUrl: this.apiUrl, queenClient });
+            return groupMembership_1.groupMembership({ realmName, identityId }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -743,7 +753,7 @@ class API {
      */
     updateGroupMembership(queenClient, realmName, identityId, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, groupMembership_1.updateGroupMembership)({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+            return groupMembership_1.updateGroupMembership({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -751,7 +761,7 @@ class API {
      */
     joinGroups(queenClient, realmName, identityId, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, groupMembership_1.joinGroups)({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+            return groupMembership_1.joinGroups({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -759,7 +769,7 @@ class API {
      */
     leaveGroups(queenClient, realmName, identityId, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, groupMembership_1.leaveGroups)({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+            return groupMembership_1.leaveGroups({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -768,7 +778,7 @@ class API {
      */
     listGroupRoleMappings(queenClient, realmName, groupId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, groupRoleMappings_1.listGroupRoleMappings)({ groupId, realmName }, { apiUrl: this.apiUrl, queenClient });
+            return groupRoleMappings_1.listGroupRoleMappings({ groupId, realmName }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -776,7 +786,7 @@ class API {
      */
     addGroupRoleMappings(queenClient, realmName, groupId, groupRoleMapping) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield (0, groupRoleMappings_1.addGroupRoleMappings)({ realmName, groupId, groupRoleMapping }, { apiUrl: this.apiUrl, queenClient });
+            yield groupRoleMappings_1.addGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl: this.apiUrl, queenClient });
             return true;
         });
     }
@@ -785,7 +795,7 @@ class API {
      */
     removeGroupRoleMappings(queenClient, realmName, groupId, groupRoleMapping) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield (0, groupRoleMappings_1.removeGroupRoleMappings)({ realmName, groupId, groupRoleMapping }, { apiUrl: this.apiUrl, queenClient });
+            yield groupRoleMappings_1.removeGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl: this.apiUrl, queenClient });
             return true;
         });
     }
@@ -794,7 +804,7 @@ class API {
      */
     listDefaultRealmGroups(queenClient, realmName) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, defaultRealmGroups_1.listDefaultRealmGroups)({ realmName }, { apiUrl: this.apiUrl, queenClient });
+            return defaultRealmGroups_1.listDefaultRealmGroups({ realmName }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -802,7 +812,7 @@ class API {
      */
     replaceDefaultRealmGroups(queenClient, realmName, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, defaultRealmGroups_1.replaceDefaultRealmGroups)({ realmName, groups }, { apiUrl: this.apiUrl, queenClient });
+            return defaultRealmGroups_1.replaceDefaultRealmGroups({ realmName, groups }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -810,7 +820,7 @@ class API {
      */
     addDefaultRealmGroups(queenClient, realmName, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, defaultRealmGroups_1.addDefaultRealmGroups)({ realmName, groups }, { apiUrl: this.apiUrl, queenClient });
+            return defaultRealmGroups_1.addDefaultRealmGroups({ realmName, groups }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -818,15 +828,15 @@ class API {
      */
     removeDefaultRealmGroups(queenClient, realmName, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, defaultRealmGroups_1.removeDefaultRealmGroups)({ realmName, groups }, { apiUrl: this.apiUrl, queenClient });
+            return defaultRealmGroups_1.removeDefaultRealmGroups({ realmName, groups }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
-     *
+     * Registers a new identity with the realm
      */
-    registerIdentity(realm_name, realm_registration_token, identity) {
+    registerIdentity(realmName, realmRegistrationToken, identity) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, identity_1.registerIdentity)({ realm_name, realm_registration_token, identity }, { apiUrl: this.apiUrl });
+            return identity_1.registerIdentity({ realmName, realmRegistrationToken, identity }, { apiUrl: this.apiUrl });
         });
     }
     /**
@@ -834,7 +844,7 @@ class API {
      */
     deleteIdentity(queenClient, realmName, identityId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, identity_1.deleteIdentity)({ realmName, identityId }, { apiUrl: this.apiUrl, queenClient });
+            return identity_1.deleteIdentity({ realmName, identityId }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
@@ -844,8 +854,8 @@ class API {
      */
     getHostedBrokerInfo() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield (0, isomorphic_fetch_1.default)(`${this.apiUrl}/v1/identity/broker/info`);
-            return (0, utils_1.validateRequestAsJSON)(response);
+            const response = yield isomorphic_fetch_1.default(`${this.apiUrl}/v1/identity/broker/info`);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -866,7 +876,7 @@ class API {
                 method: 'POST',
                 body: JSON.stringify(registerRealmBrokerRequest),
             });
-            const requestResponse = (yield (0, utils_1.validateRequestAsJSON)(response));
+            const requestResponse = (yield utils_1.validateRequestAsJSON(response));
             return requestResponse;
         });
     }
@@ -893,7 +903,7 @@ class API {
             const response = yield queenClient.authenticator.tsv1Fetch(fullUrl, {
                 method: 'GET',
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
         });
     }
     /**
@@ -909,7 +919,17 @@ class API {
             const response = yield queenClient.authenticator.tsv1Fetch(`${this.apiUrl}/v1/identity/realm/${realmName}/identity/${encUsername}`, {
                 method: 'GET',
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return utils_1.validateRequestAsJSON(response);
+        });
+    }
+    listAccessPoliciesForGroups(queenClient, realmName, groupIds) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return pam_1.listAccessPoliciesForGroups({ realmName, groupIds }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    upsertAccessPoliciesForGroup(queenClient, realmName, groupId, accessPolicies) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return pam_1.upsertAccessPoliciesForGroup({ realmName, groupId, accessPolicies }, { apiUrl: this.apiUrl, queenClient });
         });
     }
 }

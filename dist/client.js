@@ -22,6 +22,7 @@ const token_1 = __importDefault(require("./api/token"));
 const basicIdentity_1 = __importDefault(require("./types/basicIdentity"));
 const listIdentitiesResult_1 = __importDefault(require("./types/listIdentitiesResult"));
 const detailedIdentity_1 = __importDefault(require("./types/detailedIdentity"));
+const accessPolicy_1 = __importDefault(require("./types/accessPolicy"));
 /**
  * The client for Tozny's Account API.
  *
@@ -43,7 +44,7 @@ const detailedIdentity_1 = __importDefault(require("./types/detailedIdentity"));
 class Client {
     constructor(api, account, profile, queenClient) {
         this.api = api_1.default.validateInstance(api);
-        this._queenClient = (0, utils_1.validateStorageClient)(queenClient);
+        this._queenClient = utils_1.validateStorageClient(queenClient);
         this.account = account;
         this.profile = profile;
     }
@@ -304,6 +305,19 @@ class Client {
         });
     }
     /**
+     * Updates settings for the realm.
+     * Some of these features enabled by these settings are experimental and may be subject
+     * to change.
+     * @param {string} realmName Name of realm.
+     * @param {RealmSettings} settings Object containing settings to enable.
+     * @returns Updated realm settings.
+     */
+    updateRealmSettings(realmName, settings) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.updateRealmSettings(this.queenClient, realmName, settings);
+        });
+    }
+    /**
      * Creates a new group in the realm.
      *
      * @param {string} realmName Name of realm.
@@ -370,9 +384,11 @@ class Client {
     /**
      * Creates a new role for a realm.
      *
-     * @param {string} realmName  Name of realm.
-     * @param {object} role       Object with `name` and `description` of role.
-     * @returns {Promise<Role>}   The newly created role.
+     * @param {string} realmName Name of realm.
+     * @param {MinimumRoleData} role Object with `name` and `description` of role.
+     * @param {string} role.name Name of new role.
+     * @param {string} role.description Description of new role.
+     * @returns {Promise<Role>} The newly created role.
      */
     createRealmRole(realmName, role) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -384,8 +400,11 @@ class Client {
      * Update an existing role in the realm given a role id.
      *
      * @param {string} realmName Name of realm.
-     * @param {role} role        Updated attributes of the role.
-     * @returns {Promise<Role>}
+     * @param {MinimumRoleWithId} role Updated attributes of the role.
+     * @param {string} role.id Id of the role.
+     * @param {string} role.name Updated name of role.
+     * @param {string} role.description Updated description of the role.
+     * @returns {Promise<Role>} The updated role
      */
     updateRealmRole(realmName, role) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -918,12 +937,13 @@ class Client {
      * Lists the Current Access Policies for the Group Ids sent.
      *
      * @param {string} realmName Name of realm.
-     * @param {Array} groupIds  The IDs for the Tozny Groups
-     * @returns {Promise<ListAccessPolicyResponse>}
+     * @param {string[]} groupIds The IDs for the Tozny Groups
+     * @returns {Promise<ListAccessPoliciesResponse>}
      */
-    listAccessPolicies(realmName, groupIds) {
+    listAccessPoliciesForGroups(realmName, groupIds) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.listAccessPolicies(this.queenClient, realmName, groupIds);
+            const res = yield this.api.listAccessPoliciesForGroups(this.queenClient, realmName, groupIds);
+            return types_1.ListAccessPoliciesResponse.decode(res);
         });
     }
     /**
@@ -934,9 +954,13 @@ class Client {
      * @param {AccessPolicy[]} accessPolicies Configuration for the new identity
      * @returns {Promise<ListAccessPolicyResponse>}
      */
-    upsertAccessPolicies(realmName, groupId, accessPolicies) {
+    upsertAccessPoliciesForGroup(realmName, groupId, accessPolicies) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.UpsertAccessPolicies(this.queenClient, realmName, groupId, accessPolicies);
+            const res = yield this.api.upsertAccessPoliciesForGroup(this.queenClient, realmName, groupId, accessPolicies);
+            return {
+                id: res.id,
+                accessPolicies: res.access_policies.map(accessPolicy_1.default.decode),
+            };
         });
     }
     serialize() {

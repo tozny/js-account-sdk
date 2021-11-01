@@ -11,6 +11,8 @@ const DetailedIdentity = require('./detailedIdentity')
 const Group = require('./group').default
 const GroupRoleMapping = require('./groupRoleMapping').default
 const Identity = require('./identity').default
+const ListAccessPoliciesResponse = require('./listAccessPoliciesResponse')
+  .default
 const ListIdentitiesResult = require('./listIdentitiesResult')
 const Realm = require('./realm')
 const Realms = require('./realms')
@@ -26,12 +28,13 @@ module.exports = {
   ClientInfoList,
   DetailedIdentity,
   Group,
+  GroupRoleMapping,
   Identity,
+  ListAccessPoliciesResponse,
   ListIdentitiesResult,
   Realm,
   Realms,
   RegistrationToken,
   Role,
-  GroupRoleMapping,
   Sovereign,
 }

@@ -1,67 +1,53 @@
-import { validateRequestAsJSON, checkStatus } from '../utils'
-import { APIContext } from './context'
-import AccessPolicy, { ToznyAPIAccessPolicy } from '../types/accessPolicy'
+import {
+  AccessPolicyData,
+  ToznyAPIAccessPolicy,
+  ToznyAPIGroupAccessPolicies,
+} from '../types/accessPolicy'
+import { ToznyAPIListAccessPoliciesResponse } from '../types/listAccessPoliciesResponse'
 import { roleToAPI } from '../types/role'
+import { checkStatus, validateRequestAsJSON } from '../utils'
+import { APIContext } from './context'
 
-type PAMRealmSettings = {
-  mpc_enabled_for_realm: boolean
-  default_access_duration_seconds: number
-  default_required_approvals: number
-}
-
-type GroupAccessPolicies = {
-  id: string
-  access_policies: ToznyAPIAccessPolicy[]
-}
-
-type ListAccessPolicyData = {
+type ListAccessPoliciesData = {
   realmName: string
-  groupIds: []
+  groupIds: string[]
 }
-
-type ListAccessPolicyResponse = {
-  settings: PAMRealmSettings
-  groups: GroupAccessPolicies[]
-}
-
-export async function listAccessPolicies(
-  { realmName, groupIds }: ListAccessPolicyData,
+export async function listAccessPoliciesForGroups(
+  { realmName, groupIds }: ListAccessPoliciesData,
   { apiUrl, queenClient }: APIContext
-): Promise<ListAccessPolicyResponse> {
-  var query = new URLSearchParams()
+): Promise<ToznyAPIListAccessPoliciesResponse> {
+  // build query string
+  const query = new URLSearchParams()
   query.set('realm_name', encodeURIComponent(realmName))
   groupIds.forEach(groupId =>
     query.append('group_ids', encodeURIComponent(groupId))
   )
-  const request = await queenClient.authenticator.tsv1Fetch(
-    apiUrl + '/v1/identity/pam/polcies?${query.toString()}',
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+  // send request
+  const response = await queenClient.authenticator.tsv1Fetch(
+    `${apiUrl}/v1/identity/pam/policies?${query.toString()}`,
+    { method: 'GET' }
   )
-  const accessPolicyResponse = (await validateRequestAsJSON(
-    request
-  )) as ListAccessPolicyResponse
-  return accessPolicyResponse
+  const data: ToznyAPIListAccessPoliciesResponse = await validateRequestAsJSON(
+    response
+  )
+  return data
 }
 
 type UpsertPolicyData = {
   realmName: string
   groupId: string
-  accessPolicies: AccessPolicy[]
+  accessPolicies: AccessPolicyData[]
 }
-export async function upsertAccessPolicies(
+type UpsertPoliciesResponse = { group: ToznyAPIGroupAccessPolicies }
+export async function upsertAccessPoliciesForGroup(
   { realmName, groupId, accessPolicies }: UpsertPolicyData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<ToznyAPIGroupAccessPolicies> {
   const payload = {
     realm_name: realmName,
     group: {
       id: groupId,
-      accessPolicies: accessPolicies.map(ap => ({
+      access_policies: accessPolicies.map(ap => ({
         id: ap.id,
         required_approvals: ap.requiredApprovals,
         max_access_duration_seconds: ap.maxAccessDurationSeconds,
@@ -73,12 +59,10 @@ export async function upsertAccessPolicies(
     `${apiUrl}/v1/identity/pam/policies`,
     {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }
   )
-  checkStatus(response)
-  return
+  const data: UpsertPoliciesResponse = await validateRequestAsJSON(response)
+  return data.group
 }

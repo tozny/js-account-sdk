@@ -1,10 +1,10 @@
 import { checkStatus, validateRequestAsJSON } from '../utils'
 import { APIContext } from './context'
-import { ToznyAPIRole } from '../types/role'
+import { MinimumRoleData, MinimumRoleWithId, ToznyAPIRole } from '../types/role'
 
 type CreateRealmRoleData = {
   realmName: string
-  role: { name: string; description: string }
+  role: MinimumRoleData
 }
 
 export async function createRealmRole(
@@ -23,7 +23,7 @@ export async function createRealmRole(
 
 type UpdateRealmRoleData = {
   realmName: string
-  role: { id: string; name: string; description: string }
+  role: MinimumRoleWithId
 }
 export async function updateRealmRole(
   { realmName, role }: UpdateRealmRoleData,

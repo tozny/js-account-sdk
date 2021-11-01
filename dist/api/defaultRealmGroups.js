@@ -14,7 +14,7 @@ const utils_1 = require("../utils");
 function listDefaultRealmGroups({ realmName }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/default-groups`, { method: 'GET' });
-        const { groups } = (yield (0, utils_1.validateRequestAsJSON)(response));
+        const { groups } = (yield utils_1.validateRequestAsJSON(response));
         return groups;
     });
 }
@@ -25,7 +25,7 @@ function replaceDefaultRealmGroups({ realmName, groups }, { apiUrl, queenClient 
             method: 'PUT',
             body: JSON.stringify(groups),
         });
-        (0, utils_1.checkStatus)(response);
+        utils_1.checkStatus(response);
         return;
     });
 }
@@ -36,7 +36,7 @@ function addDefaultRealmGroups({ realmName, groups }, { apiUrl, queenClient }) {
             method: 'PATCH',
             body: JSON.stringify(groups),
         });
-        (0, utils_1.checkStatus)(response);
+        utils_1.checkStatus(response);
         return;
     });
 }
@@ -47,7 +47,7 @@ function removeDefaultRealmGroups({ realmName, groups }, { apiUrl, queenClient }
             method: 'DELETE',
             body: JSON.stringify(groups),
         });
-        (0, utils_1.checkStatus)(response);
+        utils_1.checkStatus(response);
         return;
     });
 }

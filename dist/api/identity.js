@@ -9,28 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteIdentity = exports.registerIdentity = exports.realmInfo = void 0;
+exports.deleteIdentity = exports.registerIdentity = void 0;
 const utils_1 = require("../utils");
-function realmInfo({ realm_name, apiUrl, }) {
+const realmSettings_1 = require("./realmSettings");
+function registerIdentity({ realmName, realmRegistrationToken, identity }, ctx) {
     return __awaiter(this, void 0, void 0, function* () {
-        let lowerCasedRealmName = realm_name.toLowerCase();
-        const response = yield fetch(`${apiUrl}/v1/identity/info/realm/${lowerCasedRealmName}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const realmInfo = (yield (0, utils_1.validateRequestAsJSON)(response));
-        return realmInfo;
-    });
-}
-exports.realmInfo = realmInfo;
-function registerIdentity({ realm_name, realm_registration_token, identity }, { apiUrl }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const info = yield realmInfo({ realm_name, apiUrl });
-        let username = identity.name.toLowerCase();
+        const info = yield realmSettings_1.getRealmInfo({ realmName }, ctx);
+        const username = identity.name.toLowerCase();
         const payload = {
-            realm_registration_token: realm_registration_token,
+            realm_registration_token: realmRegistrationToken,
             realm_name: info.domain,
             identity: {
                 realm_name: info.domain,
@@ -42,14 +29,14 @@ function registerIdentity({ realm_name, realm_registration_token, identity }, { 
                 email: identity.email,
             },
         };
-        const request = yield fetch(apiUrl + '/v1/identity/register', {
+        const request = yield fetch(ctx.apiUrl + '/v1/identity/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(payload),
         });
-        const identityResponse = (yield (0, utils_1.validateRequestAsJSON)(request));
+        const identityResponse = (yield utils_1.validateRequestAsJSON(request));
         return identityResponse;
     });
 }
@@ -62,7 +49,7 @@ function deleteIdentity({ realmName, identityId }, { apiUrl, queenClient }) {
                 'Content-Type': 'application/json',
             },
         });
-        (0, utils_1.checkStatus)(response);
+        utils_1.checkStatus(response);
         return;
     });
 }
