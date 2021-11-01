@@ -1151,6 +1151,48 @@ class Client {
 
   /**
    * Lists the Current Access Policies for the Group Ids sent.
+   * Additionally configuration settings info about multi-party control for the realm is included.
+   *
+   * The method handles multiple group ids and returns access policy information about each one in
+   * the same order on the `groupAccessPolicies` of the response.
+   *
+   * @example
+   * ```js
+   * const realmName = 'westeros'
+   * const groupId = '200dd632-3faf-48d0-933f-e3ed40e27d92'
+   * const data = await accountClient.listAccessPoliciesForGroups(
+   *   realmName,
+   *   [groupId]
+   * )
+   * // here we see the MPC settings for the realm.
+   * // additionally, we see that access to the group is governed by access policy #131
+   * // {
+   * //   "settings": {
+   * //     "defaultAccessDurationSeconds": 10800,
+   * //     "defaultRequiredApprovals": 1,
+   * //     "mpcEnabledForRealm": true
+   * //   },
+   * //   "groupAccessPolicies": [
+   * //     {
+   * //       "id": "200dd632-3faf-48d0-933f-e3ed40e27d92",
+   * //       "accessPolicies": [
+   * //         {
+   * //           "id": 131,
+   * //           "approvalRoles": [
+   * //             {
+   * //               "id": "24613e76-5a9d-4803-a55e-5f8d9e598f4e",
+   * //               "name": "approver-role",
+   * //               "description": "It will be the role approvers must have.",
+   * //             }
+   * //           ],
+   * //           "maxAccessDurationSeconds": 172800,
+   * //           "requiredApprovals": 1
+   * //         }
+   * //       ]
+   * //     }
+   * //   ]
+   * // }
+   * ```
    *
    * @param {string} realmName Name of realm.
    * @param {string[]} groupIds The IDs for the Tozny Groups
@@ -1169,7 +1211,51 @@ class Client {
   }
 
   /**
-   *  Creating or Updating an Access Policy for a Group
+   * Create, update, or remove an Access Policy for a Group
+   *
+   * This method is built to handle attaching multiple policies to a single group. However, currently
+   * only one policy per group is supported.
+   *
+   * @example
+   * ```js
+   * const realmName = 'westeros'
+   * const groupId = '12345678-90ab-cdef-0000-000000000000'
+   * const approvalRole = await accountClient.createRealmRole(
+   *   realmName,
+   *   { name: "NightsWatch", description: "They guard the wall." }
+   * );
+   *
+   * // create a new policy for group.
+   * // a request for access must be approved by one user with `approvalRole`
+   * // upon approval, access is granted for 1 day
+   * let groupAccessPolicy = await accountClient.upsertAccessPoliciesForGroup(
+   *   realmName,
+   *   groupId,
+   *   [{ approvalRoles: [approvalRole], requiredApprovals: 1, maxAccessDurationSeconds: 24*3600 }]
+   * )
+   * groupAccessPolicy.id === groupId //=> true
+   * const accessPolicy = groupAccessPolicy.accessPolicies[0]
+   *
+   * // update approval roles of existing policy
+   * const anotherRole = await accountClient.describeRealmRole(realmName, roleId)
+   * groupAccessPolicy = await accountClient.upsertAccessPoliciesForGroup(
+   *   realmName,
+   *   groupId,
+   *   [{
+   *     id: accessPolicy.id, //<-- updating the existing policy.
+   *     approvalRoles: [approvalRole, anotherRole],
+   *     requiredApprovals: 1,
+   *     maxAccessDurationSeconds: 24*3600,
+   *   }]
+   * )
+   *
+   * // remove access policy by setting policies to empty array
+   * groupAccessPolicy = await accountClient.upsertAccessPoliciesForGroup(
+   *   realmName,
+   *   groupId,
+   *   [] // <-- the group will no longer be governed by any access policy
+   * )
+   * ```
    *
    * @param {string} realmName Name of realm.
    * @param {string} groupId The ID of the Group in Tozny
