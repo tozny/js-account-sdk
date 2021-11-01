@@ -43,7 +43,7 @@ class Realm {
    *
    * @param {object} json
    *
-   * @return {<Realm>}
+   * @return {Realm}
    */
   static decode(json) {
     return new Realm(

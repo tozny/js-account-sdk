@@ -34,7 +34,7 @@ class Realm {
      *
      * @param {object} json
      *
-     * @return {<Realm>}
+     * @return {Realm}
      */
     static decode(json) {
         return new Realm(json.id, json.name, json.domain, json.admin_url, json.active, Sovereign.decode(json.sovereign), json.broker_identity_tozny_id);

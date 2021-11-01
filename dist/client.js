@@ -167,7 +167,7 @@ class Client {
     /**
      * Get a list of the current registration tokens for an account.
      *
-     * @return {Promise<Array.<RegistrationToken>>}
+     * @return {Promise<RegistrationToken[]>}
      */
     registrationTokens() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -181,7 +181,6 @@ class Client {
      * @param {object} permissions A set of key-value pair of permissions for the token.
      * @param {number} totalUsesAllowed The number of uses the token is allowed. If
      *                                  not set, unlimited uses are allowed.
-     *
      * @return {Promise<RegistrationToken>} The created registration token.
      */
     newRegistrationToken(name, permissions = {}, totalUsesAllowed) {
@@ -204,7 +203,7 @@ class Client {
     /**
      * Get a list of the current webhooks for an account.
      *
-     * @return {Promise<Array.<Webhook>>}
+     * @return {Promise<Webhook[]>}
      */
     webhooks() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -218,7 +217,6 @@ class Client {
      * @param {string} webhook_url The payload url
      * @param {object} triggers A list of triggers to associate with the webhook
      *                                  not set, unlimited uses are allowed.
-     *
      * @return {Promise<Webhook>} The created webhook.
      */
     newWebhook(webhook_url, triggers) {
@@ -321,7 +319,7 @@ class Client {
      * Creates a new group in the realm.
      *
      * @param {string} realmName Name of realm.
-     * @param {object} group     Object containing `name` of group.
+     * @param group Object containing `name` of group.
      * @returns {Promise<Group>} The newly created group.
      */
     createRealmGroup(realmName, group) {
@@ -453,7 +451,7 @@ class Client {
      *
      * @param {string} realmName      Name of realm.
      * @param {string} applicationId  Id of client application.
-     * @param {object} role           Object with `name` and `description` of role.
+     * @param {MinimumRoleData} role  Object with `name` and `description` of role.
      * @returns {Promise<Role>}       The newly created role.
      */
     createRealmApplicationRole(realmName, applicationId, role) {
@@ -466,9 +464,9 @@ class Client {
      * Update an existing application role in the realm given the original role name.
      *
      * @param {string} realmName Name of realm.
-     * @param {string} applicationId  Id of client application.
+     * @param {string} applicationId Id of client application.
      * @param {string} originalRoleName Name of the role being updated.
-     * @param {role} role        Updated attributes of the role.
+     * @param {MinimumRoleWithId} role Updated attributes of the role.
      * @returns {Promise<Role>}
      */
     updateRealmApplicationRole(realmName, applicationId, originalRoleName, role) {
@@ -681,7 +679,7 @@ class Client {
     }
     /**
      * Replace default groups for the request realm.
-     * _note: when default realm groups changed existing users groups are not updated_
+     * _note: when default realm groups are changed existing users' groups are not updated_
      *
      * @example
      * ```js
@@ -704,7 +702,7 @@ class Client {
     }
     /**
      * Add default groups for the request realm.
-     * _note: when default realm groups change, existing users groups are not updated_
+     * _note: when default realm groups are changed existing users' groups are not updated_
      *
      * @example
      * ```js
@@ -727,7 +725,7 @@ class Client {
     }
     /**
      * Remove groups for the request realm.
-     *
+     * _note: when default realm groups are changed existing users' groups are not updated_
      * @example
      * ```js
      * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
@@ -898,9 +896,9 @@ class Client {
         });
     }
     /**
-     * Set up the pagination result for listing identities
+     * Fetches the details of an identity by username.
      *
-     * @return {ListIdentitiesResult} A object usable for making paginated queries.
+     * @return {DetailedIdentity} The identity
      */
     identityDetails(realmName, username) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -951,8 +949,8 @@ class Client {
      *
      * @param {string} realmName Name of realm.
      * @param {string} groupId The ID of the Group in Tozny
-     * @param {AccessPolicy[]} accessPolicies Configuration for the new identity
-     * @returns {Promise<ListAccessPolicyResponse>}
+     * @param {AccessPolicyData[]} accessPolicies Configuration for the new identity
+     * @returns {Promise<GroupAccessPolicies>} Object containing groups `id` & `accessPolicies`
      */
     upsertAccessPoliciesForGroup(realmName, groupId, accessPolicies) {
         return __awaiter(this, void 0, void 0, function* () {

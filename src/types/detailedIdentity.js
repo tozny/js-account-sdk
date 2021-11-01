@@ -85,7 +85,7 @@ class DetailedIdentity {
    *
    * @param {object} json
    *
-   * @return {<DetailedIdentity>}
+   * @return {DetailedIdentity}
    */
   static decode(json) {
     return new DetailedIdentity(

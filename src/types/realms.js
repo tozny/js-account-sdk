@@ -29,7 +29,7 @@ class Realms {
    *
    * @param {object} json
    *
-   * @return {<Realms>}
+   * @return {Realms}
    */
   static decode(json) {
     let realms = []

@@ -72,7 +72,7 @@ class DetailedIdentity {
      *
      * @param {object} json
      *
-     * @return {<DetailedIdentity>}
+     * @return {DetailedIdentity}
      */
     static decode(json) {
         return new DetailedIdentity(json.subject_id, json.username, json.email, json.first_name, json.last_name, json.active, json.federated, GroupRoleMapping.decode(json.roles), Array.isArray(json.groups) ? json.groups.map(Group.decode) : [], typeof json.attributes === 'object' ? json.attributes : {}, json.tozny_id);

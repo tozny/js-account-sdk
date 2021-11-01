@@ -29,6 +29,11 @@ import AccessPolicy, {
 import RealmSettings from './types/realmSettings'
 import { MinimumRoleData, MinimumRoleWithId } from './types/role'
 
+/** placeholder type for js-sdk storage client */
+type ToznyQueenClient = any
+/** placeholder type for profile object */
+type ToznyProfile = any
+
 /**
  * The client for Tozny's Account API.
  *
@@ -48,11 +53,17 @@ import { MinimumRoleData, MinimumRoleWithId } from './types/role'
  * ```
  */
 class Client {
-  api: API
+  private api: API
   account: Account
-  private _queenClient: any
+  profile: ToznyProfile
+  private _queenClient: ToznyQueenClient
 
-  constructor(api, account, profile, queenClient) {
+  constructor(
+    api: API,
+    account: Account,
+    profile: ToznyProfile,
+    queenClient: ToznyQueenClient
+  ) {
     this.api = API.validateInstance(api)
     this._queenClient = validateStorageClient(queenClient)
     this.account = account
@@ -63,7 +74,7 @@ class Client {
     return this._queenClient
   }
 
-  async validatePassword(password) {
+  async validatePassword(password: string) {
     const crypto = this._queenClient.crypto
     const authSalt = await crypto.platform.b64URLDecode(this.profile.auth_salt)
     const keypair = await crypto.deriveSigningKey(
@@ -154,7 +165,7 @@ class Client {
     return this.api.updateAccountBilling(account)
   }
 
-  async addBillingCoupon(couponCode) {
+  async addBillingCoupon(couponCode: string) {
     return this.api.addBillingCoupon(this.queenClient, couponCode)
   }
 
@@ -175,12 +186,12 @@ class Client {
     return ClientInfoList.decode(rawResponse)
   }
 
-  async getClientInfo(clientId) {
+  async getClientInfo(clientId: string) {
     const rawResponse = await this.api.getClient(this.queenClient, clientId)
     return ClientInfo.decode(rawResponse)
   }
 
-  async setClientEnabled(clientId, enabled) {
+  async setClientEnabled(clientId: string, enabled: boolean) {
     await this.api.setClientEnabled(this.queenClient, clientId, enabled)
     return enabled
   }
@@ -189,7 +200,7 @@ class Client {
    * Allows user to update the name and email on their account.
    * Profile param contains a name and email for the user.
    */
-  async updateProfile(profile) {
+  async updateProfile(profile: { name: string; email: string }) {
     const response = await this.api.updateProfile(profile)
     return response
   }
@@ -197,10 +208,10 @@ class Client {
   /**
    * Get a list of the current registration tokens for an account.
    *
-   * @return {Promise<Array.<RegistrationToken>>}
+   * @return {Promise<RegistrationToken[]>}
    */
 
-  async registrationTokens(): Promise<Array<RegistrationToken>> {
+  async registrationTokens(): Promise<RegistrationToken[]> {
     const tokens = await this.api.listTokens()
     return tokens.map(RegistrationToken.decode)
   }
@@ -211,7 +222,6 @@ class Client {
    * @param {object} permissions A set of key-value pair of permissions for the token.
    * @param {number} totalUsesAllowed The number of uses the token is allowed. If
    *                                  not set, unlimited uses are allowed.
-   *
    * @return {Promise<RegistrationToken>} The created registration token.
    */
   async newRegistrationToken(
@@ -236,10 +246,9 @@ class Client {
   /**
    * Get a list of the current webhooks for an account.
    *
-   * @return {Promise<Array.<Webhook>>}
+   * @return {Promise<Webhook[]>}
    */
-
-  async webhooks(): Promise<Array<Webhook>> {
+  async webhooks(): Promise<Webhook[]> {
     const webhooks = await this.api.listWebhooks(this.queenClient)
     // TODO: Add type and type checking
     return webhooks
@@ -250,7 +259,6 @@ class Client {
    * @param {string} webhook_url The payload url
    * @param {object} triggers A list of triggers to associate with the webhook
    *                                  not set, unlimited uses are allowed.
-   *
    * @return {Promise<Webhook>} The created webhook.
    */
   async newWebhook(webhook_url: string, triggers: object): Promise<Webhook> {
@@ -269,7 +277,7 @@ class Client {
    *
    * @returns {Promise<boolean>} True if the operation succeeds.
    */
-  async deleteWebhook(webhookId): Promise<boolean> {
+  async deleteWebhook(webhookId: string): Promise<boolean> {
     return this.api.deleteWebhook(this.queenClient, webhookId)
   }
 
@@ -307,7 +315,6 @@ class Client {
    *
    * @returns {Object} aggregations response object
    */
-
   async getAggregations(startTime: string, endTime: string): object {
     const accountId = this.profile.id
     return this.api.getAggregations(
@@ -379,10 +386,13 @@ class Client {
    * Creates a new group in the realm.
    *
    * @param {string} realmName Name of realm.
-   * @param {object} group     Object containing `name` of group.
+   * @param group Object containing `name` of group.
    * @returns {Promise<Group>} The newly created group.
    */
-  async createRealmGroup(realmName: string, group: object): Promise<Group> {
+  async createRealmGroup(
+    realmName: string,
+    group: { name: string }
+  ): Promise<Group> {
     const rawResponse = await this.api.createRealmGroup(
       this.queenClient,
       realmName,
@@ -539,13 +549,13 @@ class Client {
    *
    * @param {string} realmName      Name of realm.
    * @param {string} applicationId  Id of client application.
-   * @param {object} role           Object with `name` and `description` of role.
+   * @param {MinimumRoleData} role  Object with `name` and `description` of role.
    * @returns {Promise<Role>}       The newly created role.
    */
   async createRealmApplicationRole(
     realmName: string,
     applicationId: string,
-    role: object
+    role: MinimumRoleData
   ): Promise<Role> {
     const rawResponse = await this.api.createRealmApplicationRole(
       this.queenClient,
@@ -560,16 +570,16 @@ class Client {
    * Update an existing application role in the realm given the original role name.
    *
    * @param {string} realmName Name of realm.
-   * @param {string} applicationId  Id of client application.
+   * @param {string} applicationId Id of client application.
    * @param {string} originalRoleName Name of the role being updated.
-   * @param {role} role        Updated attributes of the role.
+   * @param {MinimumRoleWithId} role Updated attributes of the role.
    * @returns {Promise<Role>}
    */
   async updateRealmApplicationRole(
     realmName: string,
     applicationId: string,
     originalRoleName: string,
-    role: role
+    role: MinimumRoleWithId
   ): Promise<Role> {
     const rawResponse = await this.api.updateRealmApplicationRole(
       this.queenClient,
@@ -845,7 +855,7 @@ class Client {
   }
   /**
    * Replace default groups for the request realm.
-   * _note: when default realm groups changed existing users groups are not updated_
+   * _note: when default realm groups are changed existing users' groups are not updated_
    *
    * @example
    * ```js
@@ -873,7 +883,7 @@ class Client {
   }
   /**
    * Add default groups for the request realm.
-   * _note: when default realm groups change, existing users groups are not updated_
+   * _note: when default realm groups are changed existing users' groups are not updated_
    *
    * @example
    * ```js
@@ -897,7 +907,7 @@ class Client {
   }
   /**
    * Remove groups for the request realm.
-   *
+   * _note: when default realm groups are changed existing users' groups are not updated_
    * @example
    * ```js
    * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
@@ -1077,9 +1087,9 @@ class Client {
    * @return {Promise<Array<BasicIdentity>>} A list of basic identity info.
    */
   private async _listIdentities(
-    realmName,
-    max,
-    next
+    realmName: string,
+    max: number,
+    next: number
   ): Promise<Array<BasicIdentity>> {
     const response = await this.api.listIdentities(
       this.queenClient,
@@ -1099,11 +1109,14 @@ class Client {
   }
 
   /**
-   * Set up the pagination result for listing identities
+   * Fetches the details of an identity by username.
    *
-   * @return {ListIdentitiesResult} A object usable for making paginated queries.
+   * @return {DetailedIdentity} The identity
    */
-  async identityDetails(realmName, username): ListIdentitiesResult {
+  async identityDetails(
+    realmName: string,
+    username: string
+  ): Promise<DetailedIdentity> {
     const response = await this.api.identityDetails(
       this.queenClient,
       realmName,
@@ -1131,7 +1144,6 @@ class Client {
   /**
    * Requests Tozny account email verification be resent.
    */
-
   async resendVerificationEmail() {
     const email = this.profile.email
     return this.api.resendVerificationEmail(email)
@@ -1161,8 +1173,8 @@ class Client {
    *
    * @param {string} realmName Name of realm.
    * @param {string} groupId The ID of the Group in Tozny
-   * @param {AccessPolicy[]} accessPolicies Configuration for the new identity
-   * @returns {Promise<ListAccessPolicyResponse>}
+   * @param {AccessPolicyData[]} accessPolicies Configuration for the new identity
+   * @returns {Promise<GroupAccessPolicies>} Object containing groups `id` & `accessPolicies`
    */
   async upsertAccessPoliciesForGroup(
     realmName: string,

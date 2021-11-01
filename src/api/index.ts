@@ -7,7 +7,7 @@ import {
   AccessPolicyData,
   ToznyAPIGroupAccessPolicies,
 } from '../types/accessPolicy'
-import { ToznyAPIGroup } from '../types/group'
+import { GroupsInput, ToznyAPIGroup } from '../types/group'
 import { ToznyAPIGroupRoleMapping } from '../types/groupRoleMapping'
 import Identity, { ToznyAPIIdentity } from '../types/identity'
 import { ToznyAPIListAccessPoliciesResponse } from '../types/listAccessPoliciesResponse'
@@ -442,14 +442,14 @@ class API {
     return checkStatus(request)
   }
 
-  async updateProfile(profile) {
+  async updateProfile(profile: { name: string; email: string }) {
     const headers = await this.withToken({
       'Content-Type': 'application/json',
     })
     const request = await fetch(this.apiUrl + '/v1/account/profile', {
       method: 'PATCH',
       headers,
-      body: JSON.stringify({ profile: profile }),
+      body: JSON.stringify({ profile }),
     })
     return validateRequestAsJSON(request)
   }
@@ -936,12 +936,13 @@ class API {
     queenClient: ToznyClient,
     realmName: string,
     identityId: string,
-    groups: ToznyAPIGroup[]
-  ): Promise<void> {
-    return updateGroupMembership(
+    groups: GroupsInput
+  ): Promise<boolean> {
+    await updateGroupMembership(
       { realmName, identityId, groups },
       { apiUrl: this.apiUrl, queenClient }
     )
+    return true
   }
   /**
    * Join a list of groups for an identity
@@ -950,12 +951,13 @@ class API {
     queenClient: ToznyClient,
     realmName: string,
     identityId: string,
-    groups: ToznyAPIGroup[]
-  ): Promise<void> {
-    return joinGroups(
+    groups: GroupsInput
+  ): Promise<boolean> {
+    await joinGroups(
       { realmName, identityId, groups },
       { apiUrl: this.apiUrl, queenClient }
     )
+    return true
   }
   /**
    * Leave a list of Groups
@@ -964,12 +966,13 @@ class API {
     queenClient: ToznyClient,
     realmName: string,
     identityId: string,
-    groups: (Group | Group['id'])[]
-  ): Promise<void> {
-    return leaveGroups(
+    groups: GroupsInput
+  ): Promise<boolean> {
+    await leaveGroups(
       { realmName, identityId, groups },
       { apiUrl: this.apiUrl, queenClient }
     )
+    return true
   }
   /**
    *
@@ -1037,7 +1040,7 @@ class API {
   async replaceDefaultRealmGroups(
     queenClient: ToznyClient,
     realmName: string,
-    groups: ToznyAPIGroup[]
+    groups: GroupsInput
   ): Promise<void> {
     return replaceDefaultRealmGroups(
       { realmName, groups },
@@ -1050,7 +1053,7 @@ class API {
   async addDefaultRealmGroups(
     queenClient: ToznyClient,
     realmName: string,
-    groups: ToznyAPIGroup[]
+    groups: GroupsInput
   ): Promise<void> {
     return addDefaultRealmGroups(
       { realmName, groups },
@@ -1063,7 +1066,7 @@ class API {
   async removeDefaultRealmGroups(
     queenClient: ToznyClient,
     realmName: string,
-    groups: ToznyAPIGroup[]
+    groups: GroupsInput
   ): Promise<void> {
     return removeDefaultRealmGroups(
       { realmName, groups },

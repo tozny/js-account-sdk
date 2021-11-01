@@ -393,7 +393,7 @@ class API {
             const request = yield isomorphic_fetch_1.default(this.apiUrl + '/v1/account/profile', {
                 method: 'PATCH',
                 headers,
-                body: JSON.stringify({ profile: profile }),
+                body: JSON.stringify({ profile }),
             });
             return utils_1.validateRequestAsJSON(request);
         });
@@ -753,7 +753,8 @@ class API {
      */
     updateGroupMembership(queenClient, realmName, identityId, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return groupMembership_1.updateGroupMembership({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+            yield groupMembership_1.updateGroupMembership({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+            return true;
         });
     }
     /**
@@ -761,7 +762,8 @@ class API {
      */
     joinGroups(queenClient, realmName, identityId, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return groupMembership_1.joinGroups({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+            yield groupMembership_1.joinGroups({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+            return true;
         });
     }
     /**
@@ -769,7 +771,8 @@ class API {
      */
     leaveGroups(queenClient, realmName, identityId, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return groupMembership_1.leaveGroups({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+            yield groupMembership_1.leaveGroups({ realmName, identityId, groups }, { apiUrl: this.apiUrl, queenClient });
+            return true;
         });
     }
     /**

@@ -25,7 +25,7 @@ class RegistrationToken {
    *
    * @param {object} json
    *
-   * @return {<RegistrationToken>}
+   * @return {RegistrationToken}
    */
   static decode(json) {
     return new RegistrationToken(
