@@ -43,10 +43,10 @@ Creates an Account object mixing the SDK and API URL together.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `sdk` | `any` | An instance of a Tozny client SDK. |
-| `apiUrl` | `string` | The URL of the Tozny Platform instance to connect to. |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `sdk` | `any` | `undefined` | An instance of a Tozny client SDK. |
+| `apiUrl` | `string` | `DEFAULT_API_URL` | The URL of the Tozny Platform instance to connect to. |
 
 #### Defined in
 

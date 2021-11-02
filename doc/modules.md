@@ -17,8 +17,4 @@
 
 ### default
 
-• **default**: `Object`
-
-#### Defined in
-
-[index.ts:1](https://github.com/tozny/js-account-sdk/blob/master/src/index.ts#L1)
+Renames and re-exports [Account](classes/Account.md)
