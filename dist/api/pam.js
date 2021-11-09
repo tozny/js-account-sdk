@@ -20,7 +20,7 @@ function listAccessPoliciesForGroups({ realmName, groupIds }, { apiUrl, queenCli
         groupIds.forEach(groupId => query.append('group_ids', encodeURIComponent(groupId)));
         // send request
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/pam/policies?${query.toString()}`, { method: 'GET' });
-        const data = yield utils_1.validateRequestAsJSON(response);
+        const data = yield (0, utils_1.validateRequestAsJSON)(response);
         return data;
     });
 }
@@ -44,7 +44,7 @@ function upsertAccessPoliciesForGroup({ realmName, groupId, accessPolicies }, { 
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
         });
-        const data = yield utils_1.validateRequestAsJSON(response);
+        const data = yield (0, utils_1.validateRequestAsJSON)(response);
         return data.group;
     });
 }

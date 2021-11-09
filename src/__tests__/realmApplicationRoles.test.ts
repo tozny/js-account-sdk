@@ -14,17 +14,6 @@ let applicationId: string
 // we find the application and use it's id.
 const clientId = 'account-console'
 
-// TODO: remove me once we have list method for application clients!
-// we need an existing client to attach roles to. to get the id for a default one,
-// we must list the existing client applications
-const getApplications = async () =>
-  client.queenClient.authenticator
-    .tsv1Fetch(
-      `${process.env.API_URL}/v1/identity/realm/${realmName}/application`,
-      { method: 'GET' }
-    )
-    .then((res: any) => res.json())
-
 beforeAll(async () => {
   // Create an account to re-use across test cases
   const seed = uuidv4()
@@ -38,12 +27,10 @@ beforeAll(async () => {
   const sovereignName = 'YassQueen'
   await client.createRealm(realmName, sovereignName)
 
-  // TODO: when we have application support, replace me.
-  const { applications } = await getApplications()
-  const app = applications.find(
-    (app: { id: string; client_id: string }) => app.client_id === clientId
-  )
-  applicationId = app.id
+  const applications = await client.listApplicationsByClientIDs(realmName, [
+    clientId,
+  ])
+  applicationId = applications[0].id
 })
 
 afterAll(async () => {

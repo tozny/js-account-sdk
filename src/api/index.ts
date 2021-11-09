@@ -10,6 +10,7 @@ import {
 import { GroupsInput, ToznyAPIGroup } from '../types/group'
 import { ToznyAPIGroupRoleMapping } from '../types/groupRoleMapping'
 import Identity, { ToznyAPIIdentity } from '../types/identity'
+import { ToznyAPIRealmApplication } from '../types/realmApplications'
 import { ToznyAPIListAccessPoliciesResponse } from '../types/listAccessPoliciesResponse'
 import RealmSettings from '../types/realmSettings'
 import { MinimumRoleData, MinimumRoleWithId, ToznyAPIRole } from '../types/role'
@@ -38,6 +39,7 @@ import {
   listAccessPoliciesForGroups,
   upsertAccessPoliciesForGroup,
 } from './pam'
+import { listRealmApplications } from './realmApplication'
 import {
   createRealmApplicationRole,
   deleteRealmApplicationRole,
@@ -1205,6 +1207,16 @@ class API {
   ): Promise<ToznyAPIGroupAccessPolicies> {
     return upsertAccessPoliciesForGroup(
       { realmName, groupId, accessPolicies },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  async listRealmApplications(
+    queenClient: ToznyClient,
+    realmName: string
+  ): Promise<ToznyAPIRealmApplication[]> {
+    return listRealmApplications(
+      { realmName },
       { apiUrl: this.apiUrl, queenClient }
     )
   }

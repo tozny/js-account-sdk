@@ -16,6 +16,7 @@ const ListAccessPoliciesResponse = require('./listAccessPoliciesResponse')
 const ListIdentitiesResult = require('./listIdentitiesResult');
 const Realm = require('./realm');
 const Realms = require('./realms');
+const RealmApplication = require('./realmApplications').default;
 const RegistrationToken = require('./registrationToken');
 const Role = require('./role').default;
 const Sovereign = require('./sovereign');
@@ -33,6 +34,7 @@ module.exports = {
     ListIdentitiesResult,
     Realm,
     Realms,
+    RealmApplication,
     RegistrationToken,
     Role,
     Sovereign,

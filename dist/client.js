@@ -44,7 +44,7 @@ const accessPolicy_1 = __importDefault(require("./types/accessPolicy"));
 class Client {
     constructor(api, account, profile, queenClient) {
         this.api = api_1.default.validateInstance(api);
-        this._queenClient = utils_1.validateStorageClient(queenClient);
+        this._queenClient = (0, utils_1.validateStorageClient)(queenClient);
         this.account = account;
         this.profile = profile;
     }
@@ -1045,6 +1045,60 @@ class Client {
                 id: res.id,
                 accessPolicies: res.access_policies.map(accessPolicy_1.default.decode),
             };
+        });
+    }
+    /**
+     * Lists all the applications for the realm.
+     *
+     * @example
+     * ```js
+     * const realmName = 'westeros'
+     * // Get a list of realm applications
+     * const applications = await accountClient.listApplications(realmName)
+     * ```
+     *
+     * @param {string} realmName Name of the realm
+     *
+     * @returns {Promise<RealmApplication[]>}
+     */
+    listApplications(realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawResponse = yield this.api.listRealmApplications(this.queenClient, realmName);
+            return rawResponse.map(types_1.RealmApplication.decode);
+        });
+    }
+    /**
+     * Lists all the applications for the realm with the provided client IDs.
+     *
+     * @example
+     * ```js
+     * const realmName = 'westeros'
+     * // An array of the client IDs for applications to list
+     * const clientIds = ['account']
+     * const applications = await accountClient.listApplicationsByClientIDs(
+     *    realmName,
+     *    clientIds
+     * )
+     * // Get the application id for the application with client OD
+     * const applicationID = applications[0].id
+     * ```
+     *
+     * @param {string} realmName Name of the realm
+     * @param {string[]} applicationClientIDs  Client IDs of the applications to list
+     *
+     * @returns {Promise<RealmApplication[]>}
+     */
+    listApplicationsByClientIDs(realmName, applicationClientIDs) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const applications = yield this.listApplications(realmName);
+            let applicationsByClientID = [];
+            for (let clientId of applicationClientIDs) {
+                let app = applications.find((app) => app.clientId === clientId);
+                if (app !== undefined) {
+                    applicationsByClientID.push(app);
+                }
+            }
+            return applicationsByClientID;
         });
     }
     serialize() {

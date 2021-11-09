@@ -14,7 +14,7 @@ const utils_1 = require("../utils");
 const realmSettings_1 = require("./realmSettings");
 function registerIdentity({ realmName, realmRegistrationToken, identity }, ctx) {
     return __awaiter(this, void 0, void 0, function* () {
-        const info = yield realmSettings_1.getRealmInfo({ realmName }, ctx);
+        const info = yield (0, realmSettings_1.getRealmInfo)({ realmName }, ctx);
         const username = identity.name.toLowerCase();
         const payload = {
             realm_registration_token: realmRegistrationToken,
@@ -36,7 +36,7 @@ function registerIdentity({ realmName, realmRegistrationToken, identity }, ctx) 
             },
             body: JSON.stringify(payload),
         });
-        const identityResponse = (yield utils_1.validateRequestAsJSON(request));
+        const identityResponse = (yield (0, utils_1.validateRequestAsJSON)(request));
         return identityResponse;
     });
 }
@@ -49,7 +49,7 @@ function deleteIdentity({ realmName, identityId }, { apiUrl, queenClient }) {
                 'Content-Type': 'application/json',
             },
         });
-        utils_1.checkStatus(response);
+        (0, utils_1.checkStatus)(response);
         return;
     });
 }

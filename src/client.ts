@@ -14,6 +14,7 @@ import {
   Group,
   GroupRoleMapping,
   ListAccessPoliciesResponse,
+  RealmApplication,
 } from './types'
 import { GroupsInput } from './types/group'
 import Refresher from './api/refresher'
@@ -1277,6 +1278,66 @@ class Client {
       id: res.id,
       accessPolicies: res.access_policies.map(AccessPolicy.decode),
     }
+  }
+
+  /**
+   * Lists all the applications for the realm.
+   *
+   * @example
+   * ```js
+   * const realmName = 'westeros'
+   * // Get a list of realm applications
+   * const applications = await accountClient.listApplications(realmName)
+   * ```
+   *
+   * @param {string} realmName Name of the realm
+   *
+   * @returns {Promise<RealmApplication[]>}
+   */
+  async listApplications(realmName: string): Promise<RealmApplication[]> {
+    const rawResponse = await this.api.listRealmApplications(
+      this.queenClient,
+      realmName
+    )
+    return rawResponse.map(RealmApplication.decode)
+  }
+
+  /**
+   * Lists all the applications for the realm with the provided client IDs.
+   *
+   * @example
+   * ```js
+   * const realmName = 'westeros'
+   * // An array of the client IDs for applications to list
+   * const clientIds = ['account']
+   * const applications = await accountClient.listApplicationsByClientIDs(
+   *    realmName,
+   *    clientIds
+   * )
+   * // Get the application id for the application with client OD
+   * const applicationID = applications[0].id
+   * ```
+   *
+   * @param {string} realmName Name of the realm
+   * @param {string[]} applicationClientIDs  Client IDs of the applications to list
+   *
+   * @returns {Promise<RealmApplication[]>}
+   */
+  async listApplicationsByClientIDs(
+    realmName: string,
+    applicationClientIDs: string[]
+  ): RealmApplication[] {
+    const applications = await this.listApplications(realmName)
+    let applicationsByClientID: RealmApplication[] = []
+    for (let clientId of applicationClientIDs) {
+      let app = applications.find(
+        (app: RealmApplication) => app.clientId === clientId
+      )
+      if (app !== undefined) {
+        applicationsByClientID.push(app)
+      }
+    }
+    return applicationsByClientID
   }
 
   serialize() {
