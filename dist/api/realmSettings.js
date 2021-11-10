@@ -15,7 +15,7 @@ const utils_1 = require("../utils");
 function getRealmInfo({ realmName }, { apiUrl }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch(`${apiUrl}/v1/identity/info/realm/${realmName.toLowerCase()}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-        const realmInfo = (yield utils_1.validateRequestAsJSON(response));
+        const realmInfo = (yield (0, utils_1.validateRequestAsJSON)(response));
         return realmInfo;
     });
 }
@@ -37,7 +37,7 @@ function updateRealmSettings({ realmName, settings: { secretsEnabled, mfaAvailab
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
         });
-        utils_1.checkStatus(response);
+        (0, utils_1.checkStatus)(response);
         return;
     });
 }

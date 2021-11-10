@@ -15,7 +15,7 @@ const roleMappingForGroupUri = (apiUrl, realmName, groupId) => `${apiUrl}/v1/ide
 function listGroupRoleMappings({ groupId, realmName }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(roleMappingForGroupUri(apiUrl, realmName, groupId), { method: 'GET' });
-        return utils_1.validateRequestAsJSON(response);
+        return (0, utils_1.validateRequestAsJSON)(response);
     });
 }
 exports.listGroupRoleMappings = listGroupRoleMappings;
@@ -25,7 +25,7 @@ function addGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl
             method: 'POST',
             body: JSON.stringify(groupRoleMapping),
         });
-        utils_1.checkStatus(response);
+        (0, utils_1.checkStatus)(response);
         return;
     });
 }
@@ -36,7 +36,7 @@ function removeGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { api
             method: 'DELETE',
             body: JSON.stringify(groupRoleMapping),
         });
-        utils_1.checkStatus(response);
+        (0, utils_1.checkStatus)(response);
         return;
     });
 }
