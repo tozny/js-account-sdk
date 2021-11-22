@@ -7,13 +7,15 @@ class AccountBillingStatus {
     isTrial,
     trialPeriodEnds,
     isLegacy,
-    isGoodStanding = null
+    isGoodStanding = null,
+    isFree = null
   ) {
     this.accountActive = accountActive
     this.isTrial = isTrial
     this.trialPeriodEnds = trialPeriodEnds
     this.isLegacy = isLegacy
     this.isGoodStanding = isGoodStanding
+    this.isFree = isFree
   }
 
   /**
@@ -26,7 +28,8 @@ class AccountBillingStatus {
    *  is_trial: true,
    *  trial_period_ends: "2019-09-22T05:19:52Z",
    *  is_legacy: false,
-   *  is_good_standing: true
+   *  is_good_standing: true,
+   *  is_free: false,
    * })
    * <code>
    *
@@ -40,7 +43,8 @@ class AccountBillingStatus {
       json.is_trial,
       json.trial_period_ends,
       json.is_legacy,
-      json.is_good_standing
+      json.is_good_standing,
+      json.is_free
     )
   }
 }
