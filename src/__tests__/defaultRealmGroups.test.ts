@@ -12,7 +12,7 @@ beforeAll(async () => {
   // Create an account to re-use across test cases
   const seed = uuidv4()
   const name = `Test Account ${seed}`
-  const email = `test+${seed}@tozny.com`
+  const email = `test-emails-group+${seed}@tozny.com`
   const password = uuidv4()
   const registration: any = await accountFactory.register(name, email, password)
   client = registration.client

@@ -10,7 +10,7 @@ export async function createTestRealm(
 ): Promise<TestRealmData> {
   const seed = uuidv4()
   const name = `Test Account ${seed}`
-  const email = `test+${seed}@tozny.com`
+  const email = `test-emails-group+${seed}@tozny.com`
   const password = uuidv4()
   const registration: any = await accountFactory.register(name, email, password)
   const client = registration.client as Client

@@ -34,7 +34,7 @@ Basically information from the registration just stored in this module variable 
 beforeAll(async () => {
   const seed = uuidv4()
   const name = `Test Account ${seed}`
-  const email = `test+${seed}@tozny.com`
+  const email = `test-emails-group+${seed}@tozny.com`
   const password = uuidv4()
   const registration = await accountFactory.register(name, email, password)
   accountClient = registration.client
