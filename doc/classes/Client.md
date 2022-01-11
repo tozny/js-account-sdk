@@ -176,7 +176,7 @@ ___
 
 ### addDefaultRealmGroups
 
-▸ **addDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`void`\>
+▸ **addDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`boolean`\>
 
 Add default groups for the request realm.
 _note: when default realm groups are changed existing users' groups are not updated_
@@ -200,7 +200,7 @@ await client.addDefaultRealmGroups(realmName, {
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`<`boolean`\>
 
 #### Defined in
 
@@ -1362,7 +1362,7 @@ ___
 
 ### removeDefaultRealmGroups
 
-▸ **removeDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`void`\>
+▸ **removeDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`boolean`\>
 
 Remove groups for the request realm.
 _note: when default realm groups are changed existing users' groups are not updated_
@@ -1389,7 +1389,9 @@ await client.removeDefaultRealmGroups(realmName, {
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`<`boolean`\>
+
+True if successful
 
 #### Defined in
 
@@ -1425,7 +1427,7 @@ ___
 
 ### replaceDefaultRealmGroups
 
-▸ **replaceDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`void`\>
+▸ **replaceDefaultRealmGroups**(`realmName`, `groups`): `Promise`<`boolean`\>
 
 Replace default groups for the request realm.
 _note: when default realm groups are changed existing users' groups are not updated_
@@ -1449,7 +1451,9 @@ await client.replaceDefaultRealmGroups(realmName, {
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`<`boolean`\>
+
+True if successful
 
 #### Defined in
 
