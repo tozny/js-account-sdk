@@ -693,7 +693,7 @@ class Client {
      *
      * @param {string} realmName  Name of realm.
      * @param {GroupsInput} groups List of groups or group ids to leave in an object on the `groups` key
-     * @returns {Promise<void>}
+     * @returns {Promise<boolean>} True if successful
      */
     replaceDefaultRealmGroups(realmName, groups) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -741,7 +741,7 @@ class Client {
      *
      * @param {string} realmName  Name of realm.
      * @param {GroupsInput} groups List of groups or group ids in an object on the `groups` key
-     * @returns {Promise<void>}
+     * @returns {Promise<boolean>} True if successful
      */
     removeDefaultRealmGroups(realmName, groups) {
         return __awaiter(this, void 0, void 0, function* () {

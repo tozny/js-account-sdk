@@ -870,12 +870,12 @@ class Client {
    *
    * @param {string} realmName  Name of realm.
    * @param {GroupsInput} groups List of groups or group ids to leave in an object on the `groups` key
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>} True if successful
    */
   async replaceDefaultRealmGroups(
     realmName: string,
     groups: GroupsInput
-  ): Promise<void> {
+  ): Promise<boolean> {
     return this.api.replaceDefaultRealmGroups(
       this.queenClient,
       realmName,
@@ -903,7 +903,7 @@ class Client {
   async addDefaultRealmGroups(
     realmName: string,
     groups: GroupsInput
-  ): Promise<void> {
+  ): Promise<boolean> {
     return this.api.addDefaultRealmGroups(this.queenClient, realmName, groups)
   }
   /**
@@ -924,12 +924,12 @@ class Client {
    *
    * @param {string} realmName  Name of realm.
    * @param {GroupsInput} groups List of groups or group ids in an object on the `groups` key
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>} True if successful
    */
   async removeDefaultRealmGroups(
     realmName: string,
     groups: GroupsInput
-  ): Promise<void> {
+  ): Promise<boolean> {
     return this.api.removeDefaultRealmGroups(
       this.queenClient,
       realmName,
