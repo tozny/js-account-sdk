@@ -30,9 +30,10 @@ To compile updated or altered code from js/ts to the build directory, ensure all
 ```sh
 npm i
 ```
-and compile code with
+and compile code and docs with
 ```sh
 npm run build
+npm run docs
 ```
 
 The javascript target of our typescript compilation is ES6 for backwards compatibility. Most ES6 features are natively supported by the targeted Node versions, but ES6 module support is not generally available yet. Use the [node.green](https://node.green/) table to check if you are unsure if a feature is natively supported, and [CanIUse](https://caniuse.com/) to check for native browser support.
@@ -123,7 +124,12 @@ Checkout branch
 
 Write code
 
-Ensure you have compiles source code into `dist`
+Ensure you have compiled source code into `dist` and docs with
+
+```bash
+npm run build
+npm run docs
+```
 
 Get code reviewed and approved
 
