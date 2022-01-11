@@ -28,7 +28,7 @@ function updateGroupMembership({ realmName, identityId, groups }, { apiUrl, quee
             body: JSON.stringify(groups),
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.updateGroupMembership = updateGroupMembership;
@@ -39,7 +39,7 @@ function joinGroups({ realmName, identityId, groups }, { apiUrl, queenClient }) 
             body: JSON.stringify(groups),
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.joinGroups = joinGroups;
@@ -50,7 +50,7 @@ function leaveGroups({ realmName, identityId, groups }, { apiUrl, queenClient })
             body: JSON.stringify(groups),
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.leaveGroups = leaveGroups;

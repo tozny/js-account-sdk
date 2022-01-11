@@ -62,13 +62,13 @@ type DeleteRealmGroupData = { realmName: string; groupId: string }
 export async function deleteRealmGroup(
   { realmName, groupId }: DeleteRealmGroupData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}`,
     { method: 'DELETE' }
   )
   checkStatus(response)
-  return
+  return true
 }
 
 type DescribeRealmGroupData = { realmName: string; groupId: string }

@@ -26,7 +26,7 @@ function replaceDefaultRealmGroups({ realmName, groups }, { apiUrl, queenClient 
             body: JSON.stringify(groups),
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.replaceDefaultRealmGroups = replaceDefaultRealmGroups;
@@ -37,7 +37,7 @@ function addDefaultRealmGroups({ realmName, groups }, { apiUrl, queenClient }) {
             body: JSON.stringify(groups),
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.addDefaultRealmGroups = addDefaultRealmGroups;
@@ -48,7 +48,7 @@ function removeDefaultRealmGroups({ realmName, groups }, { apiUrl, queenClient }
             body: JSON.stringify(groups),
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.removeDefaultRealmGroups = removeDefaultRealmGroups;
