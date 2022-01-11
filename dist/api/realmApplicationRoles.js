@@ -42,7 +42,7 @@ function deleteRealmApplicationRole({ realmName, applicationId, roleName }, { ap
             method: 'DELETE',
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.deleteRealmApplicationRole = deleteRealmApplicationRole;

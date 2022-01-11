@@ -27,7 +27,7 @@ type ReplaceDefaultRealmGroupsData = {
 export async function replaceDefaultRealmGroups(
   { realmName, groups }: ReplaceDefaultRealmGroupsData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/default-groups`,
     {
@@ -36,14 +36,14 @@ export async function replaceDefaultRealmGroups(
     }
   )
   checkStatus(response)
-  return
+  return true
 }
 
 type AddDefaultRealmGroupsData = { realmName: string; groups: GroupsInput }
 export async function addDefaultRealmGroups(
   { realmName, groups }: AddDefaultRealmGroupsData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/default-groups`,
     {
@@ -52,14 +52,14 @@ export async function addDefaultRealmGroups(
     }
   )
   checkStatus(response)
-  return
+  return true
 }
 
 type RemoveDefaultRealmGroupsData = { realmName: string; groups: GroupsInput }
 export async function removeDefaultRealmGroups(
   { realmName, groups }: RemoveDefaultRealmGroupsData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/default-groups`,
     {
@@ -68,5 +68,5 @@ export async function removeDefaultRealmGroups(
     }
   )
   checkStatus(response)
-  return
+  return true
 }

@@ -64,7 +64,7 @@ type DeleteRealmApplicationRoleData = {
 export async function deleteRealmApplicationRole(
   { realmName, applicationId, roleName }: DeleteRealmApplicationRoleData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const encodedRoleName = encodeURIComponent(roleName)
   const uri = `${realmApplicationRoleUri(
     apiUrl,
@@ -75,7 +75,7 @@ export async function deleteRealmApplicationRole(
     method: 'DELETE',
   })
   checkStatus(response)
-  return
+  return true
 }
 
 type DescribeRealmApplicationRoleData = {

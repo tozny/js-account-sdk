@@ -45,7 +45,7 @@ function deleteRealmGroup({ realmName, groupId }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}`, { method: 'DELETE' });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.deleteRealmGroup = deleteRealmGroup;

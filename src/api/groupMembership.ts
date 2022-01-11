@@ -34,7 +34,7 @@ type UpdateGroupMembershipData = {
 export async function updateGroupMembership(
   { realmName, identityId, groups }: UpdateGroupMembershipData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/identity/${identityId}/groups`,
     {
@@ -43,7 +43,7 @@ export async function updateGroupMembership(
     }
   )
   checkStatus(response)
-  return
+  return true
 }
 
 type JoinGroupsData = {
@@ -54,7 +54,7 @@ type JoinGroupsData = {
 export async function joinGroups(
   { realmName, identityId, groups }: JoinGroupsData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/identity/${identityId}/groups`,
     {
@@ -63,7 +63,7 @@ export async function joinGroups(
     }
   )
   checkStatus(response)
-  return
+  return true
 }
 
 type LeaveGroupsData = {
@@ -74,7 +74,7 @@ type LeaveGroupsData = {
 export async function leaveGroups(
   { realmName, identityId, groups }: LeaveGroupsData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/identity/${identityId}/groups`,
     {
@@ -83,5 +83,5 @@ export async function leaveGroups(
     }
   )
   checkStatus(response)
-  return
+  return true
 }

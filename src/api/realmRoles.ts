@@ -43,13 +43,13 @@ type DeleteRealmRoleData = { realmName: string; roleId: string }
 export async function deleteRealmRole(
   { realmName, roleId }: DeleteRealmRoleData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/role/${roleId}`,
     { method: 'DELETE' }
   )
   checkStatus(response)
-  return
+  return true
 }
 
 type DescribeRealmRoleData = { realmName: string; roleId: string }
