@@ -61,7 +61,7 @@ type DeleteIdentityData = {
 export async function deleteIdentity(
   { realmName, identityId }: DeleteIdentityData,
   { apiUrl, queenClient }: APIContext
-): Promise<void> {
+): Promise<boolean> {
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/realm/${realmName}/identity/${identityId}`,
     {
@@ -72,5 +72,5 @@ export async function deleteIdentity(
     }
   )
   checkStatus(response)
-  return
+  return true
 }
