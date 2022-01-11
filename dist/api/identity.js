@@ -50,7 +50,7 @@ function deleteIdentity({ realmName, identityId }, { apiUrl, queenClient }) {
             },
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.deleteIdentity = deleteIdentity;
