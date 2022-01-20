@@ -1,0 +1,3 @@
+{
+  "extends": "@toznysecure/eslint-config/typescript"
+}
