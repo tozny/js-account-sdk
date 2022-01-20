@@ -38,7 +38,7 @@ class ClientInfoList {
      */
     static decode(json) {
         let clients = json.clients
-            ? [...json.clients].map(c => ClientInfo.decode(c))
+            ? [...json.clients].map((c) => ClientInfo.decode(c))
             : [];
         return new ClientInfoList(clients, json.next_token);
     }

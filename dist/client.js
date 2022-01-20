@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 const utils_1 = require("./utils");
 const api_1 = __importDefault(require("./api"));
@@ -1091,9 +1092,9 @@ class Client {
     listApplicationsByClientIDs(realmName, applicationClientIDs) {
         return __awaiter(this, void 0, void 0, function* () {
             const applications = yield this.listApplications(realmName);
-            let applicationsByClientID = [];
-            for (let clientId of applicationClientIDs) {
-                let app = applications.find((app) => app.clientId === clientId);
+            const applicationsByClientID = [];
+            for (const clientId of applicationClientIDs) {
+                const app = applications.find((app) => app.clientId === clientId);
                 if (app !== undefined) {
                     applicationsByClientID.push(app);
                 }

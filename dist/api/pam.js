@@ -17,7 +17,7 @@ function listAccessPoliciesForGroups({ realmName, groupIds }, { apiUrl, queenCli
         // build query string
         const query = new URLSearchParams();
         query.set('realm_name', encodeURIComponent(realmName));
-        groupIds.forEach(groupId => query.append('group_ids', encodeURIComponent(groupId)));
+        groupIds.forEach((groupId) => query.append('group_ids', encodeURIComponent(groupId)));
         // send request
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/pam/policies?${query.toString()}`, { method: 'GET' });
         const data = yield (0, utils_1.validateRequestAsJSON)(response);
@@ -31,7 +31,7 @@ function upsertAccessPoliciesForGroup({ realmName, groupId, accessPolicies }, { 
             realm_name: realmName,
             group: {
                 id: groupId,
-                access_policies: accessPolicies.map(ap => ({
+                access_policies: accessPolicies.map((ap) => ({
                     id: ap.id,
                     required_approvals: ap.requiredApprovals,
                     max_access_duration_seconds: ap.maxAccessDurationSeconds,

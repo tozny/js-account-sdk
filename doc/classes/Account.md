@@ -45,46 +45,46 @@ Creates an Account object mixing the SDK and API URL together.
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `sdk` | `any` | `undefined` | An instance of a Tozny client SDK. |
+| `sdk` | `Tozny` | `undefined` | An instance of a Tozny client SDK. |
 | `apiUrl` | `string` | `DEFAULT_API_URL` | The URL of the Tozny Platform instance to connect to. |
 
 #### Defined in
 
-[account.ts:30](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L30)
+[account.ts:31](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L31)
 
 ## Accessors
 
 ### Identity
 
-• `get` **Identity**(): `Function`
+• `get` **Identity**(): `any`
 
 Gets the Tozny Identity constructor provided by the Tozny client SDK.
 
 #### Returns
 
-`Function`
+`any`
 
 #### Defined in
 
-[account.ts:58](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L58)
+[account.ts:59](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L59)
 
 ___
 
 ### Storage
 
-• `get` **Storage**(): `Function`
+• `get` **Storage**(): `any`
 
 Gets the Tozny Storage constructor provided by the Tozny client SDK.
 
 #### Returns
 
-`Function`
+`any`
 
 The Storage constructor
 
 #### Defined in
 
-[account.ts:49](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L49)
+[account.ts:50](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L50)
 
 ___
 
@@ -100,7 +100,7 @@ gets the current crypto implementation provided by the Tozny client SDK.
 
 #### Defined in
 
-[account.ts:40](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L40)
+[account.ts:41](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L41)
 
 ___
 
@@ -118,7 +118,7 @@ All of the Tozny client SDK defined types.
 
 #### Defined in
 
-[account.ts:67](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L67)
+[account.ts:68](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L68)
 
 ## Methods
 
@@ -143,7 +143,7 @@ An object with the new queen client and paper key.
 
 #### Defined in
 
-[account.ts:325](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L325)
+[account.ts:326](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L326)
 
 ___
 
@@ -172,7 +172,7 @@ A new Client created with all provided values from the object.
 
 #### Defined in
 
-[account.ts:466](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L466)
+[account.ts:467](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L467)
 
 ___
 
@@ -194,7 +194,7 @@ Begin to recover lost account access.
 
 #### Defined in
 
-[account.ts:303](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L303)
+[account.ts:304](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L304)
 
 ___
 
@@ -220,7 +220,7 @@ The Client instance for the provided credentials.
 
 #### Defined in
 
-[account.ts:80](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L80)
+[account.ts:81](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L81)
 
 ___
 
@@ -248,7 +248,7 @@ An object containing the paper key generated at and
 
 #### Defined in
 
-[account.ts:180](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L180)
+[account.ts:181](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L181)
 
 ___
 
@@ -273,7 +273,7 @@ response
 
 #### Defined in
 
-[account.ts:450](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L450)
+[account.ts:451](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L451)
 
 ___
 
@@ -298,4 +298,4 @@ The recovery object for the account
 
 #### Defined in
 
-[account.ts:314](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L314)
+[account.ts:315](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L315)

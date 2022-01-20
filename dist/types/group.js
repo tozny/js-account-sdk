@@ -38,7 +38,7 @@ class Group {
 // { key1: ['value1']} becomes { key1: 'value1' }
 function transformAttributes(apiAttributes) {
     const attributes = {};
-    for (const [key, value] of Object.entries(apiAttributes || {})) {
+    for (const key of Object.keys(apiAttributes || {})) {
         attributes[key] = apiAttributes[key][0];
     }
     return attributes;

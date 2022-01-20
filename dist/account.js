@@ -1,4 +1,5 @@
 "use strict";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 /**
  * Account connection operations, including setting up the SDK and API URL
@@ -54,7 +55,7 @@ class Account {
     /**
      * Gets the Tozny Storage constructor provided by the Tozny client SDK.
      *
-     * @return {Function} The Storage constructor
+     * @return {any} The Storage constructor
      */
     get Storage() {
         return this._sdk.storage;
@@ -62,7 +63,7 @@ class Account {
     /**
      * Gets the Tozny Identity constructor provided by the Tozny client SDK.
      *
-     * @return {Function}
+     * @return {any}
      */
     get Identity() {
         return this._sdk.identity;
@@ -158,7 +159,7 @@ class Account {
             const paperEncKey = yield this.crypto.deriveSymmetricKey(paperKey, paperEncSalt, constants_1.KEY_HASH_ROUNDS);
             const paperAuthKeypair = yield this.crypto.deriveSigningKey(paperKey, paperAuthSalt, constants_1.KEY_HASH_ROUNDS);
             // Set up user profile
-            let profile = {
+            const profile = {
                 name,
                 email,
                 auth_salt: yield this.crypto.platform.b64URLEncode(authSalt),
@@ -176,7 +177,7 @@ class Account {
             const clientEncKeys = yield this.crypto.generateKeypair();
             const clientSigKeys = yield this.crypto.generateSigningKeypair();
             // Set up the user account
-            let account = {
+            const account = {
                 company: '',
                 plan: 'free0',
                 public_key: {
@@ -256,7 +257,7 @@ class Account {
             const paperEncKey = yield this.crypto.deriveSymmetricKey(paperKey, paperEncSalt, constants_1.KEY_HASH_ROUNDS);
             const paperAuthKeypair = yield this.crypto.deriveSigningKey(paperKey, paperAuthSalt, constants_1.KEY_HASH_ROUNDS);
             // Set up user profile
-            let profile = {
+            const profile = {
                 auth_salt: yield this.crypto.platform.b64URLEncode(authSalt),
                 enc_salt: yield this.crypto.platform.b64URLEncode(encSalt),
                 paper_auth_salt: yield this.crypto.platform.b64URLEncode(paperAuthSalt),
@@ -274,7 +275,7 @@ class Account {
             // backup client
             const clientEncKeys = yield this.crypto.generateKeypair();
             const clientSigKeys = yield this.crypto.generateSigningKeypair();
-            let client = {
+            const client = {
                 name: 'Backup Client',
                 public_key: {
                     curve25519: clientEncKeys.publicKey,
@@ -283,7 +284,7 @@ class Account {
                     ed25519: clientSigKeys.publicKey,
                 },
             };
-            let newQueen = yield clientApi.rollQueen(client);
+            const newQueen = yield clientApi.rollQueen(client);
             const backupConfig = new this.Storage.Config(newQueen.client_id, newQueen.api_key_id, newQueen.api_secret, clientEncKeys.publicKey, clientEncKeys.privateKey, clientSigKeys.publicKey, clientSigKeys.privateKey, this.api.apiUrl);
             const storageClient = new this.Storage.Client(backupConfig);
             const serializedConfig = backupConfig.serialize();

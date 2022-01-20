@@ -50,7 +50,8 @@ class ApplicationSAMLSettings {
         this.forceNameIdFormat = forceNameIdFormat;
         this.nameIdFormat = nameIdFormat;
         this.idpInitiatedSSOUrlName = idpInitiatedSSOUrlName;
-        this.assertionConsumerServicePostBindingUrl = assertionConsumerServicePostBindingUrl;
+        this.assertionConsumerServicePostBindingUrl =
+            assertionConsumerServicePostBindingUrl;
     }
     static decode(json) {
         return new ApplicationSAMLSettings(json.default_endpoint, json.include_authn_statement, json.include_one_time_use_condition, json.sign_documents, json.sign_assertions, json.client_signature_required, json.force_post_binding, json.force_name_id_format, json.name_id_format, json.idp_initiated_sso_url_name, json.assertion_consumer_service_post_binding_url);

@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 /**
  * Account level API request definitions.
@@ -487,7 +488,7 @@ class API {
      */
     createWebhook(queenClient, webhook_url, triggers) {
         return __awaiter(this, void 0, void 0, function* () {
-            const webhookTriggers = triggers.map(eventString => {
+            const webhookTriggers = triggers.map((eventString) => {
                 return {
                     enabled: true,
                     api_event: eventString,
@@ -897,8 +898,8 @@ class API {
             const url = [`${this.apiUrl}/v1/identity/realm/${realmName}/identity`];
             const query = { first, max };
             const queryString = Object.keys(query)
-                .filter(k => !!query[k])
-                .map(k => `${k}=${encodeURIComponent(query[k])}`)
+                .filter((k) => !!query[k])
+                .map((k) => `${k}=${encodeURIComponent(query[k])}`)
                 .join('&');
             if (queryString) {
                 url.push(queryString);

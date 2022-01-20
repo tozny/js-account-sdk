@@ -47,7 +47,7 @@ class GroupRoleMapping {
         const realmRoles = GroupRoleMapping._decodeRoles(json.realm);
         const rolesByClient = {};
         const clientNames = Object.keys(json.client);
-        clientNames.forEach(clientName => {
+        clientNames.forEach((clientName) => {
             rolesByClient[clientName] = this._decodeRoles(json.client[clientName]);
         });
         return new GroupRoleMapping(realmRoles, rolesByClient);
