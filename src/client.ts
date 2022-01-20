@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 import { validateStorageClient } from './utils'
 import API from './api'
@@ -1104,7 +1105,7 @@ class Client {
     }
     // Do this async to speed it up just slightly.
     response.identities = await Promise.all(
-      response.identities.map(async i => BasicIdentity.decode(i))
+      response.identities.map(async (i) => BasicIdentity.decode(i))
     )
     return response
   }
@@ -1328,9 +1329,9 @@ class Client {
     applicationClientIDs: string[]
   ): RealmApplication[] {
     const applications = await this.listApplications(realmName)
-    let applicationsByClientID: RealmApplication[] = []
-    for (let clientId of applicationClientIDs) {
-      let app = applications.find(
+    const applicationsByClientID: RealmApplication[] = []
+    for (const clientId of applicationClientIDs) {
+      const app = applications.find(
         (app: RealmApplication) => app.clientId === clientId
       )
       if (app !== undefined) {

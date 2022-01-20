@@ -51,7 +51,7 @@ class GroupRoleMapping {
 
     const rolesByClient: RolesByClient = {}
     const clientNames = Object.keys(json.client)
-    clientNames.forEach(clientName => {
+    clientNames.forEach((clientName) => {
       rolesByClient[clientName] = this._decodeRoles(json.client[clientName])
     })
 

@@ -1,11 +1,10 @@
 import {
   AccessPolicyData,
-  ToznyAPIAccessPolicy,
   ToznyAPIGroupAccessPolicies,
 } from '../types/accessPolicy'
 import { ToznyAPIListAccessPoliciesResponse } from '../types/listAccessPoliciesResponse'
 import { roleToAPI } from '../types/role'
-import { checkStatus, validateRequestAsJSON } from '../utils'
+import { validateRequestAsJSON } from '../utils'
 import { APIContext } from './context'
 
 type ListAccessPoliciesData = {
@@ -19,7 +18,7 @@ export async function listAccessPoliciesForGroups(
   // build query string
   const query = new URLSearchParams()
   query.set('realm_name', encodeURIComponent(realmName))
-  groupIds.forEach(groupId =>
+  groupIds.forEach((groupId) =>
     query.append('group_ids', encodeURIComponent(groupId))
   )
   // send request
@@ -47,7 +46,7 @@ export async function upsertAccessPoliciesForGroup(
     realm_name: realmName,
     group: {
       id: groupId,
-      access_policies: accessPolicies.map(ap => ({
+      access_policies: accessPolicies.map((ap) => ({
         id: ap.id,
         required_approvals: ap.requiredApprovals,
         max_access_duration_seconds: ap.maxAccessDurationSeconds,

@@ -1,5 +1,4 @@
 import Account from '../account'
-// @ts-ignore no type defs exist for js-sdk
 import Tozny from '@toznysecure/sdk/node'
 import { v4 as uuidv4 } from 'uuid'
 import { cleanupRealms } from './utils'
@@ -11,7 +10,7 @@ let identity: any = null
 let realmConfig: any = null
 let realm: any
 let username: any = null
-let apiURL = process.env.API_URL
+const apiURL = process.env.API_URL
 
 beforeAll(async () => {
   // Create an account to re-use across test cases
@@ -35,7 +34,7 @@ beforeAll(async () => {
   client = accountClient.client
   const token = await client.newRegistrationToken(tokenName, permissions)
   const stringToken = String(token.token)
-  const createdRealm = await client.createRealm(realmName, sovereignName)
+  await client.createRealm(realmName, sovereignName)
   username = `it-user-${uuidv4()}`
   realmConfig = {
     realmName: realmName,
@@ -43,7 +42,7 @@ beforeAll(async () => {
     brokerTargetUrl: 'http://integrationtest.local.tozny.com',
     apiURL,
   }
-  realm = new Tozny.identity.Realm(
+  realm = new (Tozny.identity as any).Realm(
     realmConfig.realmName,
     realmConfig.appName,
     realmConfig.brokerTargetUrl,
@@ -64,12 +63,12 @@ afterAll(async () => {
 
 describe('Identity Group Membership', () => {
   it('adds, lists, removes identity group membership', async () => {
-    let identity_id = identity.storage.config.clientId
+    const identityId = identity.storage.config.clientId
 
     // This identity should currently have no groups
     const responseEmptyGroups = await client.groupMembership(
       realmName,
-      identity_id
+      identityId
     )
     expect(responseEmptyGroups).toBeInstanceOf(Array)
     expect(responseEmptyGroups).toHaveLength(0)
@@ -84,14 +83,14 @@ describe('Identity Group Membership', () => {
     expect(group1.name).toBe('ToznyEngineers')
 
     // Add identity to the group
-    await client.updateGroupMembership(realmName, identity_id, {
+    await client.updateGroupMembership(realmName, identityId, {
       groups: [group1.id],
     })
 
     // List out the groups the identity is in, expected only ToznyEngineers
     const responseToznyEngineers = await client.groupMembership(
       realmName,
-      identity_id
+      identityId
     )
     // Check to make sure the group we added is the only group
     expect(responseToznyEngineers).toBeInstanceOf(Array)
@@ -100,10 +99,10 @@ describe('Identity Group Membership', () => {
     expect(responseToznyEngineers[0].name).toBe('ToznyEngineers')
 
     // Leave the group
-    await client.leaveGroups(realmName, identity_id, { groups: [group1.id] })
+    await client.leaveGroups(realmName, identityId, { groups: [group1.id] })
 
     // Check group membership expected to be 0
-    const empty = await client.groupMembership(realmName, identity_id)
+    const empty = await client.groupMembership(realmName, identityId)
     expect(empty).toBeInstanceOf(Array)
     expect(empty).toHaveLength(0)
 
@@ -117,12 +116,12 @@ describe('Identity Group Membership', () => {
     expect(group3.id).toBeTruthy()
     expect(group3.name).toBe('ToznyOps')
     // Join all 3 groups
-    await client.joinGroups(realmName, identity_id, {
+    await client.joinGroups(realmName, identityId, {
       groups: [group1.id, group2.id, group3.id],
     })
 
     // Check membership for all 3 groups
-    const allGroups = await client.groupMembership(realmName, identity_id)
+    const allGroups = await client.groupMembership(realmName, identityId)
     expect(allGroups).toBeInstanceOf(Array)
     expect(allGroups).toHaveLength(3)
     expect(allGroups[0].id).toBeTruthy()

@@ -1,5 +1,4 @@
 import { Account, Client } from '..'
-// @ts-ignore no type defs exist for js-sdk
 import Tozny from '@toznysecure/sdk/node'
 import { cleanupRealms, createTestRealm } from './utils'
 
@@ -21,7 +20,7 @@ describe('Realm applications', () => {
   it('can list applications', async () => {
     const clientId = 'account'
     const applications = await client.listApplications(realmName)
-    const application = applications.find(app => app.clientId === clientId)
+    const application = applications.find((app) => app.clientId === clientId)
     expect(application).not.toBeUndefined()
   })
   it('can list applications by client ids', async () => {

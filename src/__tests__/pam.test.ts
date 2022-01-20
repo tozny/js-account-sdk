@@ -1,4 +1,3 @@
-// @ts-ignore no type defs exist for js-sdk
 import Tozny from '@toznysecure/sdk/node'
 import { Account, Client } from '..'
 import { cleanupRealms, createTestRealm } from './utils'
@@ -62,17 +61,11 @@ describe('Access Policies', () => {
       id: policyId,
       approvalRoles: [otherRole],
     })
-    const updatedGroupAccessPolicies = await client.upsertAccessPoliciesForGroup(
-      realmName,
-      group.id,
-      [updated]
-    )
+    const updatedGroupAccessPolicies =
+      await client.upsertAccessPoliciesForGroup(realmName, group.id, [updated])
     // remove access policy
-    const removedGroupAccessPolicies = await client.upsertAccessPoliciesForGroup(
-      realmName,
-      group.id,
-      []
-    )
+    const removedGroupAccessPolicies =
+      await client.upsertAccessPoliciesForGroup(realmName, group.id, [])
     // final fetch
     const afterRemove = await client.listAccessPoliciesForGroups(realmName, [
       group.id,

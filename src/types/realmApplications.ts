@@ -127,7 +127,8 @@ class ApplicationSAMLSettings {
     this.forceNameIdFormat = forceNameIdFormat
     this.nameIdFormat = nameIdFormat
     this.idpInitiatedSSOUrlName = idpInitiatedSSOUrlName
-    this.assertionConsumerServicePostBindingUrl = assertionConsumerServicePostBindingUrl
+    this.assertionConsumerServicePostBindingUrl =
+      assertionConsumerServicePostBindingUrl
   }
 
   static decode(

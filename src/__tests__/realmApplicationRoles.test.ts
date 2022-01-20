@@ -1,5 +1,4 @@
 import Account from '../account'
-// @ts-ignore no type defs exist for js-sdk
 import Tozny from '@toznysecure/sdk/node'
 import { v4 as uuidv4 } from 'uuid'
 import { cleanupRealms } from './utils'
@@ -68,20 +67,18 @@ describe('Realm Application Roles', () => {
     )
 
     // listing
-    const realmApplicationRoles: Role[] = await client.listRealmApplicationRoles(
-      realmName,
-      applicationId
-    )
+    const realmApplicationRoles: Role[] =
+      await client.listRealmApplicationRoles(realmName, applicationId)
 
     // there is one default role plus the two created above
     expect(realmApplicationRoles).toHaveLength(3)
 
-    const roleNames = realmApplicationRoles.map(r => r.name)
+    const roleNames = realmApplicationRoles.map((r) => r.name)
     expect(roleNames).toContain('uma_protection')
     expect(roleNames).toContain(superhuman.name)
     expect(roleNames).toContain(chef.name)
 
-    const roleIds = realmApplicationRoles.map(r => r.id)
+    const roleIds = realmApplicationRoles.map((r) => r.id)
     expect(roleIds).toContain(superhuman.id)
     expect(roleIds).toContain(chef.id)
 
@@ -112,7 +109,7 @@ describe('Realm Application Roles', () => {
       applicationId
     )
     expect(listed).toHaveLength(2)
-    expect(listed.map(r => r.id)).not.toContain(chef.id)
+    expect(listed.map((r) => r.id)).not.toContain(chef.id)
   })
 
   it('describes a role by id', async () => {

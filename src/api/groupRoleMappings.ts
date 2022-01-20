@@ -19,7 +19,7 @@ const roleMappingForGroupUri = (
   apiUrl: string,
   realmName: string,
   groupId: string
-): String =>
+): string =>
   `${apiUrl}/v1/identity/realm/${realmName}/group/${groupId}/role_mapping`
 
 type ListGroupRoleMappingsData = { groupId: string; realmName: string }

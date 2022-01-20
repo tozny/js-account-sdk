@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 /**
  * Account level API request definitions.
@@ -543,7 +544,7 @@ class API {
    * @return {Promise<object>} The raw webhook object written
    */
   async createWebhook(queenClient, webhook_url, triggers) {
-    const webhookTriggers = triggers.map(eventString => {
+    const webhookTriggers = triggers.map((eventString) => {
       return {
         enabled: true,
         api_event: eventString,
@@ -1157,8 +1158,8 @@ class API {
     const url = [`${this.apiUrl}/v1/identity/realm/${realmName}/identity`]
     const query = { first, max }
     const queryString = Object.keys(query)
-      .filter(k => !!query[k])
-      .map(k => `${k}=${encodeURIComponent(query[k])}`)
+      .filter((k) => !!query[k])
+      .map((k) => `${k}=${encodeURIComponent(query[k])}`)
       .join('&')
     if (queryString) {
       url.push(queryString)

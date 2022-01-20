@@ -1,5 +1,4 @@
 import Account from '../account'
-// @ts-ignore no type defs exist for js-sdk
 import Tozny from '@toznysecure/sdk/node'
 import { v4 as uuidv4 } from 'uuid'
 import { cleanupRealms } from './utils'

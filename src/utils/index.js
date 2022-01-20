@@ -35,7 +35,8 @@ function validateStorageClient(client) {
 }
 
 function validateEmail(inputEmail) {
-  const acceptableEmail = /^[a-zA-Z0-9+_.,-]+@([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/
+  const acceptableEmail =
+    /^[a-zA-Z0-9+_.,-]+@([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/
   const email = acceptableEmail.test(inputEmail.trim())
   if (!email) {
     throw new Error(`${inputEmail} is not an acceptable email address`)

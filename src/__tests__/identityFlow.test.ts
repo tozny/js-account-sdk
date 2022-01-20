@@ -1,9 +1,8 @@
 import Account from '../account'
-// @ts-ignore no type defs exist for js-sdk
 import Tozny from '@toznysecure/sdk/node'
 import { v4 as uuidv4 } from 'uuid'
 import { cleanupRealms } from './utils'
-const DetailedIdentity = require('../types/detailedIdentity')
+import { DetailedIdentity } from '../types'
 
 const accountFactory = new Account(Tozny, process.env.API_URL)
 let client: any = null

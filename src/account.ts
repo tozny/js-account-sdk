@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck disable type-checking for now. turn me back on when feeling brave.
 /**
  * Account connection operations, including setting up the SDK and API URL
@@ -44,18 +45,18 @@ class Account {
   /**
    * Gets the Tozny Storage constructor provided by the Tozny client SDK.
    *
-   * @return {Function} The Storage constructor
+   * @return {any} The Storage constructor
    */
-  get Storage(): Function {
+  get Storage(): any {
     return this._sdk.storage
   }
 
   /**
    * Gets the Tozny Identity constructor provided by the Tozny client SDK.
    *
-   * @return {Function}
+   * @return {any}
    */
-  get Identity(): Function {
+  get Identity(): any {
     return this._sdk.identity
   }
 
@@ -80,7 +81,7 @@ class Account {
   async login(
     username: string,
     password: string,
-    type: string = 'standard'
+    type = 'standard'
   ): Promise<Client> {
     const challenge = await this.api.getChallenge(username)
     const b64AuthSalt =
@@ -211,7 +212,7 @@ class Account {
     )
 
     // Set up user profile
-    let profile = {
+    const profile = {
       name,
       email,
       auth_salt: await this.crypto.platform.b64URLEncode(authSalt),
@@ -230,7 +231,7 @@ class Account {
     const clientEncKeys = await this.crypto.generateKeypair()
     const clientSigKeys = await this.crypto.generateSigningKeypair()
     // Set up the user account
-    let account = {
+    const account = {
       company: '',
       plan: 'free0',
       public_key: {
@@ -359,7 +360,7 @@ class Account {
     )
 
     // Set up user profile
-    let profile = {
+    const profile = {
       auth_salt: await this.crypto.platform.b64URLEncode(authSalt),
       enc_salt: await this.crypto.platform.b64URLEncode(encSalt),
       paper_auth_salt: await this.crypto.platform.b64URLEncode(paperAuthSalt),
@@ -386,7 +387,7 @@ class Account {
     const clientEncKeys = await this.crypto.generateKeypair()
     const clientSigKeys = await this.crypto.generateSigningKeypair()
 
-    let client = {
+    const client = {
       name: 'Backup Client',
       public_key: {
         curve25519: clientEncKeys.publicKey,
@@ -396,7 +397,7 @@ class Account {
       },
     }
 
-    let newQueen = await clientApi.rollQueen(client)
+    const newQueen = await clientApi.rollQueen(client)
 
     const backupConfig = new this.Storage.Config(
       newQueen.client_id,

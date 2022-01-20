@@ -147,7 +147,7 @@ describe('Account Client', () => {
       )
       // Register identities so there are several to test with
       const usernames = await Promise.all(
-        [0, 1].map(async i => {
+        [0, 1].map(async (i) => {
           const username = `testuser${i}`
           await realm.register(
             username,
@@ -165,7 +165,7 @@ describe('Account Client', () => {
       // Validate
       expect(identities.length).toEqual(usernames.length)
       const seen = []
-      identities.forEach(i => {
+      identities.forEach((i) => {
         expect(i).toBeInstanceOf(BasicIdentity)
         expect(usernames).toContain(i.username)
         expect(seen).toEqual(expect.not.arrayContaining([i.id]))
@@ -195,7 +195,7 @@ describe('Account Client', () => {
       )
       // Register identities so there are several to test with
       await Promise.all(
-        [0, 1].map(async i => {
+        [0, 1].map(async (i) => {
           const username = `testuser${i}`
           await realm.register(
             username,
@@ -215,7 +215,7 @@ describe('Account Client', () => {
       for (let i = 0; i < 3; i++) {
         const identities = await idList.next()
         seen = seen.concat(
-          identities.map(i => i.id).filter(i => !seen.includes(i))
+          identities.map((i) => i.id).filter((i) => !seen.includes(i))
         )
         pages++
         // if the list report it is done iterating, break the loop.
@@ -251,7 +251,7 @@ describe('Account Client', () => {
       expect(idDetails).toBeInstanceOf(DetailedIdentity)
       expect(idDetails.username).toBe(sovereignName.toLowerCase())
       expect(
-        idDetails.roles.client['realm-management'].map(r => r.name)
+        idDetails.roles.client['realm-management'].map((r) => r.name)
       ).toContain('realm-admin')
     } finally {
       await cleanupRealms(client)
