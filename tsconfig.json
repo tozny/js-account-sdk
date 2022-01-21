@@ -6,8 +6,18 @@
     "module": "commonjs" /* Specify what module code is generated. */,
     "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. */,
-    "strict": true /* Enable all strict type-checking options. */
+    "strict": true /* Enable all strict type-checking options. */,
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
+    "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ] /* List of folders to include type definitions from. */
   },
   "include": ["./src/**/*"],
-  "exclude": ["./src/__tests__"]
+  "exclude": ["./src/__tests__"],
+  "typeRoots": [
+    "./node_modules/@types",
+    "./types"
+  ] /* List of folders to include type definitions from. */
 }
