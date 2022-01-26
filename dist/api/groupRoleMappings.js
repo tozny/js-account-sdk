@@ -26,7 +26,7 @@ function addGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { apiUrl
             body: JSON.stringify(groupRoleMapping),
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.addGroupRoleMappings = addGroupRoleMappings;
@@ -37,7 +37,7 @@ function removeGroupRoleMappings({ realmName, groupId, groupRoleMapping }, { api
             body: JSON.stringify(groupRoleMapping),
         });
         (0, utils_1.checkStatus)(response);
-        return;
+        return true;
     });
 }
 exports.removeGroupRoleMappings = removeGroupRoleMappings;
