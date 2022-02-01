@@ -1,4 +1,5 @@
 # Tozny JS Account SDK
+
 [![Build Status](https://app.travis-ci.com/tozny/js-account-sdk.svg?branch=master)](https://app.travis-ci.com/tozny/js-account-sdk)
 
 Javascript SDK for performing Tozny platform account level operations
@@ -341,8 +342,6 @@ await accountClient.deleteRealmApplicationRole(realmName, applicationId, roleNam
 
 **List identities in a realm**
 
-
-
 ```js
 const realmName = 'westeros'
 // list identities in westeros 10 at a time
@@ -360,19 +359,30 @@ while (!idList.done) {
 **Register an Identity in a Realm**
 
 ```js
+// Note: Identities should be registered using Tozny's JS SDK (@toznysecure/sdk/node) instead of the account client. The account client's registerIdentity() is intended for internal use.
+
 // Create a token
 const token = await accountClient.newRegistrationToken(tokenName, permissions)
-const identity = {
-  name: 'identityName',
-  email: 'identity@example.com',
-  first_name: 'firstName',
-  last_name: 'lastName',
-}
-// Register Identity
-const registeredIdentity = await accountClient.registerIdentity(
+
+// Create a Realm object
+const realmName = 'realmName'
+const appName = 'account'
+const brokerTargetUrl = 'https://id.tozny.com/example/recover'
+const apiUrl = 'https://api.e3db.com'
+const realm = new Tozny.identity.Realm(
   realmName,
+  appName,
+  brokerTargetUrl,
+  apiUrl
+)
+
+// Register Identity
+const username = 'user'
+identity = await realm.register(
+  username,
+  'secure-password',
   token.token,
-  identity
+  'email@example.com'
 )
 ```
 

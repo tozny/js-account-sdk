@@ -419,7 +419,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:997](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L997)
+[client.ts:1002](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1002)
 
 ___
 
@@ -756,7 +756,7 @@ The hosted broker public info.
 
 #### Defined in
 
-[client.ts:1045](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1045)
+[client.ts:1050](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1050)
 
 ___
 
@@ -781,7 +781,7 @@ The identity
 
 #### Defined in
 
-[client.ts:1118](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1118)
+[client.ts:1123](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1123)
 
 ___
 
@@ -921,7 +921,7 @@ const data = await accountClient.listAccessPoliciesForGroups(
 
 #### Defined in
 
-[client.ts:1203](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1203)
+[client.ts:1208](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1208)
 
 ___
 
@@ -950,7 +950,7 @@ const applications = await accountClient.listApplications(realmName)
 
 #### Defined in
 
-[client.ts:1298](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1298)
+[client.ts:1303](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1303)
 
 ___
 
@@ -986,7 +986,7 @@ const applicationID = applications[0].id
 
 #### Defined in
 
-[client.ts:1327](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1327)
+[client.ts:1332](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1332)
 
 ___
 
@@ -1107,7 +1107,7 @@ A object usable for making paginated queries.
 
 #### Defined in
 
-[client.ts:1078](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1078)
+[client.ts:1083](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1083)
 
 ___
 
@@ -1271,7 +1271,7 @@ This will likely be replaced by a call to GET the account profile.
 
 #### Defined in
 
-[client.ts:1140](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1140)
+[client.ts:1145](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1145)
 
 ___
 
@@ -1282,6 +1282,11 @@ ___
 Registers an identity with the specified realm using the specified parameters,returning the created identity and error (if any).
 
 Note that the `identity` input takes snake_case values.
+
+registerIdentity() is intended for internal use. The JS SDK (@toznysecure/sdk/node) should be used instead to register Identities.
+
+Note that no notes are written in this method, so the broker Identity is unable to perform password recovery for Identities registered with this method.
+The Identity will be unable to login to the Realm as a result.
 
 **`example`**
 ```js
@@ -1315,7 +1320,7 @@ const identityResponse = await accountClient.registerIdentity(
 
 #### Defined in
 
-[client.ts:969](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L969)
+[client.ts:974](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L974)
 
 ___
 
@@ -1340,7 +1345,7 @@ The broker identity for the realm.
 
 #### Defined in
 
-[client.ts:1009](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1009)
+[client.ts:1014](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1014)
 
 ___
 
@@ -1473,7 +1478,7 @@ Requests Tozny account email verification be resent.
 
 #### Defined in
 
-[client.ts:1149](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1149)
+[client.ts:1154](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1154)
 
 ___
 
@@ -1495,7 +1500,7 @@ ___
 
 #### Defined in
 
-[client.ts:1344](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1344)
+[client.ts:1349](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1349)
 
 ___
 
@@ -1796,7 +1801,7 @@ Object containing groups `id` & `accessPolicies`
 
 #### Defined in
 
-[client.ts:1267](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1267)
+[client.ts:1272](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1272)
 
 ___
 

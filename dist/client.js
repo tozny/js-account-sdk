@@ -754,6 +754,11 @@ class Client {
      *
      * Note that the `identity` input takes snake_case values.
      *
+     * registerIdentity() is intended for internal use. The JS SDK (@toznysecure/sdk/node) should be used instead to register Identities.
+     *
+     * Note that no notes are written in this method, so the broker Identity is unable to perform password recovery for Identities registered with this method.
+     * The Identity will be unable to login to the Realm as a result.
+     *
      * @example
      * ```js
      * // Create a token
