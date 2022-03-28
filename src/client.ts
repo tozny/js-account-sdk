@@ -742,17 +742,17 @@ class Client {
    * ```
    *
    * @param {string} realmName Name of realm.
-   * @param {string} identityId Id of Tozny identity
+   * @param {string} identityToznyId Id of Tozny identity
    * @returns {Promise<Group[]>}
    */
   async groupMembership(
     realmName: string,
-    identityId: string
+    identityToznyId: string
   ): Promise<Group[]> {
     const rawResponse = await this.api.groupMembership(
       this.queenClient,
       realmName,
-      identityId
+      identityToznyId
     )
     return rawResponse.map(Group.decode)
   }
@@ -761,27 +761,28 @@ class Client {
    *
    * @example
    * ```js
-   *   const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+   * const identity = await accountClient.identityDetails(realmName, username)
+   * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
    *   name: 'ToznyEngineers',
    * })
-   * await client.updateGroupMembership(realmName, identityId, {
+   * await client.updateGroupMembership(realmName, identity.toznyId, {
    *   groups: [toznyEngineersGroup.id],
    * })
    * ```
    * @param {string} realmName Name of realm.
-   * @param {string} identityId Id of Tozny identity
+   * @param {string} identityToznyId Id of Tozny identity
    * @param {GroupsInput} groups List of groups or group ids to update in an object on the `groups` key
    * @returns {Promise<boolean>} True if successful
    */
   async updateGroupMembership(
     realmName: string,
-    identityId: string,
+    identityToznyId: string,
     groups: GroupsInput
   ): Promise<boolean> {
     return this.api.updateGroupMembership(
       this.queenClient,
       realmName,
-      identityId,
+      identityToznyId,
       groups
     )
   }
@@ -790,53 +791,65 @@ class Client {
    *
    * @example
    * ```js
+   * const identity = await accountClient.identityDetails(realmName, username)
    * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
    *   name: 'ToznyEngineers',
    * })
-   * await client.joinGroups(realmName, identityId, {
+   * await client.joinGroups(realmName, identity.toznyId, {
    *   groups: [toznyEngineersGroup.id],
    * })
    * ```
    *
    * @param {string} realmName Name of realm.
-   * @param {string} identityId Id of Tozny identity
+   * @param {string} identityToznyId Id of Tozny identity
    * @param {GroupsInput} groups List of groups or group ids to join in an object on the `groups` key
    * @returns {Promise<boolean>} True if successful
    */
   async joinGroups(
     realmName: string,
-    identityId: string,
+    identityToznyId: string,
     groups: GroupsInput
   ): Promise<boolean> {
-    return this.api.joinGroups(this.queenClient, realmName, identityId, groups)
+    return this.api.joinGroups(
+      this.queenClient,
+      realmName,
+      identityToznyId,
+      groups
+    )
   }
   /**
    * Leave a list of Realm Groups for an identity
    *
    * @example
    * ```js
+   * const identity = await accountClient.identityDetails(realmName, username)
    * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
    *   name: 'ToznyEngineers',
    * })
-   * await client.joinGroups(realmName, identityId, {
+   * await client.joinGroups(realmName, identity.toznyId, {
    *   groups: [toznyEngineersGroup.id],
    * })
-   * await client.leaveGroups(realmName, identityId, {
+   * await client.leaveGroups(realmName, identity.toznyId, {
    *   groups: [toznyEngineersGroup.id],
    * })
    * ```
    *
    * @param {string} realmName Name of realm.
-   * @param {string} identityId Id of Tozny identity
+   * @param {string} identityToznyId Id of Tozny identity
    * @param {GroupsInput} groups List of groups or group ids to leave in an object on the `groups` key
    * @returns {Promise<boolean>} True if successful
    */
   async leaveGroups(
     realmName: string,
-    identityId: string,
+    identityToznyId: string,
     groups: GroupsInput
   ): Promise<boolean> {
-    return this.api.leaveGroups(this.queenClient, realmName, identityId, groups)
+    return this.api.leaveGroups(
+      this.queenClient,
+      realmName,
+      identityToznyId,
+      groups
+    )
   }
   /**
    * Lists all default groups for the request realm.
