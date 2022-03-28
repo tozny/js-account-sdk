@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tozny/tozny-js-account-sdk.git"
+    "url": "git+https://github.com/tozny/js-account-sdk.git"
   },
   "keywords": [
     "crypto",
@@ -34,9 +34,9 @@
   },
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/tozny/tozny-js-account-sdk/issues"
+    "url": "https://github.com/tozny/js-account-sdk/issues"
   },
-  "homepage": "https://github.com/tozny/tozny-js-account-sdk#readme",
+  "homepage": "https://github.com/tozny/js-account-sdk#readme",
   "dependencies": {
     "isomorphic-fetch": "^3.0.0",
     "niceware": "^2.0.0"

@@ -204,7 +204,7 @@ await client.addDefaultRealmGroups(realmName, {
 
 #### Defined in
 
-[client.ts:904](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L904)
+[client.ts:917](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L917)
 
 ___
 
@@ -419,7 +419,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:1002](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1002)
+[client.ts:1015](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1015)
 
 ___
 
@@ -715,7 +715,7 @@ ___
 
 ### groupMembership
 
-▸ **groupMembership**(`realmName`, `identityId`): `Promise`<`Group`[]\>
+▸ **groupMembership**(`realmName`, `identityToznyId`): `Promise`<`Group`[]\>
 
 List all realm groups for an identity
 
@@ -730,7 +730,7 @@ const groupList = await client.groupMembership(realmName, identity.toznyId)
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `realmName` | `string` | Name of realm. |
-| `identityId` | `string` | Id of Tozny identity |
+| `identityToznyId` | `string` | Id of Tozny identity |
 
 #### Returns
 
@@ -756,7 +756,7 @@ The hosted broker public info.
 
 #### Defined in
 
-[client.ts:1050](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1050)
+[client.ts:1063](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1063)
 
 ___
 
@@ -781,22 +781,23 @@ The identity
 
 #### Defined in
 
-[client.ts:1123](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1123)
+[client.ts:1136](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1136)
 
 ___
 
 ### joinGroups
 
-▸ **joinGroups**(`realmName`, `identityId`, `groups`): `Promise`<`boolean`\>
+▸ **joinGroups**(`realmName`, `identityToznyId`, `groups`): `Promise`<`boolean`\>
 
 Join a list of Realm groups for an identity
 
 **`example`**
 ```js
+const identity = await accountClient.identityDetails(realmName, username)
 const toznyEngineersGroup = await client.createRealmGroup(realmName, {
   name: 'ToznyEngineers',
 })
-await client.joinGroups(realmName, identityId, {
+await client.joinGroups(realmName, identity.toznyId, {
   groups: [toznyEngineersGroup.id],
 })
 ```
@@ -806,7 +807,7 @@ await client.joinGroups(realmName, identityId, {
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `realmName` | `string` | Name of realm. |
-| `identityId` | `string` | Id of Tozny identity |
+| `identityToznyId` | `string` | Id of Tozny identity |
 | `groups` | `GroupsInput` | List of groups or group ids to join in an object on the `groups` key |
 
 #### Returns
@@ -817,25 +818,26 @@ True if successful
 
 #### Defined in
 
-[client.ts:806](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L806)
+[client.ts:808](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L808)
 
 ___
 
 ### leaveGroups
 
-▸ **leaveGroups**(`realmName`, `identityId`, `groups`): `Promise`<`boolean`\>
+▸ **leaveGroups**(`realmName`, `identityToznyId`, `groups`): `Promise`<`boolean`\>
 
 Leave a list of Realm Groups for an identity
 
 **`example`**
 ```js
+const identity = await accountClient.identityDetails(realmName, username)
 const toznyEngineersGroup = await client.createRealmGroup(realmName, {
   name: 'ToznyEngineers',
 })
-await client.joinGroups(realmName, identityId, {
+await client.joinGroups(realmName, identity.toznyId, {
   groups: [toznyEngineersGroup.id],
 })
-await client.leaveGroups(realmName, identityId, {
+await client.leaveGroups(realmName, identity.toznyId, {
   groups: [toznyEngineersGroup.id],
 })
 ```
@@ -845,7 +847,7 @@ await client.leaveGroups(realmName, identityId, {
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `realmName` | `string` | Name of realm. |
-| `identityId` | `string` | Id of Tozny identity |
+| `identityToznyId` | `string` | Id of Tozny identity |
 | `groups` | `GroupsInput` | List of groups or group ids to leave in an object on the `groups` key |
 
 #### Returns
@@ -856,7 +858,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:834](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L834)
+[client.ts:842](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L842)
 
 ___
 
@@ -921,7 +923,7 @@ const data = await accountClient.listAccessPoliciesForGroups(
 
 #### Defined in
 
-[client.ts:1208](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1208)
+[client.ts:1221](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1221)
 
 ___
 
@@ -950,7 +952,7 @@ const applications = await accountClient.listApplications(realmName)
 
 #### Defined in
 
-[client.ts:1303](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1303)
+[client.ts:1316](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1316)
 
 ___
 
@@ -986,7 +988,7 @@ const applicationID = applications[0].id
 
 #### Defined in
 
-[client.ts:1332](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1332)
+[client.ts:1345](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1345)
 
 ___
 
@@ -1036,7 +1038,7 @@ List of all groups at realm.
 
 #### Defined in
 
-[client.ts:851](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L851)
+[client.ts:864](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L864)
 
 ___
 
@@ -1107,7 +1109,7 @@ A object usable for making paginated queries.
 
 #### Defined in
 
-[client.ts:1083](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1083)
+[client.ts:1096](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1096)
 
 ___
 
@@ -1271,7 +1273,7 @@ This will likely be replaced by a call to GET the account profile.
 
 #### Defined in
 
-[client.ts:1145](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1145)
+[client.ts:1158](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1158)
 
 ___
 
@@ -1320,7 +1322,7 @@ const identityResponse = await accountClient.registerIdentity(
 
 #### Defined in
 
-[client.ts:974](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L974)
+[client.ts:987](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L987)
 
 ___
 
@@ -1345,7 +1347,7 @@ The broker identity for the realm.
 
 #### Defined in
 
-[client.ts:1014](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1014)
+[client.ts:1027](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1027)
 
 ___
 
@@ -1400,7 +1402,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:930](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L930)
+[client.ts:943](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L943)
 
 ___
 
@@ -1462,7 +1464,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:876](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L876)
+[client.ts:889](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L889)
 
 ___
 
@@ -1478,7 +1480,7 @@ Requests Tozny account email verification be resent.
 
 #### Defined in
 
-[client.ts:1154](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1154)
+[client.ts:1167](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1167)
 
 ___
 
@@ -1500,7 +1502,7 @@ ___
 
 #### Defined in
 
-[client.ts:1349](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1349)
+[client.ts:1362](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1362)
 
 ___
 
@@ -1575,16 +1577,17 @@ ___
 
 ### updateGroupMembership
 
-▸ **updateGroupMembership**(`realmName`, `identityId`, `groups`): `Promise`<`boolean`\>
+▸ **updateGroupMembership**(`realmName`, `identityToznyId`, `groups`): `Promise`<`boolean`\>
 
 Update group membership
 
 **`example`**
 ```js
-  const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+const identity = await accountClient.identityDetails(realmName, username)
+const toznyEngineersGroup = await client.createRealmGroup(realmName, {
   name: 'ToznyEngineers',
 })
-await client.updateGroupMembership(realmName, identityId, {
+await client.updateGroupMembership(realmName, identity.toznyId, {
   groups: [toznyEngineersGroup.id],
 })
 ```
@@ -1594,7 +1597,7 @@ await client.updateGroupMembership(realmName, identityId, {
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `realmName` | `string` | Name of realm. |
-| `identityId` | `string` | Id of Tozny identity |
+| `identityToznyId` | `string` | Id of Tozny identity |
 | `groups` | `GroupsInput` | List of groups or group ids to update in an object on the `groups` key |
 
 #### Returns
@@ -1605,7 +1608,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:776](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L776)
+[client.ts:777](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L777)
 
 ___
 
@@ -1801,7 +1804,7 @@ Object containing groups `id` & `accessPolicies`
 
 #### Defined in
 
-[client.ts:1272](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1272)
+[client.ts:1285](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1285)
 
 ___
 
