@@ -9,8 +9,9 @@ To contribute to the Tozny Platform Admin JS SDK, review these guidelines carefu
 Code linting is provided by ES Lint, and coding style is managed with Prettier. Ensure all code is lint free and formatted code before submitting it to the Tozny Platform Admin JS SDK.
 
 In addition to automated linting, some things should be kept in mind when designing new APIs:
-* use `camelCase` for all object keys
-  * though the underlying web api uses snake_case, we should do our best to not expose this in our js abstraction. we've adopted camelCase as our coding style, and we should avoid mixing case types whenever possible. camelCase should be converted to snake_case at the request layer, and responses should be converted back to camelCase before being returned.
+
+- use `camelCase` for all object keys
+  - though the underlying web api uses snake_case, we should do our best to not expose this in our js abstraction. we've adopted camelCase as our coding style, and we should avoid mixing case types whenever possible. camelCase should be converted to snake_case at the request layer, and responses should be converted back to camelCase before being returned.
 
 ### Types
 
@@ -27,10 +28,13 @@ Originally, this project used vanilla ES6 javascript that is natively available 
 Source code in `src/` is compiled from ts/js to ES6 js in `dist/`. The compiled files are committed into source control in an effort to allow consumers to install only production dependencies. The `package.json` points to `dist/index.js`, so no build/compilation on install is required. Eventually this might not be the case (see below), but for now **you must compile the code & commit the compiled code in `dist`**.
 
 To compile updated or altered code from js/ts to the build directory, ensure all build dependencies are installed:
+
 ```sh
 npm i
 ```
+
 and compile code and docs with
+
 ```sh
 npm run build
 npm run docs
@@ -38,13 +42,13 @@ npm run docs
 
 The javascript target of our typescript compilation is ES6 for backwards compatibility. Most ES6 features are natively supported by the targeted Node versions, but ES6 module support is not generally available yet. Use the [node.green](https://node.green/) table to check if you are unsure if a feature is natively supported, and [CanIUse](https://caniuse.com/) to check for native browser support.
 
-
 #### TS Migration Path
+
 The migration is an iterative process of betterment! Here's a rough sketch of the goal of migration:
 
-* **Version 0** (You are here) - we as a team can develop in typescript. New code can be written in ts & be imported into existing js files. Code gets compiled and the compiled files are committed to source control for outside consumption.
-* **Verison 0.5** - migration of existing js is completed. most of this work can be accomplished with automated code tools: a combination of [`5to6`](https://github.com/5to6/5to6-codemod) (for migrating `require`/`module` -> `import`/`export`) & [`ts-migrate`](https://github.com/airbnb/ts-migrate). if not this, simply creating `*.d.ts` declarations for our js code would go a long way for external consumption.
-* **Version 1** - typescript files are built on install & `dist` is removed from source code tracking. this allows external applications written in typescript to have the type safety guaranteed by our library being in ts.
+- **Version 0** (You are here) - we as a team can develop in typescript. New code can be written in ts & be imported into existing js files. Code gets compiled and the compiled files are committed to source control for outside consumption.
+- **Verison 0.5** - migration of existing js is completed. most of this work can be accomplished with automated code tools: a combination of [`5to6`](https://github.com/5to6/5to6-codemod) (for migrating `require`/`module` -> `import`/`export`) & [`ts-migrate`](https://github.com/airbnb/ts-migrate). if not this, simply creating `*.d.ts` declarations for our js code would go a long way for external consumption.
+- **Version 1** - typescript files are built on install & `dist` is removed from source code tracking. this allows external applications written in typescript to have the type safety guaranteed by our library being in ts.
 
 ## Testing
 

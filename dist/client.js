@@ -292,6 +292,18 @@ class Client {
         });
     }
     /**
+     * Requests the user count of a specified TozID Realm
+     *
+     * @param {string} realmName The name for the realm to delete.
+     *
+     * @returns {Promise<object>} The user count
+     */
+    getRealmUserCount(realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.getRealmUserCount(this.queenClient, realmName);
+        });
+    }
+    /**
      * Requests the deletion of a named TozID Realm belonging to the account.
      *
      * @param {string} realmName The name for the realm to delete.
@@ -582,12 +594,12 @@ class Client {
      * ```
      *
      * @param {string} realmName Name of realm.
-     * @param {string} identityId Id of Tozny identity
+     * @param {string} identityToznyId Id of Tozny identity
      * @returns {Promise<Group[]>}
      */
-    groupMembership(realmName, identityId) {
+    groupMembership(realmName, identityToznyId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const rawResponse = yield this.api.groupMembership(this.queenClient, realmName, identityId);
+            const rawResponse = yield this.api.groupMembership(this.queenClient, realmName, identityToznyId);
             return rawResponse.map(types_1.Group.decode);
         });
     }
@@ -596,21 +608,22 @@ class Client {
      *
      * @example
      * ```js
-     *   const toznyEngineersGroup = await client.createRealmGroup(realmName, {
+     * const identity = await accountClient.identityDetails(realmName, username)
+     * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
      *   name: 'ToznyEngineers',
      * })
-     * await client.updateGroupMembership(realmName, identityId, {
+     * await client.updateGroupMembership(realmName, identity.toznyId, {
      *   groups: [toznyEngineersGroup.id],
      * })
      * ```
      * @param {string} realmName Name of realm.
-     * @param {string} identityId Id of Tozny identity
+     * @param {string} identityToznyId Id of Tozny identity
      * @param {GroupsInput} groups List of groups or group ids to update in an object on the `groups` key
      * @returns {Promise<boolean>} True if successful
      */
-    updateGroupMembership(realmName, identityId, groups) {
+    updateGroupMembership(realmName, identityToznyId, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.updateGroupMembership(this.queenClient, realmName, identityId, groups);
+            return this.api.updateGroupMembership(this.queenClient, realmName, identityToznyId, groups);
         });
     }
     /**
@@ -618,22 +631,23 @@ class Client {
      *
      * @example
      * ```js
+     * const identity = await accountClient.identityDetails(realmName, username)
      * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
      *   name: 'ToznyEngineers',
      * })
-     * await client.joinGroups(realmName, identityId, {
+     * await client.joinGroups(realmName, identity.toznyId, {
      *   groups: [toznyEngineersGroup.id],
      * })
      * ```
      *
      * @param {string} realmName Name of realm.
-     * @param {string} identityId Id of Tozny identity
+     * @param {string} identityToznyId Id of Tozny identity
      * @param {GroupsInput} groups List of groups or group ids to join in an object on the `groups` key
      * @returns {Promise<boolean>} True if successful
      */
-    joinGroups(realmName, identityId, groups) {
+    joinGroups(realmName, identityToznyId, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.joinGroups(this.queenClient, realmName, identityId, groups);
+            return this.api.joinGroups(this.queenClient, realmName, identityToznyId, groups);
         });
     }
     /**
@@ -641,25 +655,26 @@ class Client {
      *
      * @example
      * ```js
+     * const identity = await accountClient.identityDetails(realmName, username)
      * const toznyEngineersGroup = await client.createRealmGroup(realmName, {
      *   name: 'ToznyEngineers',
      * })
-     * await client.joinGroups(realmName, identityId, {
+     * await client.joinGroups(realmName, identity.toznyId, {
      *   groups: [toznyEngineersGroup.id],
      * })
-     * await client.leaveGroups(realmName, identityId, {
+     * await client.leaveGroups(realmName, identity.toznyId, {
      *   groups: [toznyEngineersGroup.id],
      * })
      * ```
      *
      * @param {string} realmName Name of realm.
-     * @param {string} identityId Id of Tozny identity
+     * @param {string} identityToznyId Id of Tozny identity
      * @param {GroupsInput} groups List of groups or group ids to leave in an object on the `groups` key
      * @returns {Promise<boolean>} True if successful
      */
-    leaveGroups(realmName, identityId, groups) {
+    leaveGroups(realmName, identityToznyId, groups) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.leaveGroups(this.queenClient, realmName, identityId, groups);
+            return this.api.leaveGroups(this.queenClient, realmName, identityToznyId, groups);
         });
     }
     /**

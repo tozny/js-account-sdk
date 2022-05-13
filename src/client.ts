@@ -359,6 +359,17 @@ class Client {
   }
 
   /**
+   * Requests the user count of a specified TozID Realm
+   *
+   * @param {string} realmName The name for the realm to delete.
+   *
+   * @returns {Promise<object>} The user count
+   */
+  async getRealmUserCount(realmName: string): Promise<object> {
+    return this.api.getRealmUserCount(this.queenClient, realmName)
+  }
+
+  /**
    * Requests the deletion of a named TozID Realm belonging to the account.
    *
    * @param {string} realmName The name for the realm to delete.
