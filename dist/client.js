@@ -300,7 +300,7 @@ class Client {
      */
     getRealmUserCount(realmName) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.getRealmUserCount(this.queenClient, realmName);
+            return yield this.api.getRealmUserCount(this.queenClient, realmName);
         });
     }
     /**

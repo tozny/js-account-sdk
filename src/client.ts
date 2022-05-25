@@ -366,7 +366,7 @@ class Client {
    * @returns {Promise<object>} The user count
    */
   async getRealmUserCount(realmName: string): Promise<object> {
-    return this.api.getRealmUserCount(this.queenClient, realmName)
+    return await this.api.getRealmUserCount(this.queenClient, realmName)
   }
 
   /**

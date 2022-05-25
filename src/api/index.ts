@@ -666,7 +666,7 @@ class API {
    */
   async getRealmUserCount(queenClient, realmName) {
     const response = await queenClient.authenticator.tsv1Fetch(
-      this.apiUrl + `v1/identity/realm/${realmName}/identity/count`,
+      this.apiUrl + `/v1/identity/realm/${realmName}/identity/count`,
       {
         method: 'GET',
       }
