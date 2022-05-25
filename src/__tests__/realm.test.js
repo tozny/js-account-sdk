@@ -171,6 +171,9 @@ describe('Account Client', () => {
         expect(seen).toEqual(expect.not.arrayContaining([i.id]))
         seen.push(i.id)
       })
+
+      const users = await client.getRealmUserCount(realmName)
+      expect(users.identity_count).toBe(usernames.length)
     } finally {
       await cleanupRealms(client)
     }

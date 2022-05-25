@@ -117,7 +117,7 @@ const accountClient = account.client
 
 #### Defined in
 
-[client.ts:63](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L63)
+[client.ts:64](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L64)
 
 ## Properties
 
@@ -127,7 +127,7 @@ const accountClient = account.client
 
 #### Defined in
 
-[client.ts:59](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L59)
+[client.ts:60](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L60)
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 #### Defined in
 
-[client.ts:60](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L60)
+[client.ts:61](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L61)
 
 ## Accessors
 
@@ -151,7 +151,7 @@ ___
 
 #### Defined in
 
-[client.ts:75](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L75)
+[client.ts:76](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L76)
 
 ## Methods
 
@@ -171,7 +171,7 @@ ___
 
 #### Defined in
 
-[client.ts:170](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L170)
+[client.ts:171](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L171)
 
 ___
 
@@ -205,7 +205,7 @@ await client.addDefaultRealmGroups(realmName, {
 
 #### Defined in
 
-[client.ts:928](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L928)
+[client.ts:933](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L933)
 
 ___
 
@@ -249,7 +249,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:713](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L713)
+[client.ts:718](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L718)
 
 ___
 
@@ -263,7 +263,7 @@ ___
 
 #### Defined in
 
-[client.ts:160](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L160)
+[client.ts:161](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L161)
 
 ___
 
@@ -283,7 +283,7 @@ ___
 
 #### Defined in
 
-[client.ts:91](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L91)
+[client.ts:92](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L92)
 
 ___
 
@@ -309,7 +309,7 @@ The representation of the created realm returned by the server.
 
 #### Defined in
 
-[client.ts:337](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L337)
+[client.ts:338](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L338)
 
 ___
 
@@ -335,7 +335,7 @@ The newly created role.
 
 #### Defined in
 
-[client.ts:568](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L568)
+[client.ts:573](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L573)
 
 ___
 
@@ -361,7 +361,7 @@ The newly created group.
 
 #### Defined in
 
-[client.ts:405](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L405)
+[client.ts:410](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L410)
 
 ___
 
@@ -386,7 +386,7 @@ The newly created role.
 
 #### Defined in
 
-[client.ts:490](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L490)
+[client.ts:495](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L495)
 
 ___
 
@@ -420,7 +420,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:1026](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1026)
+[client.ts:1031](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1031)
 
 ___
 
@@ -444,7 +444,7 @@ Empty object.
 
 #### Defined in
 
-[client.ts:379](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L379)
+[client.ts:384](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L384)
 
 ___
 
@@ -470,7 +470,7 @@ True if successful.
 
 #### Defined in
 
-[client.ts:615](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L615)
+[client.ts:620](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L620)
 
 ___
 
@@ -495,7 +495,7 @@ True if successful.
 
 #### Defined in
 
-[client.ts:477](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L477)
+[client.ts:482](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L482)
 
 ___
 
@@ -520,7 +520,7 @@ True if successful.
 
 #### Defined in
 
-[client.ts:531](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L531)
+[client.ts:536](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L536)
 
 ___
 
@@ -544,7 +544,7 @@ True if the operation succeeds.
 
 #### Defined in
 
-[client.ts:244](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L244)
+[client.ts:245](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L245)
 
 ___
 
@@ -568,7 +568,7 @@ True if the operation succeeds.
 
 #### Defined in
 
-[client.ts:282](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L282)
+[client.ts:283](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L283)
 
 ___
 
@@ -592,7 +592,7 @@ Describe a realm application role by id.
 
 #### Defined in
 
-[client.ts:636](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L636)
+[client.ts:641](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L641)
 
 ___
 
@@ -615,7 +615,7 @@ Describe a realm group by id.
 
 #### Defined in
 
-[client.ts:424](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L424)
+[client.ts:429](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L429)
 
 ___
 
@@ -638,7 +638,7 @@ Describe a realm role by id.
 
 #### Defined in
 
-[client.ts:542](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L542)
+[client.ts:547](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L547)
 
 ___
 
@@ -663,7 +663,7 @@ aggregations response object
 
 #### Defined in
 
-[client.ts:320](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L320)
+[client.ts:321](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L321)
 
 ___
 
@@ -683,7 +683,7 @@ ___
 
 #### Defined in
 
-[client.ts:191](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L191)
+[client.ts:192](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L192)
 
 ___
 
@@ -707,7 +707,7 @@ The user count
 
 #### Defined in
 
-[client.ts:368](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L368)
+[client.ts:369](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L369)
 
 ___
 
@@ -734,7 +734,7 @@ request response object
 
 #### Defined in
 
-[client.ts:296](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L296)
+[client.ts:297](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L297)
 
 ___
 
@@ -763,7 +763,7 @@ const groupList = await client.groupMembership(realmName, identity.toznyId)
 
 #### Defined in
 
-[client.ts:759](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L759)
+[client.ts:764](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L764)
 
 ___
 
@@ -781,7 +781,7 @@ The hosted broker public info.
 
 #### Defined in
 
-[client.ts:1074](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1074)
+[client.ts:1079](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1079)
 
 ___
 
@@ -806,7 +806,7 @@ The identity
 
 #### Defined in
 
-[client.ts:1147](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1147)
+[client.ts:1152](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1152)
 
 ___
 
@@ -843,7 +843,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:819](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L819)
+[client.ts:824](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L824)
 
 ___
 
@@ -883,7 +883,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:853](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L853)
+[client.ts:858](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L858)
 
 ___
 
@@ -948,7 +948,7 @@ const data = await accountClient.listAccessPoliciesForGroups(
 
 #### Defined in
 
-[client.ts:1232](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1232)
+[client.ts:1237](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1237)
 
 ___
 
@@ -977,7 +977,7 @@ const applications = await accountClient.listApplications(realmName)
 
 #### Defined in
 
-[client.ts:1327](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1327)
+[client.ts:1332](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1332)
 
 ___
 
@@ -1013,7 +1013,7 @@ const applicationID = applications[0].id
 
 #### Defined in
 
-[client.ts:1356](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1356)
+[client.ts:1361](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1361)
 
 ___
 
@@ -1034,7 +1034,7 @@ ___
 
 #### Defined in
 
-[client.ts:182](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L182)
+[client.ts:183](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L183)
 
 ___
 
@@ -1063,7 +1063,7 @@ List of all groups at realm.
 
 #### Defined in
 
-[client.ts:875](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L875)
+[client.ts:880](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L880)
 
 ___
 
@@ -1088,7 +1088,7 @@ List of all roles at realm.
 
 #### Defined in
 
-[client.ts:675](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L675)
+[client.ts:680](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L680)
 
 ___
 
@@ -1134,7 +1134,7 @@ A object usable for making paginated queries.
 
 #### Defined in
 
-[client.ts:1107](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1107)
+[client.ts:1112](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1112)
 
 ___
 
@@ -1159,7 +1159,7 @@ List of all roles for application.
 
 #### Defined in
 
-[client.ts:656](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L656)
+[client.ts:661](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L661)
 
 ___
 
@@ -1183,7 +1183,7 @@ List of all groups at realm.
 
 #### Defined in
 
-[client.ts:462](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L462)
+[client.ts:467](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L467)
 
 ___
 
@@ -1207,7 +1207,7 @@ List of all roles at realm.
 
 #### Defined in
 
-[client.ts:552](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L552)
+[client.ts:557](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L557)
 
 ___
 
@@ -1225,7 +1225,7 @@ The listed realm representations returned by the server.
 
 #### Defined in
 
-[client.ts:356](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L356)
+[client.ts:357](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L357)
 
 ___
 
@@ -1251,7 +1251,7 @@ The created registration token.
 
 #### Defined in
 
-[client.ts:229](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L229)
+[client.ts:230](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L230)
 
 ___
 
@@ -1276,7 +1276,7 @@ The created webhook.
 
 #### Defined in
 
-[client.ts:266](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L266)
+[client.ts:267](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L267)
 
 ___
 
@@ -1298,7 +1298,7 @@ This will likely be replaced by a call to GET the account profile.
 
 #### Defined in
 
-[client.ts:1169](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1169)
+[client.ts:1174](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1174)
 
 ___
 
@@ -1347,7 +1347,7 @@ const identityResponse = await accountClient.registerIdentity(
 
 #### Defined in
 
-[client.ts:998](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L998)
+[client.ts:1003](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1003)
 
 ___
 
@@ -1372,7 +1372,7 @@ The broker identity for the realm.
 
 #### Defined in
 
-[client.ts:1038](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1038)
+[client.ts:1043](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1043)
 
 ___
 
@@ -1388,7 +1388,7 @@ Get a list of the current registration tokens for an account.
 
 #### Defined in
 
-[client.ts:216](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L216)
+[client.ts:217](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L217)
 
 ___
 
@@ -1427,7 +1427,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:954](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L954)
+[client.ts:959](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L959)
 
 ___
 
@@ -1453,7 +1453,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:734](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L734)
+[client.ts:739](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L739)
 
 ___
 
@@ -1489,7 +1489,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:900](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L900)
+[client.ts:905](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L905)
 
 ___
 
@@ -1505,7 +1505,7 @@ Requests Tozny account email verification be resent.
 
 #### Defined in
 
-[client.ts:1178](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1178)
+[client.ts:1183](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1183)
 
 ___
 
@@ -1527,7 +1527,7 @@ ___
 
 #### Defined in
 
-[client.ts:1373](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1373)
+[client.ts:1378](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1378)
 
 ___
 
@@ -1548,7 +1548,7 @@ ___
 
 #### Defined in
 
-[client.ts:196](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L196)
+[client.ts:197](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L197)
 
 ___
 
@@ -1562,7 +1562,7 @@ ___
 
 #### Defined in
 
-[client.ts:174](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L174)
+[client.ts:175](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L175)
 
 ___
 
@@ -1576,7 +1576,7 @@ ___
 
 #### Defined in
 
-[client.ts:178](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L178)
+[client.ts:179](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L179)
 
 ___
 
@@ -1596,7 +1596,7 @@ ___
 
 #### Defined in
 
-[client.ts:165](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L165)
+[client.ts:166](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L166)
 
 ___
 
@@ -1633,7 +1633,7 @@ True if successful
 
 #### Defined in
 
-[client.ts:788](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L788)
+[client.ts:793](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L793)
 
 ___
 
@@ -1658,7 +1658,7 @@ Profile param contains a name and email for the user.
 
 #### Defined in
 
-[client.ts:205](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L205)
+[client.ts:206](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L206)
 
 ___
 
@@ -1683,7 +1683,7 @@ Update an existing application role in the realm given the original role name.
 
 #### Defined in
 
-[client.ts:591](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L591)
+[client.ts:596](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L596)
 
 ___
 
@@ -1707,7 +1707,7 @@ Update an existing group in the realm given a group id.
 
 #### Defined in
 
-[client.ts:442](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L442)
+[client.ts:447](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L447)
 
 ___
 
@@ -1732,7 +1732,7 @@ The updated role
 
 #### Defined in
 
-[client.ts:512](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L512)
+[client.ts:517](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L517)
 
 ___
 
@@ -1759,7 +1759,7 @@ Updated realm settings.
 
 #### Defined in
 
-[client.ts:391](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L391)
+[client.ts:396](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L396)
 
 ___
 
@@ -1829,7 +1829,7 @@ Object containing groups `id` & `accessPolicies`
 
 #### Defined in
 
-[client.ts:1296](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1296)
+[client.ts:1301](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1301)
 
 ___
 
@@ -1849,7 +1849,7 @@ ___
 
 #### Defined in
 
-[client.ts:79](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L79)
+[client.ts:80](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L80)
 
 ___
 
@@ -1865,4 +1865,4 @@ Get a list of the current webhooks for an account.
 
 #### Defined in
 
-[client.ts:253](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L253)
+[client.ts:254](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L254)

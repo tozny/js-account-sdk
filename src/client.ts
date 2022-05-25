@@ -30,6 +30,7 @@ import AccessPolicy, {
 } from './types/accessPolicy'
 import RealmSettings from './types/realmSettings'
 import { MinimumRoleData, MinimumRoleWithId } from './types/role'
+import RealmUserCount from './types/realm_user_count'
 
 /** placeholder type for js-sdk storage client */
 type ToznyQueenClient = any
@@ -363,10 +364,14 @@ class Client {
    *
    * @param {string} realmName The name for the realm to delete.
    *
-   * @returns {Promise<object>} The user count
+   * @returns {Promise<RealmUserCount>} The user count
    */
   async getRealmUserCount(realmName: string): Promise<object> {
-    return this.api.getRealmUserCount(this.queenClient, realmName)
+    const response = await this.api.getRealmUserCount(
+      this.queenClient,
+      realmName
+    )
+    return RealmUserCount.decode(response)
   }
 
   /**

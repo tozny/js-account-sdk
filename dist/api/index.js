@@ -587,7 +587,7 @@ class API {
      */
     getRealmUserCount(queenClient, realmName) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + `v1/identity/realm/${realmName}/identity/count`, {
+            const response = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + `/v1/identity/realm/${realmName}/identity/count`, {
                 method: 'GET',
             });
             return (0, utils_1.validateRequestAsJSON)(response);

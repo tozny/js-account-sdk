@@ -24,6 +24,7 @@ const basicIdentity_1 = __importDefault(require("./types/basicIdentity"));
 const listIdentitiesResult_1 = __importDefault(require("./types/listIdentitiesResult"));
 const detailedIdentity_1 = __importDefault(require("./types/detailedIdentity"));
 const accessPolicy_1 = __importDefault(require("./types/accessPolicy"));
+const realm_user_count_1 = __importDefault(require("./types/realm_user_count"));
 /**
  * The client for Tozny's Account API.
  *
@@ -296,11 +297,12 @@ class Client {
      *
      * @param {string} realmName The name for the realm to delete.
      *
-     * @returns {Promise<object>} The user count
+     * @returns {Promise<RealmUserCount>} The user count
      */
     getRealmUserCount(realmName) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.getRealmUserCount(this.queenClient, realmName);
+            const response = yield this.api.getRealmUserCount(this.queenClient, realmName);
+            return realm_user_count_1.default.decode(response);
         });
     }
     /**
