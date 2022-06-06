@@ -659,6 +659,22 @@ class API {
   }
 
   /**
+   * Get the count of Identities in a Realm.
+   *
+   * @param queenClient The queen client for the account to get the count of Identities of a realm.
+   * @param realmName The name of the realm to get the Identities count for.
+   */
+  async getRealmUserCount(queenClient, realmName) {
+    const response = await queenClient.authenticator.tsv1Fetch(
+      this.apiUrl + `/v1/identity/realm/${realmName}/identity/count`,
+      {
+        method: 'GET',
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
    * Requests the creation of a new TozID Realm.
    *
    * @param {object} queenClient The queen client for the account to delete the realm from.
