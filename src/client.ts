@@ -1383,6 +1383,24 @@ class Client {
       storageClient: this._queenClient.config.serialize(),
     }
   }
+
+  /**
+   * Initiate Totp. Get QR info from API
+   *
+   * @returns response
+   */
+  async initiateTotp() {
+    return this.api.initiateTotp()
+  }
+
+  /**
+   * Register Totp.
+   *
+   * @returns response
+   */
+  async registerTotp(data) {
+    return this.api.registerTotp(data)
+  }
 }
 
 export default Client

@@ -520,6 +520,41 @@ class API {
   }
 
   /**
+   * Requests TOTP QR info for MFA.
+   *
+   * @return {Promise<object>} The QRInfo Object
+   */
+  async initiateTotp() {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + `/v1/account/mfa/qrinfo`, {
+      method: 'GET',
+      headers,
+    })
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Registers TOTP.
+   *
+   */
+  async registerTotp(data: { secret: string; totp: string }) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(
+      this.apiUrl + `/v1/account/mfa/totp/register`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(data),
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
    * Requests a list of webhooks available for the account.
    *
    * @return {Array<object>} An array of webhook objects.
