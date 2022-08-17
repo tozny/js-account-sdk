@@ -528,7 +528,7 @@ class API {
     const headers = await this.withToken({
       'Content-Type': 'application/json',
     })
-    const response = await fetch(this.apiUrl + `/v1/account/mfa/qrinfo`, {
+    const response = await fetch(this.apiUrl + `/v1/account/mfa/totp/qrinfo`, {
       method: 'GET',
       headers,
     })
@@ -543,15 +543,12 @@ class API {
     const headers = await this.withToken({
       'Content-Type': 'application/json',
     })
-    const response = await fetch(
-      this.apiUrl + `/v1/account/mfa/totp/register`,
-      {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(data),
-      }
-    )
-    return validateRequestAsJSON(response)
+    const response = await fetch(this.apiUrl + `/v1/account/mfa/totp`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(data),
+    })
+    return response.ok ? response : response.json()
   }
 
   /**
