@@ -1401,6 +1401,20 @@ class Client {
   async registerTotp(data) {
     return this.api.registerTotp(data)
   }
+
+  /**
+   * Get MFA devices
+   */
+  async getMFA() {
+    return this.api.getMFA()
+  }
+
+  /**
+   * Delete MFA
+   */
+  async deleteMFA(id) {
+    return this.api.deleteMFA(id)
+  }
 }
 
 export default Client

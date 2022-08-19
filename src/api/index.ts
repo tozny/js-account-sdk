@@ -552,6 +552,38 @@ class API {
   }
 
   /**
+   * Get MFA devices.
+   *
+   * @return {Array<object>} An array of MFA object.
+   */
+  async getMFA() {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + `/v1/account/mfa`, {
+      method: 'GET',
+      headers,
+    })
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Delete MFA.
+   *
+   * @return empty response with status code 200.
+   */
+  async deleteMFA(id) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + `/v1/account/mfa/` + id, {
+      method: 'DELETE',
+      headers,
+    })
+    return response
+  }
+
+  /**
    * Requests a list of webhooks available for the account.
    *
    * @return {Array<object>} An array of webhook objects.
