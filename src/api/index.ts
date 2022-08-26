@@ -201,6 +201,50 @@ class API {
   }
 
   /**
+   * Send back a signature asserting authentication for an account challenge. Duplicate of completeChallenge for dashboard portal login
+   *
+   * @param {string} username The username of the account logging in.
+   * @param {string} challenge The challenge sent by the server.
+   * @param {string} response The signed challenge to authenticate.
+   * @param {string} keyType Either password or paper, depending on which seed is used to sign.
+   * @return {Promise<object>} The account information when authenticated.
+   */
+  async completeChallengeForMFA(username, challenge, response, keyType) {
+    const request = await fetch(this.apiUrl + '/v1/account/dashboard/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: username,
+        challenge: challenge,
+        response: response,
+        keyid: keyType,
+      }),
+    })
+    return validateRequestAsJSON(request)
+  }
+
+  async verifyTotp(username, challenge, response, totp) {
+    const request = await fetch(
+      this.apiUrl + '/v1/account/dashboard/verifytotp',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: username,
+          challenge: challenge,
+          response: response,
+          totp: totp,
+        }),
+      }
+    )
+    return validateRequestAsJSON(request)
+  }
+
+  /**
    * Get the profile metadata associated with an account
    *
    * @return Promise<object> The raw profile meta for an account.
