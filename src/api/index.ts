@@ -11,8 +11,8 @@ import {
 import { GroupsInput, ToznyAPIGroup } from '../types/group'
 import { ToznyAPIGroupRoleMapping } from '../types/groupRoleMapping'
 import Identity, { ToznyAPIIdentity } from '../types/identity'
-import { ToznyAPIRealmApplication } from '../types/realmApplications'
 import { ToznyAPIListAccessPoliciesResponse } from '../types/listAccessPoliciesResponse'
+import { ToznyAPIRealmApplication } from '../types/realmApplications'
 import RealmSettings from '../types/realmSettings'
 import { MinimumRoleData, MinimumRoleWithId, ToznyAPIRole } from '../types/role'
 import { checkStatus, validateRequestAsJSON } from '../utils'
@@ -237,6 +237,7 @@ class API {
           email: username,
           challenge: challenge,
           response: response,
+          keyid: 'totp',
           totp: totp,
         }),
       }
