@@ -217,12 +217,7 @@ class Account {
   async verifyTotp(username, sigKeys, challenge, totp) {
     //If totp is enabled. It will return profile.
     const signature = await this.crypto.sign(challenge, sigKeys.privateKey)
-    const profile = await this.api.verifyTotp(
-      username,
-      challenge,
-      signature,
-      totp
-    )
+    return await this.api.verifyTotp(username, challenge, signature, totp)
   }
 
   async completeLogin(username, sigKeys, encKey, profile) {
@@ -230,8 +225,6 @@ class Account {
 
     // Set up client API with token an refresh
     const clientToken = new Token(profile.token)
-    console.log('profile', profile)
-    console.log('token', profile.token)
     const clientApi = this.api.clone()
     clientToken.refresher = new Refresher(
       clientApi,
