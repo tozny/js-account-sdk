@@ -46,6 +46,7 @@ const accountClient = account.client
 - [createRealmGroup](Client.md#createrealmgroup)
 - [createRealmRole](Client.md#createrealmrole)
 - [deleteIdentity](Client.md#deleteidentity)
+- [deleteMFA](Client.md#deletemfa)
 - [deleteRealm](Client.md#deleterealm)
 - [deleteRealmApplicationRole](Client.md#deleterealmapplicationrole)
 - [deleteRealmGroup](Client.md#deleterealmgroup)
@@ -57,11 +58,13 @@ const accountClient = account.client
 - [describeRealmRole](Client.md#describerealmrole)
 - [getAggregations](Client.md#getaggregations)
 - [getClientInfo](Client.md#getclientinfo)
+- [getMFA](Client.md#getmfa)
 - [getRealmUserCount](Client.md#getrealmusercount)
 - [getRequests](Client.md#getrequests)
 - [groupMembership](Client.md#groupmembership)
 - [hostedBrokerInfo](Client.md#hostedbrokerinfo)
 - [identityDetails](Client.md#identitydetails)
+- [initiateTotp](Client.md#initiatetotp)
 - [joinGroups](Client.md#joingroups)
 - [leaveGroups](Client.md#leavegroups)
 - [listAccessPoliciesForGroups](Client.md#listaccesspoliciesforgroups)
@@ -80,6 +83,7 @@ const accountClient = account.client
 - [refreshProfile](Client.md#refreshprofile)
 - [registerIdentity](Client.md#registeridentity)
 - [registerRealmBrokerIdentity](Client.md#registerrealmbrokeridentity)
+- [registerTotp](Client.md#registertotp)
 - [registrationTokens](Client.md#registrationtokens)
 - [removeDefaultRealmGroups](Client.md#removedefaultrealmgroups)
 - [removeGroupRoleMappings](Client.md#removegrouprolemappings)
@@ -424,6 +428,28 @@ True if successful
 
 ___
 
+### deleteMFA
+
+▸ **deleteMFA**(`id`): `Promise`<`Response`\>
+
+Delete MFA
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `id` | `any` |
+
+#### Returns
+
+`Promise`<`Response`\>
+
+#### Defined in
+
+[client.ts:1415](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1415)
+
+___
+
 ### deleteRealm
 
 ▸ **deleteRealm**(`realmName`): `Promise`<`object`\>
@@ -687,6 +713,22 @@ ___
 
 ___
 
+### getMFA
+
+▸ **getMFA**(): `Promise`<`any`\>
+
+Get MFA devices
+
+#### Returns
+
+`Promise`<`any`\>
+
+#### Defined in
+
+[client.ts:1408](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1408)
+
+___
+
 ### getRealmUserCount
 
 ▸ **getRealmUserCount**(`realmName`): `Promise`<`object`\>
@@ -807,6 +849,24 @@ The identity
 #### Defined in
 
 [client.ts:1152](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1152)
+
+___
+
+### initiateTotp
+
+▸ **initiateTotp**(): `Promise`<`any`\>
+
+Initiate Totp. Get QR info from API
+
+#### Returns
+
+`Promise`<`any`\>
+
+response
+
+#### Defined in
+
+[client.ts:1392](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1392)
 
 ___
 
@@ -1373,6 +1433,30 @@ The broker identity for the realm.
 #### Defined in
 
 [client.ts:1043](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1043)
+
+___
+
+### registerTotp
+
+▸ **registerTotp**(`data`): `Promise`<`any`\>
+
+Register Totp.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `any` |
+
+#### Returns
+
+`Promise`<`any`\>
+
+response
+
+#### Defined in
+
+[client.ts:1401](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1401)
 
 ___
 

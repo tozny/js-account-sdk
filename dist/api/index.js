@@ -196,7 +196,7 @@ class API {
                     email: username,
                     challenge: challenge,
                     response: response,
-                    keyid: "totp",
+                    keyid: 'totp',
                     totp: totp,
                 }),
             });
