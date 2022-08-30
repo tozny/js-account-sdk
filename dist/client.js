@@ -1132,5 +1132,41 @@ class Client {
             storageClient: this._queenClient.config.serialize(),
         };
     }
+    /**
+     * Initiate Totp. Get QR info from API
+     *
+     * @returns response
+     */
+    initiateTotp() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.initiateTotp();
+        });
+    }
+    /**
+     * Register Totp.
+     *
+     * @returns response
+     */
+    registerTotp(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.registerTotp(data);
+        });
+    }
+    /**
+     * Get MFA devices
+     */
+    getMFA() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.getMFA();
+        });
+    }
+    /**
+     * Delete MFA
+     */
+    deleteMFA(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.deleteMFA(id);
+        });
+    }
 }
 exports.default = Client;

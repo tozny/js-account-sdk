@@ -137,6 +137,57 @@ class Account {
         });
     }
     /**
+     * Use the normal login flow to create a connection to a Tozny account.
+     *
+     * @param {string} username The username for the account.
+     * @param {string} password The secret password for the account.
+     * @param {string} type Either standard or paper depending on the password type.
+     *
+     * @return ??
+     */
+    loginWithMFA(username, password, type = 'standard') {
+        return __awaiter(this, void 0, void 0, function* () {
+            const challenge = yield this.api.getChallenge(username);
+            const b64AuthSalt = type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt;
+            const authSalt = yield this.crypto.platform.b64URLDecode(b64AuthSalt);
+            const sigKeys = yield this.crypto.deriveSigningKey(password, authSalt, constants_1.KEY_HASH_ROUNDS);
+            const signature = yield this.crypto.sign(challenge.challenge, sigKeys.privateKey);
+            const profile = yield this.api.completeChallengeForMFA(username, challenge.challenge, signature, type === 'paper' ? 'paper' : 'password');
+            const b64EncSalt = type === 'paper'
+                ? profile.profile.paper_enc_salt
+                : profile.profile.enc_salt;
+            const encSalt = yield this.crypto.platform.b64URLDecode(b64EncSalt);
+            const encKey = yield this.crypto.deriveSymmetricKey(password, encSalt, constants_1.KEY_HASH_ROUNDS);
+            return { sigKeys, encKey, profile };
+        });
+    }
+    verifyTotp(username, sigKeys, challenge, totp) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //If totp is enabled. It will return profile.
+            const signature = yield this.crypto.sign(challenge, sigKeys.privateKey);
+            return yield this.api.verifyTotp(username, challenge, signature, totp);
+        });
+    }
+    completeLogin(username, sigKeys, encKey, profile) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //Continue setting login values.
+            // Set up client API with token an refresh
+            const clientToken = new token_1.default(profile.token);
+            const clientApi = this.api.clone();
+            clientToken.refresher = new refresher_1.default(clientApi, this.crypto, sigKeys, username);
+            clientApi.setToken(clientToken);
+            // Set up queen keys
+            const meta = yield clientApi.getProfileMeta();
+            //const encClient = type === 'paper' ? meta.paperBackup : meta.backupClient
+            const encClient = meta.backupClient;
+            const clientCreds = yield this.crypto.decryptString(encClient, encKey);
+            const storageConfig = this.Storage.Config.fromObject(clientCreds);
+            storageConfig.apiUrl = this.api.apiUrl;
+            const storageClient = new this.Storage.Client(storageConfig);
+            return new client_1.default(clientApi, profile.account, profile.profile, storageClient);
+        });
+    }
+    /**
      * Creates a new account using the credentials provided.
      * @param {string} name The name to use for the account.
      * @param {string} email The email address for the account.

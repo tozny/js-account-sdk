@@ -160,6 +160,50 @@ class API {
         });
     }
     /**
+     * Send back a signature asserting authentication for an account challenge. Duplicate of completeChallenge for dashboard portal login
+     *
+     * @param {string} username The username of the account logging in.
+     * @param {string} challenge The challenge sent by the server.
+     * @param {string} response The signed challenge to authenticate.
+     * @param {string} keyType Either password or paper, depending on which seed is used to sign.
+     * @return {Promise<object>} The account information when authenticated.
+     */
+    completeChallengeForMFA(username, challenge, response, keyType) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/dashboard/auth', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: username,
+                    challenge: challenge,
+                    response: response,
+                    keyid: keyType,
+                }),
+            });
+            return (0, utils_1.validateRequestAsJSON)(request);
+        });
+    }
+    verifyTotp(username, challenge, response, totp) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/dashboard/verifytotp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: username,
+                    challenge: challenge,
+                    response: response,
+                    keyid: 'totp',
+                    totp: totp,
+                }),
+            });
+            return (0, utils_1.validateRequestAsJSON)(request);
+        });
+    }
+    /**
      * Get the profile metadata associated with an account
      *
      * @return Promise<object> The raw profile meta for an account.
@@ -463,6 +507,74 @@ class API {
             });
             yield (0, utils_1.checkStatus)(response);
             return true;
+        });
+    }
+    /**
+     * Requests TOTP QR info for MFA.
+     *
+     * @return {Promise<object>} The QRInfo Object
+     */
+    initiateTotp() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const headers = yield this.withToken({
+                'Content-Type': 'application/json',
+            });
+            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa/totp/qrinfo`, {
+                method: 'GET',
+                headers,
+            });
+            return (0, utils_1.validateRequestAsJSON)(response);
+        });
+    }
+    /**
+     * Registers TOTP.
+     *
+     */
+    registerTotp(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const headers = yield this.withToken({
+                'Content-Type': 'application/json',
+            });
+            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa/totp`, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(data),
+            });
+            return response.ok ? response : response.json();
+        });
+    }
+    /**
+     * Get MFA devices.
+     *
+     * @return {Array<object>} An array of MFA object.
+     */
+    getMFA() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const headers = yield this.withToken({
+                'Content-Type': 'application/json',
+            });
+            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa`, {
+                method: 'GET',
+                headers,
+            });
+            return (0, utils_1.validateRequestAsJSON)(response);
+        });
+    }
+    /**
+     * Delete MFA.
+     *
+     * @return empty response with status code 200.
+     */
+    deleteMFA(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const headers = yield this.withToken({
+                'Content-Type': 'application/json',
+            });
+            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa/` + id, {
+                method: 'DELETE',
+                headers,
+            });
+            return response;
         });
     }
     /**

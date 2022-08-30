@@ -26,12 +26,15 @@ account Client.
 ### Methods
 
 - [changeAccountPassword](Account.md#changeaccountpassword)
+- [completeLogin](Account.md#completelogin)
 - [fromObject](Account.md#fromobject)
 - [initiateRecoverAccount](Account.md#initiaterecoveraccount)
 - [login](Account.md#login)
+- [loginWithMFA](Account.md#loginwithmfa)
 - [register](Account.md#register)
 - [verifyEmail](Account.md#verifyemail)
 - [verifyRecoverAccountChallenge](Account.md#verifyrecoveraccountchallenge)
+- [verifyTotp](Account.md#verifytotp)
 
 ## Constructors
 
@@ -143,7 +146,30 @@ An object with the new queen client and paper key.
 
 #### Defined in
 
-[account.ts:326](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L326)
+[account.ts:409](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L409)
+
+___
+
+### completeLogin
+
+▸ **completeLogin**(`username`, `sigKeys`, `encKey`, `profile`): `Promise`<[`Client`](Client.md)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `username` | `any` |
+| `sigKeys` | `any` |
+| `encKey` | `any` |
+| `profile` | `any` |
+
+#### Returns
+
+`Promise`<[`Client`](Client.md)\>
+
+#### Defined in
+
+[account.ts:223](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L223)
 
 ___
 
@@ -172,7 +198,7 @@ A new Client created with all provided values from the object.
 
 #### Defined in
 
-[account.ts:467](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L467)
+[account.ts:550](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L550)
 
 ___
 
@@ -194,7 +220,7 @@ Begin to recover lost account access.
 
 #### Defined in
 
-[account.ts:304](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L304)
+[account.ts:387](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L387)
 
 ___
 
@@ -224,6 +250,32 @@ The Client instance for the provided credentials.
 
 ___
 
+### loginWithMFA
+
+▸ **loginWithMFA**(`username`, `password`, `type?`): `Promise`<`any`\>
+
+Use the normal login flow to create a connection to a Tozny account.
+
+#### Parameters
+
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `username` | `string` | `undefined` | The username for the account. |
+| `password` | `string` | `undefined` | The secret password for the account. |
+| `type` | `string` | `'standard'` | Either standard or paper depending on the password type. |
+
+#### Returns
+
+`Promise`<`any`\>
+
+??
+
+#### Defined in
+
+[account.ts:180](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L180)
+
+___
+
 ### register
 
 ▸ **register**(`name`, `email`, `password`): `Promise`<`object`\>
@@ -248,7 +300,7 @@ An object containing the paper key generated at and
 
 #### Defined in
 
-[account.ts:181](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L181)
+[account.ts:264](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L264)
 
 ___
 
@@ -273,7 +325,7 @@ response
 
 #### Defined in
 
-[account.ts:451](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L451)
+[account.ts:534](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L534)
 
 ___
 
@@ -298,4 +350,27 @@ The recovery object for the account
 
 #### Defined in
 
-[account.ts:315](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L315)
+[account.ts:398](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L398)
+
+___
+
+### verifyTotp
+
+▸ **verifyTotp**(`username`, `sigKeys`, `challenge`, `totp`): `Promise`<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `username` | `any` |
+| `sigKeys` | `any` |
+| `challenge` | `any` |
+| `totp` | `any` |
+
+#### Returns
+
+`Promise`<`any`\>
+
+#### Defined in
+
+[account.ts:217](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L217)

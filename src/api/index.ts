@@ -11,8 +11,8 @@ import {
 import { GroupsInput, ToznyAPIGroup } from '../types/group'
 import { ToznyAPIGroupRoleMapping } from '../types/groupRoleMapping'
 import Identity, { ToznyAPIIdentity } from '../types/identity'
-import { ToznyAPIRealmApplication } from '../types/realmApplications'
 import { ToznyAPIListAccessPoliciesResponse } from '../types/listAccessPoliciesResponse'
+import { ToznyAPIRealmApplication } from '../types/realmApplications'
 import RealmSettings from '../types/realmSettings'
 import { MinimumRoleData, MinimumRoleWithId, ToznyAPIRole } from '../types/role'
 import { checkStatus, validateRequestAsJSON } from '../utils'
@@ -197,6 +197,51 @@ class API {
         keyid: keyType,
       }),
     })
+    return validateRequestAsJSON(request)
+  }
+
+  /**
+   * Send back a signature asserting authentication for an account challenge. Duplicate of completeChallenge for dashboard portal login
+   *
+   * @param {string} username The username of the account logging in.
+   * @param {string} challenge The challenge sent by the server.
+   * @param {string} response The signed challenge to authenticate.
+   * @param {string} keyType Either password or paper, depending on which seed is used to sign.
+   * @return {Promise<object>} The account information when authenticated.
+   */
+  async completeChallengeForMFA(username, challenge, response, keyType) {
+    const request = await fetch(this.apiUrl + '/v1/account/dashboard/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: username,
+        challenge: challenge,
+        response: response,
+        keyid: keyType,
+      }),
+    })
+    return validateRequestAsJSON(request)
+  }
+
+  async verifyTotp(username, challenge, response, totp) {
+    const request = await fetch(
+      this.apiUrl + '/v1/account/dashboard/verifytotp',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: username,
+          challenge: challenge,
+          response: response,
+          keyid: 'totp',
+          totp: totp,
+        }),
+      }
+    )
     return validateRequestAsJSON(request)
   }
 
@@ -517,6 +562,70 @@ class API {
     })
     await checkStatus(response)
     return true
+  }
+
+  /**
+   * Requests TOTP QR info for MFA.
+   *
+   * @return {Promise<object>} The QRInfo Object
+   */
+  async initiateTotp() {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + `/v1/account/mfa/totp/qrinfo`, {
+      method: 'GET',
+      headers,
+    })
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Registers TOTP.
+   *
+   */
+  async registerTotp(data: { secret: string; totp: string }) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + `/v1/account/mfa/totp`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(data),
+    })
+    return response.ok ? response : response.json()
+  }
+
+  /**
+   * Get MFA devices.
+   *
+   * @return {Array<object>} An array of MFA object.
+   */
+  async getMFA() {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + `/v1/account/mfa`, {
+      method: 'GET',
+      headers,
+    })
+    return validateRequestAsJSON(response)
+  }
+
+  /**
+   * Delete MFA.
+   *
+   * @return empty response with status code 200.
+   */
+  async deleteMFA(id) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(this.apiUrl + `/v1/account/mfa/` + id, {
+      method: 'DELETE',
+      headers,
+    })
+    return response
   }
 
   /**
