@@ -32,6 +32,7 @@ account Client.
 - [login](Account.md#login)
 - [loginWithMFA](Account.md#loginwithmfa)
 - [register](Account.md#register)
+- [resetMFA](Account.md#resetmfa)
 - [verifyEmail](Account.md#verifyemail)
 - [verifyRecoverAccountChallenge](Account.md#verifyrecoveraccountchallenge)
 - [verifyTotp](Account.md#verifytotp)
@@ -146,7 +147,7 @@ An object with the new queen client and paper key.
 
 #### Defined in
 
-[account.ts:409](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L409)
+[account.ts:433](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L433)
 
 ___
 
@@ -198,7 +199,7 @@ A new Client created with all provided values from the object.
 
 #### Defined in
 
-[account.ts:550](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L550)
+[account.ts:574](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L574)
 
 ___
 
@@ -220,7 +221,7 @@ Begin to recover lost account access.
 
 #### Defined in
 
-[account.ts:387](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L387)
+[account.ts:411](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L411)
 
 ___
 
@@ -252,7 +253,7 @@ ___
 
 ### loginWithMFA
 
-▸ **loginWithMFA**(`username`, `password`, `type?`): `Promise`<`any`\>
+▸ **loginWithMFA**(`username`, `password`, `type?`): `Promise`<`object`\>
 
 Use the normal login flow to create a connection to a Tozny account.
 
@@ -266,9 +267,7 @@ Use the normal login flow to create a connection to a Tozny account.
 
 #### Returns
 
-`Promise`<`any`\>
-
-??
+`Promise`<`object`\>
 
 #### Defined in
 
@@ -300,7 +299,30 @@ An object containing the paper key generated at and
 
 #### Defined in
 
-[account.ts:264](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L264)
+[account.ts:288](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L288)
+
+___
+
+### resetMFA
+
+▸ **resetMFA**(`username`, `paperKey`): `Promise`<`object`\>
+
+Reset MFA
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `username` | `string` | The name to use for the account. |
+| `paperKey` | `string` | The paperKey for the account. |
+
+#### Returns
+
+`Promise`<`object`\>
+
+#### Defined in
+
+[account.ts:262](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L262)
 
 ___
 
@@ -325,7 +347,7 @@ response
 
 #### Defined in
 
-[account.ts:534](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L534)
+[account.ts:558](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L558)
 
 ___
 
@@ -350,7 +372,7 @@ The recovery object for the account
 
 #### Defined in
 
-[account.ts:398](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L398)
+[account.ts:422](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L422)
 
 ___
 

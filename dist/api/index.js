@@ -203,6 +203,23 @@ class API {
             return (0, utils_1.validateRequestAsJSON)(request);
         });
     }
+    resetMFA(username, challenge, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const resetResponse = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/reset-mfa', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: username,
+                    challenge: challenge,
+                    response: response,
+                    keyid: 'paper',
+                }),
+            });
+            return resetResponse;
+        });
+    }
     /**
      * Get the profile metadata associated with an account
      *
