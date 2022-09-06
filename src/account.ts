@@ -175,13 +175,13 @@ class Account {
    * @param {string} password The secret password for the account.
    * @param {string} type Either standard or paper depending on the password type.
    *
-   * @return ??
+   * @return {Promise<Object>}
    */
   async loginWithMFA(
     username: string,
     password: string,
     type = 'standard'
-  ): Promise<any> {
+  ): Promise<object> {
     const challenge = await this.api.getChallenge(username)
     const b64AuthSalt =
       type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt
@@ -249,6 +249,30 @@ class Account {
       profile.profile,
       storageClient
     )
+  }
+
+  /**
+   * Reset MFA
+   * @param {string} username The name to use for the account.
+   * @param {string} paperKey The paperKey for the account.
+   *
+   * @return {Promise<Object>}
+   */
+
+  async resetMFA(username: string, paperKey: string): Promise<object> {
+    const challenge = await this.api.getChallenge(username)
+    const b64AuthSalt = challenge.paper_auth_salt
+    const authSalt = await this.crypto.platform.b64URLDecode(b64AuthSalt)
+    const sigKeys = await this.crypto.deriveSigningKey(
+      paperKey,
+      authSalt,
+      KEY_HASH_ROUNDS
+    )
+    const signature = await this.crypto.sign(
+      challenge.challenge,
+      sigKeys.privateKey
+    )
+    return await this.api.resetMFA(username, challenge.challenge, signature)
   }
 
   /**
