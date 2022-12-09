@@ -1415,6 +1415,17 @@ class Client {
   async deleteMFA(id) {
     return this.api.deleteMFA(id)
   }
+
+  /**
+   * Initiate WebAuthn
+   */
+  async initiateWebAuthn() {
+    return this.api.webAuthnChallenge()
+  }
+
+  async registerWebAuthnDevice() {
+    return this.api.registerWebAuthnDevice()
+  }
 }
 
 export default Client

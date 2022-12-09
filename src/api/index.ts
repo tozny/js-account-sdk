@@ -645,6 +645,39 @@ class API {
   }
 
   /**
+   * Requests API to issue challenge.
+   *
+   * @return {Promise<object>} The challenge data Object
+   */
+  async webAuthnChallenge() {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(
+      this.apiUrl + `/v1/account/mfa/webauthn/challenge`,
+      {
+        method: 'GET',
+        headers,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  async registerWebAuthnDevice() {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(
+      this.apiUrl + `/v1/account/mfa/webauthn/register`,
+      {
+        method: 'POST',
+        headers,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
    * Requests a list of webhooks available for the account.
    *
    * @return {Array<object>} An array of webhook objects.
