@@ -578,6 +578,35 @@ class API {
         });
     }
     /**
+     * Requests API to issue challenge.
+     *
+     * @return {Promise<object>} The challenge data Object
+    */
+    webAuthnChallenge() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const headers = yield this.withToken({
+                'Content-Type': 'application/json',
+            });
+            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa/webauthn/challenge`, {
+                method: 'GET',
+                headers,
+            });
+            return (0, utils_1.validateRequestAsJSON)(response);
+        });
+    }
+    registerWebAuthnDevice() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const headers = yield this.withToken({
+                'Content-Type': 'application/json',
+            });
+            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa/webauthn/register`, {
+                method: 'POST',
+                headers,
+            });
+            return (0, utils_1.validateRequestAsJSON)(response);
+        });
+    }
+    /**
      * Requests a list of webhooks available for the account.
      *
      * @return {Array<object>} An array of webhook objects.
