@@ -1170,15 +1170,15 @@ class Client {
     }
     /**
      * Initiate WebAuthn
-    */
+     */
     initiateWebAuthn() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.api.webAuthnChallenge();
         });
     }
-    registerWebAuthnDevice() {
+    registerWebAuthnDevice(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.registerWebAuthnDevice();
+            return this.api.registerWebAuthnDevice(data);
         });
     }
 }

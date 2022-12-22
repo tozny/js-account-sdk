@@ -1423,8 +1423,8 @@ class Client {
     return this.api.webAuthnChallenge()
   }
 
-  async registerWebAuthnDevice() {
-    return this.api.registerWebAuthnDevice()
+  async registerWebAuthnDevice(data) {
+    return this.api.registerWebAuthnDevice(data)
   }
 }
 
