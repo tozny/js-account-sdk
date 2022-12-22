@@ -65,6 +65,7 @@ const accountClient = account.client
 - [hostedBrokerInfo](Client.md#hostedbrokerinfo)
 - [identityDetails](Client.md#identitydetails)
 - [initiateTotp](Client.md#initiatetotp)
+- [initiateWebAuthn](Client.md#initiatewebauthn)
 - [joinGroups](Client.md#joingroups)
 - [leaveGroups](Client.md#leavegroups)
 - [listAccessPoliciesForGroups](Client.md#listaccesspoliciesforgroups)
@@ -84,6 +85,7 @@ const accountClient = account.client
 - [registerIdentity](Client.md#registeridentity)
 - [registerRealmBrokerIdentity](Client.md#registerrealmbrokeridentity)
 - [registerTotp](Client.md#registertotp)
+- [registerWebAuthnDevice](Client.md#registerwebauthndevice)
 - [registrationTokens](Client.md#registrationtokens)
 - [removeDefaultRealmGroups](Client.md#removedefaultrealmgroups)
 - [removeGroupRoleMappings](Client.md#removegrouprolemappings)
@@ -870,6 +872,22 @@ response
 
 ___
 
+### initiateWebAuthn
+
+▸ **initiateWebAuthn**(): `Promise`<`any`\>
+
+Initiate WebAuthn
+
+#### Returns
+
+`Promise`<`any`\>
+
+#### Defined in
+
+[client.ts:1422](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1422)
+
+___
+
 ### joinGroups
 
 ▸ **joinGroups**(`realmName`, `identityToznyId`, `groups`): `Promise`<`boolean`\>
@@ -1457,6 +1475,20 @@ response
 #### Defined in
 
 [client.ts:1401](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1401)
+
+___
+
+### registerWebAuthnDevice
+
+▸ **registerWebAuthnDevice**(): `Promise`<`any`\>
+
+#### Returns
+
+`Promise`<`any`\>
+
+#### Defined in
+
+[client.ts:1426](https://github.com/tozny/js-account-sdk/blob/master/src/client.ts#L1426)
 
 ___
 

@@ -663,7 +663,7 @@ class API {
     return validateRequestAsJSON(response)
   }
 
-  async registerWebAuthnDevice() {
+  async registerWebAuthnDevice(data) {
     const headers = await this.withToken({
       'Content-Type': 'application/json',
     })
@@ -672,9 +672,10 @@ class API {
       {
         method: 'POST',
         headers,
+        body: JSON.stringify(data),
       }
     )
-    return validateRequestAsJSON(response)
+    return response
   }
 
   /**

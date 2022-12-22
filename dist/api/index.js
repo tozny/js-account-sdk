@@ -598,7 +598,7 @@ class API {
      * Requests API to issue challenge.
      *
      * @return {Promise<object>} The challenge data Object
-    */
+     */
     webAuthnChallenge() {
         return __awaiter(this, void 0, void 0, function* () {
             const headers = yield this.withToken({
@@ -611,7 +611,7 @@ class API {
             return (0, utils_1.validateRequestAsJSON)(response);
         });
     }
-    registerWebAuthnDevice() {
+    registerWebAuthnDevice(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
@@ -619,8 +619,9 @@ class API {
             const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa/webauthn/register`, {
                 method: 'POST',
                 headers,
+                body: JSON.stringify(data),
             });
-            return (0, utils_1.validateRequestAsJSON)(response);
+            return response;
         });
     }
     /**
