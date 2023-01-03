@@ -220,6 +220,12 @@ class Account {
     return await this.api.verifyTotp(username, challenge, signature, totp)
   }
 
+  async verifyWebAuthn(username, payload) {
+    //If totp is enabled. It will return profile.
+    //const signature = await this.crypto.sign(challenge, sigKeys.privateKey)
+    return await this.api.verifyWebAuthn(username, payload)
+  }
+
   async completeLogin(username, sigKeys, encKey, profile) {
     //Continue setting login values.
 

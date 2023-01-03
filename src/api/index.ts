@@ -245,6 +245,23 @@ class API {
     return validateRequestAsJSON(request)
   }
 
+  async verifyWebAuthn(username, payload) {
+    const request = await fetch(
+      this.apiUrl + '/v1/account/dashboard/verifywebAuthn',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: username,
+          ...payload,
+        }),
+      }
+    )
+    return validateRequestAsJSON(request)
+  }
+
   /**
    * Get the profile metadata associated with an account
    *

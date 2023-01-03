@@ -1480,11 +1480,17 @@ ___
 
 ### registerWebAuthnDevice
 
-▸ **registerWebAuthnDevice**(): `Promise`<`any`\>
+▸ **registerWebAuthnDevice**(`data`): `Promise`<`Response`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `any` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Response`\>
 
 #### Defined in
 

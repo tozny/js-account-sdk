@@ -168,6 +168,13 @@ class Account {
             return yield this.api.verifyTotp(username, challenge, signature, totp);
         });
     }
+    verifyWebAuthn(username, payload) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //If totp is enabled. It will return profile.
+            //const signature = await this.crypto.sign(challenge, sigKeys.privateKey)
+            return yield this.api.verifyWebAuthn(username, payload);
+        });
+    }
     completeLogin(username, sigKeys, encKey, profile) {
         return __awaiter(this, void 0, void 0, function* () {
             //Continue setting login values.
