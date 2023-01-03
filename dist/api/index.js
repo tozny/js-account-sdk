@@ -220,6 +220,18 @@ class API {
             return resetResponse;
         });
     }
+    verifyWebAuthn(username, payload) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/dashboard/verifywebAuthn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.assign({ email: username }, payload)),
+            });
+            return (0, utils_1.validateRequestAsJSON)(request);
+        });
+    }
     /**
      * Get the profile metadata associated with an account
      *
