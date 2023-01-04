@@ -35,6 +35,7 @@ account Client.
 - [verifyEmail](Account.md#verifyemail)
 - [verifyRecoverAccountChallenge](Account.md#verifyrecoveraccountchallenge)
 - [verifyTotp](Account.md#verifytotp)
+- [verifyWebAuthn](Account.md#verifywebauthn)
 
 ## Constructors
 
@@ -146,7 +147,7 @@ An object with the new queen client and paper key.
 
 #### Defined in
 
-[account.ts:409](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L409)
+[account.ts:415](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L415)
 
 ___
 
@@ -169,7 +170,7 @@ ___
 
 #### Defined in
 
-[account.ts:223](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L223)
+[account.ts:229](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L229)
 
 ___
 
@@ -198,7 +199,7 @@ A new Client created with all provided values from the object.
 
 #### Defined in
 
-[account.ts:550](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L550)
+[account.ts:556](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L556)
 
 ___
 
@@ -220,7 +221,7 @@ Begin to recover lost account access.
 
 #### Defined in
 
-[account.ts:387](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L387)
+[account.ts:393](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L393)
 
 ___
 
@@ -300,7 +301,7 @@ An object containing the paper key generated at and
 
 #### Defined in
 
-[account.ts:264](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L264)
+[account.ts:270](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L270)
 
 ___
 
@@ -325,7 +326,7 @@ response
 
 #### Defined in
 
-[account.ts:534](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L534)
+[account.ts:540](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L540)
 
 ___
 
@@ -350,7 +351,7 @@ The recovery object for the account
 
 #### Defined in
 
-[account.ts:398](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L398)
+[account.ts:404](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L404)
 
 ___
 
@@ -374,3 +375,24 @@ ___
 #### Defined in
 
 [account.ts:217](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L217)
+
+___
+
+### verifyWebAuthn
+
+▸ **verifyWebAuthn**(`username`, `payload`): `Promise`<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `username` | `any` |
+| `payload` | `any` |
+
+#### Returns
+
+`Promise`<`any`\>
+
+#### Defined in
+
+[account.ts:223](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L223)
