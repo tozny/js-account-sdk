@@ -148,8 +148,7 @@ An object with the new queen client and paper key.
 
 #### Defined in
 
-[account.ts:433](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L433)
-account.ts:415
+account.ts:439
 
 ___
 
@@ -201,8 +200,7 @@ A new Client created with all provided values from the object.
 
 #### Defined in
 
-[account.ts:574](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L574)
-account.ts:556
+account.ts:580
 
 ___
 
@@ -224,8 +222,7 @@ Begin to recover lost account access.
 
 #### Defined in
 
-[account.ts:411](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L411)
-account.ts:393
+account.ts:417
 
 ___
 
@@ -303,7 +300,7 @@ An object containing the paper key generated at and
 
 #### Defined in
 
-[account.ts:288](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L288)
+account.ts:294
 
 ___
 
@@ -326,8 +323,7 @@ Reset MFA
 
 #### Defined in
 
-[account.ts:262](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L262)
-account.ts:270
+account.ts:268
 
 ___
 
@@ -352,8 +348,7 @@ response
 
 #### Defined in
 
-[account.ts:558](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L558)
-account.ts:540
+account.ts:564
 
 ___
 
@@ -378,8 +373,7 @@ The recovery object for the account
 
 #### Defined in
 
-[account.ts:422](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L422)
-account.ts:404
+account.ts:428
 
 ___
 
