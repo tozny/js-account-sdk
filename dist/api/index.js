@@ -220,6 +220,18 @@ class API {
             return resetResponse;
         });
     }
+    verifyWebAuthn(username, payload) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const request = yield (0, isomorphic_fetch_1.default)(this.apiUrl + '/v1/account/dashboard/verifywebAuthn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.assign({ email: username }, payload)),
+            });
+            return (0, utils_1.validateRequestAsJSON)(request);
+        });
+    }
     /**
      * Get the profile metadata associated with an account
      *
@@ -590,6 +602,36 @@ class API {
             const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa/` + id, {
                 method: 'DELETE',
                 headers,
+            });
+            return response;
+        });
+    }
+    /**
+     * Requests API to issue challenge.
+     *
+     * @return {Promise<object>} The challenge data Object
+     */
+    webAuthnChallenge() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const headers = yield this.withToken({
+                'Content-Type': 'application/json',
+            });
+            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa/webauthn/challenge`, {
+                method: 'GET',
+                headers,
+            });
+            return (0, utils_1.validateRequestAsJSON)(response);
+        });
+    }
+    registerWebAuthnDevice(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const headers = yield this.withToken({
+                'Content-Type': 'application/json',
+            });
+            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v1/account/mfa/webauthn/register`, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(data),
             });
             return response;
         });

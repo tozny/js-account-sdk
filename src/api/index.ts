@@ -260,6 +260,23 @@ class API {
     })
     return resetResponse
   }
+  
+  async verifyWebAuthn(username, payload) {
+    const request = await fetch(
+      this.apiUrl + '/v1/account/dashboard/verifywebAuthn',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: username,
+          ...payload,
+        }),
+      }
+    )
+    return validateRequestAsJSON(request)
+  }
 
   /**
    * Get the profile metadata associated with an account
@@ -641,6 +658,40 @@ class API {
       method: 'DELETE',
       headers,
     })
+    return response
+  }
+
+  /**
+   * Requests API to issue challenge.
+   *
+   * @return {Promise<object>} The challenge data Object
+   */
+  async webAuthnChallenge() {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(
+      this.apiUrl + `/v1/account/mfa/webauthn/challenge`,
+      {
+        method: 'GET',
+        headers,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  async registerWebAuthnDevice(data) {
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await fetch(
+      this.apiUrl + `/v1/account/mfa/webauthn/register`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(data),
+      }
+    )
     return response
   }
 

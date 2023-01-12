@@ -36,6 +36,7 @@ account Client.
 - [verifyEmail](Account.md#verifyemail)
 - [verifyRecoverAccountChallenge](Account.md#verifyrecoveraccountchallenge)
 - [verifyTotp](Account.md#verifytotp)
+- [verifyWebAuthn](Account.md#verifywebauthn)
 
 ## Constructors
 
@@ -54,7 +55,7 @@ Creates an Account object mixing the SDK and API URL together.
 
 #### Defined in
 
-[account.ts:31](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L31)
+account.ts:31
 
 ## Accessors
 
@@ -70,7 +71,7 @@ Gets the Tozny Identity constructor provided by the Tozny client SDK.
 
 #### Defined in
 
-[account.ts:59](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L59)
+account.ts:59
 
 ___
 
@@ -88,7 +89,7 @@ The Storage constructor
 
 #### Defined in
 
-[account.ts:50](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L50)
+account.ts:50
 
 ___
 
@@ -104,7 +105,7 @@ gets the current crypto implementation provided by the Tozny client SDK.
 
 #### Defined in
 
-[account.ts:41](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L41)
+account.ts:41
 
 ___
 
@@ -122,7 +123,7 @@ All of the Tozny client SDK defined types.
 
 #### Defined in
 
-[account.ts:68](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L68)
+account.ts:68
 
 ## Methods
 
@@ -147,7 +148,7 @@ An object with the new queen client and paper key.
 
 #### Defined in
 
-[account.ts:433](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L433)
+account.ts:439
 
 ___
 
@@ -170,7 +171,7 @@ ___
 
 #### Defined in
 
-[account.ts:223](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L223)
+account.ts:229
 
 ___
 
@@ -199,7 +200,7 @@ A new Client created with all provided values from the object.
 
 #### Defined in
 
-[account.ts:574](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L574)
+account.ts:580
 
 ___
 
@@ -221,7 +222,7 @@ Begin to recover lost account access.
 
 #### Defined in
 
-[account.ts:411](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L411)
+account.ts:417
 
 ___
 
@@ -247,7 +248,7 @@ The Client instance for the provided credentials.
 
 #### Defined in
 
-[account.ts:81](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L81)
+account.ts:81
 
 ___
 
@@ -271,7 +272,7 @@ Use the normal login flow to create a connection to a Tozny account.
 
 #### Defined in
 
-[account.ts:180](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L180)
+account.ts:180
 
 ___
 
@@ -299,7 +300,7 @@ An object containing the paper key generated at and
 
 #### Defined in
 
-[account.ts:288](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L288)
+account.ts:294
 
 ___
 
@@ -322,7 +323,7 @@ Reset MFA
 
 #### Defined in
 
-[account.ts:262](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L262)
+account.ts:268
 
 ___
 
@@ -347,7 +348,7 @@ response
 
 #### Defined in
 
-[account.ts:558](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L558)
+account.ts:564
 
 ___
 
@@ -372,7 +373,7 @@ The recovery object for the account
 
 #### Defined in
 
-[account.ts:422](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L422)
+account.ts:428
 
 ___
 
@@ -395,4 +396,25 @@ ___
 
 #### Defined in
 
-[account.ts:217](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L217)
+account.ts:217
+
+___
+
+### verifyWebAuthn
+
+▸ **verifyWebAuthn**(`username`, `payload`): `Promise`<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `username` | `any` |
+| `payload` | `any` |
+
+#### Returns
+
+`Promise`<`any`\>
+
+#### Defined in
+
+account.ts:223
