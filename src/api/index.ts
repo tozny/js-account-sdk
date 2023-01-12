@@ -245,6 +245,22 @@ class API {
     return validateRequestAsJSON(request)
   }
 
+  async resetMFA(username, challenge, response) {
+    const resetResponse = await fetch(this.apiUrl + '/v1/account/reset-mfa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: username,
+        challenge: challenge,
+        response: response,
+        keyid: 'paper',
+      }),
+    })
+    return resetResponse
+  }
+
   /**
    * Get the profile metadata associated with an account
    *

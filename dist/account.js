@@ -143,7 +143,7 @@ class Account {
      * @param {string} password The secret password for the account.
      * @param {string} type Either standard or paper depending on the password type.
      *
-     * @return ??
+     * @return {Promise<Object>}
      */
     loginWithMFA(username, password, type = 'standard') {
         return __awaiter(this, void 0, void 0, function* () {
@@ -185,6 +185,23 @@ class Account {
             storageConfig.apiUrl = this.api.apiUrl;
             const storageClient = new this.Storage.Client(storageConfig);
             return new client_1.default(clientApi, profile.account, profile.profile, storageClient);
+        });
+    }
+    /**
+     * Reset MFA
+     * @param {string} username The name to use for the account.
+     * @param {string} paperKey The paperKey for the account.
+     *
+     * @return {Promise<Object>}
+     */
+    resetMFA(username, paperKey) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const challenge = yield this.api.getChallenge(username);
+            const b64AuthSalt = challenge.paper_auth_salt;
+            const authSalt = yield this.crypto.platform.b64URLDecode(b64AuthSalt);
+            const sigKeys = yield this.crypto.deriveSigningKey(paperKey, authSalt, constants_1.KEY_HASH_ROUNDS);
+            const signature = yield this.crypto.sign(challenge.challenge, sigKeys.privateKey);
+            return yield this.api.resetMFA(username, challenge.challenge, signature);
         });
     }
     /**
