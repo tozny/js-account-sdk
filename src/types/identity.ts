@@ -14,6 +14,7 @@ class Identity {
   privateKey: string
   privateSigningKey: string
   email: string
+  attributes: Record<string, string[]>
 
   constructor(
     id: string,
@@ -27,7 +28,8 @@ class Identity {
     signingKey: string,
     privateKey: string,
     privateSigningKey: string,
-    email: string
+    email: string,
+    attributes: Record<string, string[]>
   ) {
     this.id = id
     this.toznyId = toznyId
@@ -41,6 +43,7 @@ class Identity {
     this.privateKey = privateKey
     this.privateSigningKey = privateSigningKey
     this.email = email
+    this.attributes = attributes
   }
 
   /**
@@ -82,7 +85,8 @@ class Identity {
       json.signing_key,
       json.private_key,
       json.private_signing_key,
-      json.email
+      json.email,
+      json.attributes
     )
   }
 }
@@ -100,6 +104,7 @@ export type ToznyAPIIdentity = {
   private_key: string
   private_signing_key: string
   email: string
+  attributes: Record<string, string[]>
 }
 
 export default Identity

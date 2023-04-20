@@ -27,6 +27,7 @@ function registerIdentity({ realmName, realmRegistrationToken, identity }, ctx) 
                 first_name: identity.first_name,
                 last_name: identity.last_name,
                 email: identity.email,
+                attributes: identity.attributes
             },
         };
         const request = yield fetch(ctx.apiUrl + '/v1/identity/register', {
