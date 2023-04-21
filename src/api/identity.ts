@@ -76,3 +76,29 @@ export async function deleteIdentity(
   checkStatus(response)
   return true
 }
+
+type IdentityRoleData = {
+  realmName: string
+  identityId: string
+  roleName: string
+}
+export async function addRoleToIdentity(
+  { realmName, identityId, roleName }: IdentityRoleData,
+  { apiUrl, queenClient }: APIContext
+): Promise<boolean> {
+  const payload = {
+    role_name: roleName,
+  }
+  const response = await queenClient.authenticator.tsv1Fetch(
+    `${apiUrl}/v1/identity/admin/realm/${realmName}/identity/${identityId}/role`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }
+  )
+  checkStatus(response)
+  return true
+}
