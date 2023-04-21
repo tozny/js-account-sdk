@@ -830,6 +830,26 @@ class Client {
         });
     }
     /**
+     * Add role to an identity.
+     *
+     * @example
+     * ```js
+     * // Get the identityId you wish to delete
+     * const identity = accountClient.identityDetails(realmName, username)
+     *
+     * // Add role to the identity.
+     * await accountClient.addRoleToIdentity(roleName, identity.toznyId)
+     * ```
+     * @param {string} roleName Name of the role.
+     * @param {string} identityId Id of Tozny identity
+     * @returns {Promise<boolean>} True if successful
+     */
+    addRoleToIdentity(realmName, identityId, roleName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.api.addRoleToIdentity(this.queenClient, realmName, identityId, roleName);
+        });
+    }
+    /**
      * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
      * @param  {string} realmName         The name of the realm to register the broker identity with.
      * @param  {string} registrationToken A registration for the account that has permissions for registering clients of type broker.
