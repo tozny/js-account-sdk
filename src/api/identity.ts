@@ -10,6 +10,7 @@ type IdentityRegistrationData = {
   last_name: string
   public_key: string
   signing_key: string
+  attributes: Record<string, string[]>
 }
 type RegisterIdentityData = {
   realmName: string
@@ -39,6 +40,7 @@ export async function registerIdentity(
       first_name: identity.first_name,
       last_name: identity.last_name,
       email: identity.email,
+      attributes: identity.attributes,
     },
   }
   const request = await fetch(ctx.apiUrl + '/v1/identity/register', {

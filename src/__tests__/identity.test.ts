@@ -41,6 +41,10 @@ describe('Identity', () => {
       email: `identity-${seed}@example.com`,
       first_name: 'firstName',
       last_name: 'coolLastName',
+      attributes: {
+        key1: ['value1'],
+        key2: ['value2'],
+      },
     }
     // Register Identity
     const identityResponse = await client.registerIdentity(
@@ -53,6 +57,8 @@ describe('Identity', () => {
     expect(identityResponse.identity.name).toBe(identity.name)
     expect(identityResponse.identity.first_name).toBe(identity.first_name)
     expect(identityResponse.identity.last_name).toBe(identity.last_name)
+    expect(identityResponse.identity.attributes.key1[0]).toBe('value1')
+    expect(identityResponse.identity.attributes.key2[0]).toBe('value2')
 
     // List all identities in realm, Expected new identity and sovereign
     // Set max page size to 1 in order to test paging

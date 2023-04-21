@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * A registered Identity for a Tozny realm.
  */
 class Identity {
-    constructor(id, toznyId, realmId, realmName, name, apiKeyId, apiSecretKey, publicKey, signingKey, privateKey, privateSigningKey, email) {
+    constructor(id, toznyId, realmId, realmName, name, apiKeyId, apiSecretKey, publicKey, signingKey, privateKey, privateSigningKey, email, attributes) {
         this.id = id;
         this.toznyId = toznyId;
         this.realmId = realmId;
@@ -17,6 +17,7 @@ class Identity {
         this.privateKey = privateKey;
         this.privateSigningKey = privateSigningKey;
         this.email = email;
+        this.attributes = attributes;
     }
     /**
      * Specify how an already unserialized JSON array should be marshaled into
@@ -45,7 +46,7 @@ class Identity {
      * @return {<Identity>}
      */
     static decode(json) {
-        return new Identity(json.id, json.tozny_id, json.realm_id, json.realm_name, json.name, json.api_key_id, json.api_secret_key, json.public_key, json.signing_key, json.private_key, json.private_signing_key, json.email);
+        return new Identity(json.id, json.tozny_id, json.realm_id, json.realm_name, json.name, json.api_key_id, json.api_secret_key, json.public_key, json.signing_key, json.private_key, json.private_signing_key, json.email, json.attributes);
     }
 }
 exports.default = Identity;
