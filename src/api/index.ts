@@ -35,7 +35,7 @@ import {
   listGroupRoleMappings,
   removeGroupRoleMappings,
 } from './groupRoleMappings'
-import { deleteIdentity, registerIdentity } from './identity'
+import { deleteIdentity, registerIdentity, addRoleToIdentity } from './identity'
 import {
   listAccessPoliciesForGroups,
   upsertAccessPoliciesForGroup,
@@ -260,7 +260,7 @@ class API {
     })
     return resetResponse
   }
-  
+
   async verifyWebAuthn(username, payload) {
     const request = await fetch(
       this.apiUrl + '/v1/account/dashboard/verifywebAuthn',
@@ -1293,6 +1293,21 @@ class API {
   ): Promise<void> {
     return deleteIdentity(
       { realmName, identityId },
+      { apiUrl: this.apiUrl, queenClient }
+    )
+  }
+
+  /**
+   * Add role to an identity
+   */
+  async addRoleToIdentity(
+    queenClient: ToznyClient,
+    realmName: string,
+    identityId: string,
+    roleName: string
+  ): Promise<void> {
+    return addRoleToIdentity(
+      { realmName, identityId, roleName },
       { apiUrl: this.apiUrl, queenClient }
     )
   }

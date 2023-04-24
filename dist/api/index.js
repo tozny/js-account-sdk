@@ -1038,6 +1038,14 @@ class API {
         });
     }
     /**
+     * Add role to an identity
+     */
+    addRoleToIdentity(queenClient, realmName, identityId, roleName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (0, identity_1.addRoleToIdentity)({ realmName, identityId, roleName }, { apiUrl: this.apiUrl, queenClient });
+        });
+    }
+    /**
      * Gets the public info about the Tozny hosted broker
      *
      * @return {Promise<object>} The hosted broker public info.

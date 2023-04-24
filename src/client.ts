@@ -1034,6 +1034,35 @@ class Client {
   ): Promise<boolean> {
     return this.api.deleteIdentity(this.queenClient, realmName, identityId)
   }
+
+  /**
+   * Add role to an identity.
+   *
+   * @example
+   * ```js
+   * // Get the identityId you wish to delete
+   * const identity = accountClient.identityDetails(realmName, username)
+   *
+   * // Add role to the identity.
+   * await accountClient.addRoleToIdentity(roleName, identity.toznyId)
+   * ```
+   * @param {string} roleName Name of the role.
+   * @param {string} identityId Id of Tozny identity
+   * @returns {Promise<boolean>} True if successful
+   */
+  async addRoleToIdentity(
+    realmName: string,
+    identityId: string,
+    roleName: string
+  ): Promise<boolean> {
+    return this.api.addRoleToIdentity(
+      this.queenClient,
+      realmName,
+      identityId,
+      roleName
+    )
+  }
+
   /**
    * registerRealmBrokerIdentity registers an identity to be the broker for a realm.
    * @param  {string} realmName         The name of the realm to register the broker identity with.
