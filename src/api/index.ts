@@ -35,7 +35,11 @@ import {
   listGroupRoleMappings,
   removeGroupRoleMappings,
 } from './groupRoleMappings'
-import { deleteIdentity, registerIdentity, addRoleToIdentity } from './identity'
+import {
+  deleteIdentity,
+  registerIdentity,
+  addRolesToIdentity,
+} from './identity'
 import {
   listAccessPoliciesForGroups,
   upsertAccessPoliciesForGroup,
@@ -1298,16 +1302,16 @@ class API {
   }
 
   /**
-   * Add role to an identity
+   * Add roles to an identity
    */
-  async addRoleToIdentity(
+  async addRolesToIdentity(
     queenClient: ToznyClient,
     realmName: string,
     identityId: string,
-    roleName: string
+    roles: string[]
   ): Promise<void> {
-    return addRoleToIdentity(
-      { realmName, identityId, roleName },
+    return addRolesToIdentity(
+      { realmName, identityId, roles },
       { apiUrl: this.apiUrl, queenClient }
     )
   }

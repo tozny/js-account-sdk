@@ -838,15 +838,16 @@ class Client {
      * const identity = accountClient.identityDetails(realmName, username)
      *
      * // Add role to the identity.
-     * await accountClient.addRoleToIdentity(roleName, identity.toznyId)
+     * await accountClient.addRolesToIdentity(realmName, toznyId, roles)
      * ```
-     * @param {string} roleName Name of the role.
-     * @param {string} identityId Id of Tozny identity
-     * @returns {Promise<boolean>} True if successful
+     * @param {string} realmName Name of the realm.
+     * @param {string} identityId Id of Tozny identity.
+     * @param {Array} roles String Array of roles. Both realm and client roles.
+     * @returns {Promise<boolean>} True if successful.
      */
-    addRoleToIdentity(realmName, identityId, roleName) {
+    addRolesToIdentity(realmName, identityId, roles) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.api.addRoleToIdentity(this.queenClient, realmName, identityId, roleName);
+            return this.api.addRolesToIdentity(this.queenClient, realmName, identityId, roles);
         });
     }
     /**

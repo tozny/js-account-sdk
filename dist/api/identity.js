@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addRoleToIdentity = exports.deleteIdentity = exports.registerIdentity = void 0;
+exports.addRolesToIdentity = exports.deleteIdentity = exports.registerIdentity = void 0;
 const utils_1 = require("../utils");
 const realmSettings_1 = require("./realmSettings");
 function registerIdentity({ realmName, realmRegistrationToken, identity }, ctx) {
@@ -55,10 +55,10 @@ function deleteIdentity({ realmName, identityId }, { apiUrl, queenClient }) {
     });
 }
 exports.deleteIdentity = deleteIdentity;
-function addRoleToIdentity({ realmName, identityId, roleName }, { apiUrl, queenClient }) {
+function addRolesToIdentity({ realmName, identityId, roles }, { apiUrl, queenClient }) {
     return __awaiter(this, void 0, void 0, function* () {
         const payload = {
-            role_name: roleName,
+            roles,
         };
         const response = yield queenClient.authenticator.tsv1Fetch(`${apiUrl}/v1/identity/admin/realm/${realmName}/identity/${identityId}/role`, {
             method: 'POST',
@@ -71,4 +71,4 @@ function addRoleToIdentity({ realmName, identityId, roleName }, { apiUrl, queenC
         return true;
     });
 }
-exports.addRoleToIdentity = addRoleToIdentity;
+exports.addRolesToIdentity = addRolesToIdentity;

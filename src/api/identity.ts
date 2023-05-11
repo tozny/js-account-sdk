@@ -80,14 +80,14 @@ export async function deleteIdentity(
 type IdentityRoleData = {
   realmName: string
   identityId: string
-  roleName: string
+  roles: string[]
 }
-export async function addRoleToIdentity(
-  { realmName, identityId, roleName }: IdentityRoleData,
+export async function addRolesToIdentity(
+  { realmName, identityId, roles }: IdentityRoleData,
   { apiUrl, queenClient }: APIContext
 ): Promise<boolean> {
   const payload = {
-    role_name: roleName,
+    roles,
   }
   const response = await queenClient.authenticator.tsv1Fetch(
     `${apiUrl}/v1/identity/admin/realm/${realmName}/identity/${identityId}/role`,
