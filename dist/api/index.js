@@ -1038,11 +1038,11 @@ class API {
         });
     }
     /**
-     * Add role to an identity
+     * Add roles to an identity
      */
-    addRoleToIdentity(queenClient, realmName, identityId, roleName) {
+    addRolesToIdentity(queenClient, realmName, identityId, roles) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (0, identity_1.addRoleToIdentity)({ realmName, identityId, roleName }, { apiUrl: this.apiUrl, queenClient });
+            return (0, identity_1.addRolesToIdentity)({ realmName, identityId, roles }, { apiUrl: this.apiUrl, queenClient });
         });
     }
     /**
