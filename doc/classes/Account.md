@@ -171,7 +171,7 @@ ___
 
 #### Defined in
 
-[account.ts:229](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L229)
+[account.ts:230](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L230)
 
 ___
 
@@ -200,7 +200,7 @@ A new Client created with all provided values from the object.
 
 #### Defined in
 
-[account.ts:580](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L580)
+[account.ts:581](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L581)
 
 ___
 
@@ -222,7 +222,7 @@ Begin to recover lost account access.
 
 #### Defined in
 
-[account.ts:417](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L417)
+[account.ts:418](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L418)
 
 ___
 
@@ -272,7 +272,7 @@ Use the normal login flow to create a connection to a Tozny account.
 
 #### Defined in
 
-[account.ts:180](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L180)
+[account.ts:181](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L181)
 
 ___
 
@@ -300,7 +300,7 @@ An object containing the paper key generated at and
 
 #### Defined in
 
-[account.ts:294](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L294)
+[account.ts:295](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L295)
 
 ___
 
@@ -323,7 +323,7 @@ Reset MFA
 
 #### Defined in
 
-[account.ts:268](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L268)
+[account.ts:269](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L269)
 
 ___
 
@@ -348,7 +348,7 @@ response
 
 #### Defined in
 
-[account.ts:564](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L564)
+[account.ts:565](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L565)
 
 ___
 
@@ -373,7 +373,7 @@ The recovery object for the account
 
 #### Defined in
 
-[account.ts:428](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L428)
+[account.ts:429](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L429)
 
 ___
 
@@ -396,7 +396,7 @@ ___
 
 #### Defined in
 
-[account.ts:217](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L217)
+[account.ts:218](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L218)
 
 ___
 
@@ -417,4 +417,4 @@ ___
 
 #### Defined in
 
-[account.ts:223](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L223)
+[account.ts:224](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L224)
