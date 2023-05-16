@@ -87,6 +87,7 @@ class Account {
      */
     login(username, password, type = 'standard') {
         return __awaiter(this, void 0, void 0, function* () {
+            username = username.toLowerCase();
             const challenge = yield this.api.getChallenge(username);
             const b64AuthSalt = type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt;
             const authSalt = yield this.crypto.platform.b64URLDecode(b64AuthSalt);

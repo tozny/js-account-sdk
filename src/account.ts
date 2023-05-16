@@ -83,6 +83,7 @@ class Account {
     password: string,
     type = 'standard'
   ): Promise<Client> {
+    username = username.toLowerCase()
     const challenge = await this.api.getChallenge(username)
     const b64AuthSalt =
       type === 'paper' ? challenge.paper_auth_salt : challenge.auth_salt
