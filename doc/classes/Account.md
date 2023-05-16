@@ -148,7 +148,7 @@ An object with the new queen client and paper key.
 
 #### Defined in
 
-[account.ts:439](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L439)
+[account.ts:440](https://github.com/tozny/js-account-sdk/blob/master/src/account.ts#L440)
 
 ___
 
