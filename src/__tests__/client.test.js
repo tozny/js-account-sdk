@@ -169,4 +169,32 @@ describe('Account Client', () => {
     expect(same).toBe(true)
     expect(sameFetched.enabled).toBe(true)
   })
+
+  // this test tests that you can register with case insensitive emails and login with case insensitive emails
+  test('can login without case sensitivity', async () => {
+    const uppercaseSeed = uuidv4()
+    const uppercaseName = `Test Account ${uppercaseSeed}`
+    const uppercaseEmail = `TEST-emails-GROUP+${uppercaseSeed}@tozny.com`
+    let lowercaseEmail = uppercaseEmail.toLowerCase()
+    const accountPassword = uuidv4()
+    await accountFactory.register(
+      uppercaseName,
+      uppercaseEmail,
+      accountPassword
+    )
+
+    // expected to only succeed if login is case insensitive
+    const uppercaseAccountClient = await accountFactory.login(
+      uppercaseEmail,
+      accountPassword
+    )
+    expect(uppercaseAccountClient).toBeTruthy()
+
+    // expected to always succeed
+    const lowercaseAccountClient = await accountFactory.login(
+      lowercaseEmail,
+      accountPassword
+    )
+    expect(lowercaseAccountClient).toBeTruthy()
+  })
 })

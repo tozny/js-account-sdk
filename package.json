@@ -1,6 +1,6 @@
 {
   "name": "@toznysecure/account-sdk",
-  "version": "2.0.19",
+  "version": "2.0.19-alpha.1",
   "description": "Javascript SDK for performing Tozny platform account level operations",
   "main": "dist/index.js",
   "publishConfig": {
