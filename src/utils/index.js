@@ -6,7 +6,18 @@ function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
   }
+  const statusTexts = {
+    400: 'Bad Request',
+    401: 'Unauthorized',
+    403: 'Forbidden',
+    404: 'Not Found',
+    409: 'Conflict',
+    // Add more status codes and default texts as needed
+  };
 
+  if(response.statusText == ''){
+    response.statusText = statusTexts[response.status];
+  }
   let error = new Error(response.statusText)
   error.response = response
   throw error
