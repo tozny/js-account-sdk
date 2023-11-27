@@ -13,12 +13,22 @@ function checkStatus(response) {
     404: 'Not Found',
     409: 'Conflict',
     // Add more status codes and default texts as needed
-  };
-
-  if(response.statusText == ''){
-    response.statusText = statusTexts[response.status];
   }
-  let error = new Error(response.statusText)
+  if (
+    response.statusText === '' ||
+    response.statusText === 'Internal Server Error'
+  ) {
+    response.statusText = statusTexts[response.status] || 'Unknown Error'
+  }
+
+  let error
+  if (response.status >= 500 && response.status < 600) {
+    // Server error
+    error = new Error('Server Error')
+  } else {
+    error = new Error(response.statusText)
+  }
+
   error.response = response
   throw error
 }
