@@ -14,8 +14,7 @@ function checkStatus(response) {
         409: 'Conflict',
         // Add more status codes and default texts as needed
     };
-    if (response.statusText === '' ||
-        response.statusText === 'Internal Server Error') {
+    if (response.statusText == '') {
         response.statusText = statusTexts[response.status] || 'Unknown Error';
     }
     let error;
