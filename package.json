@@ -44,7 +44,7 @@
   "devDependencies": {
     "@toznysecure/eslint-config": "^1.0.0",
     "@toznysecure/prettier-config": "^1.0.0",
-    "@toznysecure/sdk": "1.5.16-alpha.57",
+    "@toznysecure/sdk": "^1.5.16-alpha.57",
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^27.5.2",
     "@types/uuid": "^8.3.1",
