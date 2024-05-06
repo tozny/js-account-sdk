@@ -358,11 +358,14 @@ describe('Account Client', () => {
       Object.entries(result.results).forEach(([groupID, capabilities]) => {
         if (groupID === queenGroup.group.groupID) {
           // The first group created by the queen and with the subject added in should have all 3 permissions
-          expect(capabilities).toEqual([
-            'SHARE_CONTENT',
-            'MANAGE_MEMBERSHIP',
-            'READ_CONTENT',
-          ])
+          expect(capabilities).toHaveLength(3)
+          expect(capabilities).toEqual(
+            expect.arrayContaining([
+              'SHARE_CONTENT',
+              'MANAGE_MEMBERSHIP',
+              'READ_CONTENT',
+            ])
+          )
         } else if (
           [subjectGroup1.group.groupID, subjectGroup2.group.groupID].includes(
             groupID
