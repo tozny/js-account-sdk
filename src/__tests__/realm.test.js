@@ -260,4 +260,125 @@ describe('Account Client', () => {
       await cleanupRealms(client)
     }
   })
+
+  test('can fetch realm user capabilities for a storage group', async () => {
+    try {
+      // set up
+      // create a realm
+      const realmName = uuidv4().split('-')[0]
+      const sovereignName = 'YassQueen'
+      const createdRealm = await client.createRealm(realmName, sovereignName)
+      await client.registerRealmBrokerIdentity(
+        createdRealm.name,
+        registrationToken.token
+      )
+      const queenClientConfig = client._queenClient.config
+      const queenStorageClient = new Tozny.storage.Client(queenClientConfig)
+
+      // Test
+      const groupName1 = `testGroup1-${uuidv4()}`
+      const groupName2 = `testGroup2-${uuidv4()}`
+      const groupName3 = `testGroup3-${uuidv4()}`
+      const groupDescription =
+        'this is a group meant to test fetchGroupIDsByCapabilities'
+
+      // Register set up normal SDK realm to register identities
+      const realm = new Tozny.identity.Realm(
+        realmName,
+        'account',
+        `http://localhost:8081/${realmName}/recover`,
+        process.env.API_URL
+      )
+
+      const subject = await realm.register(
+        'testuser1',
+        'password',
+        registrationToken.token,
+        `testuser1@example.com`
+      )
+
+      const queenGroup = await queenStorageClient.createGroup(
+        groupName1,
+        [],
+        groupDescription
+      )
+
+      const capability = {
+        read: true,
+        share: true,
+        manage: true,
+      }
+      const newMember = new Tozny.types.GroupMember(
+        subject.storage.config.clientId,
+        capability
+      )
+      await queenStorageClient.addGroupMembers(queenGroup.group.groupID, [
+        newMember,
+      ])
+
+      const subjectStorageClient = new Tozny.storage.Client(
+        subject.storage.config
+      )
+      const subjectGroup1 = await subjectStorageClient.createGroup(
+        groupName2,
+        [],
+        groupDescription
+      )
+      // create group 3
+      const subjectGroup2 = await subjectStorageClient.createGroup(
+        groupName3,
+        [],
+        groupDescription
+      )
+
+      // make a non existent group id of all zeros
+      const nonExistentGroupID = '00000000-0000-0000-0000-000000000000'
+
+      const params = {
+        clientID: subject.storage.config.clientId,
+        groupIDs: [
+          queenGroup.group.groupID,
+          subjectGroup1.group.groupID,
+          subjectGroup2.group.groupID,
+          nonExistentGroupID,
+        ],
+        nextToken: 0,
+        max: 10,
+      }
+      const result = await queenStorageClient.fetchClientGroupCapabilities(
+        params
+      )
+
+      // Validate results
+      expect(result).toBeDefined()
+      expect(result).toHaveProperty('results')
+      expect(result).toHaveProperty('next_token')
+      expect(Object.keys(result.results)).toHaveLength(4)
+
+      Object.entries(result.results).forEach(([groupID, capabilities]) => {
+        if (groupID === queenGroup.group.groupID) {
+          // The first group created by the queen and with the subject added in should have all 3 permissions
+          expect(capabilities).toEqual([
+            'SHARE_CONTENT',
+            'MANAGE_MEMBERSHIP',
+            'READ_CONTENT',
+          ])
+        } else if (
+          [subjectGroup1.group.groupID, subjectGroup2.group.groupID].includes(
+            groupID
+          )
+        ) {
+          // The two groups created by the subject should have just manage capability
+          expect(capabilities).toEqual(['MANAGE_MEMBERSHIP'])
+        } else if (groupID === nonExistentGroupID) {
+          // The non-existent group should have no permissions
+          expect(capabilities).toEqual([])
+        } else {
+          throw new Error(`Unexpected groupID: ${groupID}`)
+        }
+      })
+    } finally {
+      await cleanupRealms(client)
+    }
+  })
 })
