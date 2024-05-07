@@ -319,9 +319,14 @@ describe('Account Client', () => {
       const subjectStorageClient = new Tozny.storage.Client(
         subject.storage.config
       )
+      const capabilitiesObject = {
+        share: true,
+        manage: true,
+        read: true,
+      }
       const subjectGroup1 = await subjectStorageClient.createGroup(
         groupName2,
-        ['MANAGE_MEMBERSHIP'],
+        capabilitiesObject,
         groupDescription
       )
       // create group 3
