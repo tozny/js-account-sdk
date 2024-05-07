@@ -321,7 +321,7 @@ describe('Account Client', () => {
       )
       const subjectGroup1 = await subjectStorageClient.createGroup(
         groupName2,
-        [],
+        ['MANAGE_MEMBERSHIP'],
         groupDescription
       )
       // create group 3
