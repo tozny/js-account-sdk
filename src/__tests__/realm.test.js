@@ -345,11 +345,14 @@ describe('Account Client', () => {
         nextToken: 0,
         max: 10,
       }
+      console.log('params: ', params)
+
       const result = await queenStorageClient.fetchClientGroupCapabilities(
         params
       )
 
       // Validate results
+      console.log('result: ', result)
       expect(result).toBeDefined()
       expect(result).toHaveProperty('results')
       expect(result).toHaveProperty('next_token')
@@ -357,6 +360,9 @@ describe('Account Client', () => {
 
       Object.entries(result.results).forEach(([groupID, capabilities]) => {
         if (groupID === queenGroup.group.groupID) {
+          console.log('groupID(queengroupid): ', groupID)
+
+          console.log('capabilities: ', capabilities)
           // The first group created by the queen and with the subject added in should have all 3 permissions
           expect(capabilities).toHaveLength(3)
           expect(capabilities).toEqual(
@@ -371,6 +377,8 @@ describe('Account Client', () => {
             groupID
           )
         ) {
+          console.log('groupID(subjectGroup): ', groupID)
+          console.log('capabilities: ', capabilities)
           // The two groups created by the subject should have just manage capability
           expect(capabilities).toEqual(['MANAGE_MEMBERSHIP'])
         } else if (groupID === nonExistentGroupID) {
