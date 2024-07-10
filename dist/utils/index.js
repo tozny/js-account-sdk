@@ -6,7 +6,25 @@ function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
         return response;
     }
-    let error = new Error(response.statusText);
+    const statusTexts = {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        409: 'Conflict',
+        // Add more status codes and default texts as needed
+    };
+    if (response.statusText == '') {
+        response.statusText = statusTexts[response.status] || 'Unknown Error';
+    }
+    let error;
+    if (response.status >= 500 && response.status < 600) {
+        // Server error
+        error = new Error('Server Error');
+    }
+    else {
+        error = new Error(response.statusText);
+    }
     error.response = response;
     throw error;
 }
