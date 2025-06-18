@@ -192,6 +192,19 @@ class Client {
         });
     }
     /**
+     * Subscribes to a plan.
+     * @param {string} realmName The realm name to subscribe to.
+     * @param {string} accountId The account id to subscribe to.
+     *
+     * @return {Promise<any>} The raw subscription object written
+     */
+    subscribePlan(realmName, accountId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield this.api.subscribePlan(realmName, accountId);
+            return response;
+        });
+    }
+    /**
      * Removes a token object from the accounts available tokens.
      * @param {Token} token The token to remove from the account.
      *

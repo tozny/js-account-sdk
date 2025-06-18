@@ -519,6 +519,31 @@ class API {
         });
     }
     /**
+       * Subscribes to a plan.
+       *
+       * @param {string} realmName The realm name to subscribe to.
+       * @param {string} accountId The account id to subscribe to.
+       *
+       * @return {Promise<object>} The raw subscription object written
+       */
+    subscribePlan(realmName, accountId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const body = JSON.stringify({
+                realm_name: realmName.toLowerCase(),
+                account_id: accountId,
+            });
+            const headers = yield this.withToken({
+                'Content-Type': 'application/json',
+            });
+            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v2/account/subscriptions`, {
+                method: 'POST',
+                headers,
+                body,
+            });
+            return (0, utils_1.validateRequestAsJSON)(response);
+        });
+    }
+    /**
      * Requests a specific token is removed from the account by token value.
      *
      * @param {string} token The token value to delete from the server
