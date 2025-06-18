@@ -237,6 +237,21 @@ class Client {
   }
 
   /**
+   * Subscribes to a plan.
+   * @param {string} realmName The realm name to subscribe to.
+   * @param {string} accountId The account id to subscribe to.
+   *
+   * @return {Promise<any>} The raw subscription object written
+   */
+  async subscribePlan(
+    realmName: string,
+    accountId: string
+  ): Promise<any> {
+    const response = await this.api.subscribePlan(realmName, accountId)
+    return response
+  }
+
+  /**
    * Removes a token object from the accounts available tokens.
    * @param {Token} token The token to remove from the account.
    *
