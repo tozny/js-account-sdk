@@ -519,18 +519,19 @@ class API {
         });
     }
     /**
-       * Subscribes to a plan.
-       *
-       * @param {string} realmName The realm name to subscribe to.
-       * @param {string} accountId The account id to subscribe to.
-       *
-       * @return {Promise<object>} The raw subscription object written
-       */
-    subscribePlan(queenClient, realmName, accountId) {
+     * Subscribes to a plan.
+     *
+     * @param {string} realmName The realm name to subscribe to.
+     * @param {string} accountId The account id to subscribe to.
+     *
+     * @return {Promise<object>} The raw subscription object written
+     */
+    subscribePlan(queenClient, realmName, accountId, planName) {
         return __awaiter(this, void 0, void 0, function* () {
             const body = JSON.stringify({
                 realm_name: realmName.toLowerCase(),
                 account_id: accountId,
+                plan_name: planName,
             });
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',

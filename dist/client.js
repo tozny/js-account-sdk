@@ -198,9 +198,9 @@ class Client {
      *
      * @return {Promise<any>} The raw subscription object written
      */
-    subscribePlan(realmName, accountId) {
+    subscribePlan(realmName, accountId, planName) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.api.subscribePlan(this.queenClient, realmName, accountId);
+            const response = yield this.api.subscribePlan(this.queenClient, realmName, accountId, planName);
             return response;
         });
     }
