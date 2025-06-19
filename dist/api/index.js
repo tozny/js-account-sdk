@@ -545,6 +545,26 @@ class API {
         });
     }
     /**
+     * Get the plan features for a realm.
+     *
+     * @param {string} realmName The realm name to get plan features for.
+     *
+     * @return {Promise<object>} The raw plan features object.
+     */
+    getPlanFeatures(queenClient, realmName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            realmName = realmName.toLowerCase();
+            const request = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + '/v1/identity/realm/' + realmName + '/plan/features', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const json = yield validateResponseAsJSON(request);
+            return json;
+        });
+    }
+    /**
      * Requests a specific token is removed from the account by token value.
      *
      * @param {string} token The token value to delete from the server
