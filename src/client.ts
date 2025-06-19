@@ -245,9 +245,15 @@ class Client {
    */
   async subscribePlan(
     realmName: string,
-    accountId: string
+    accountId: string,
+    planName: string
   ): Promise<any> {
-    const response = await this.api.subscribePlan(this.queenClient, realmName, accountId)
+    const response = await this.api.subscribePlan(
+      this.queenClient,
+      realmName,
+      accountId,
+      planName
+    )
     return response
   }
 
