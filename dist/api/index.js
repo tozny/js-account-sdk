@@ -526,7 +526,7 @@ class API {
        *
        * @return {Promise<object>} The raw subscription object written
        */
-    subscribePlan(realmName, accountId) {
+    subscribePlan(queenClient, realmName, accountId) {
         return __awaiter(this, void 0, void 0, function* () {
             const body = JSON.stringify({
                 realm_name: realmName.toLowerCase(),
@@ -535,7 +535,7 @@ class API {
             const headers = yield this.withToken({
                 'Content-Type': 'application/json',
             });
-            const response = yield (0, isomorphic_fetch_1.default)(this.apiUrl + `/v2/account/subscriptions`, {
+            const response = yield queenClient.authenticator.tsv1Fetch(this.apiUrl + `/v2/account/subscriptions`, {
                 method: 'POST',
                 headers,
                 body,

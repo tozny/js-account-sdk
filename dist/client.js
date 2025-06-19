@@ -200,7 +200,7 @@ class Client {
      */
     subscribePlan(realmName, accountId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.api.subscribePlan(realmName, accountId);
+            const response = yield this.api.subscribePlan(this.queenClient, realmName, accountId);
             return response;
         });
     }
