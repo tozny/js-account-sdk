@@ -204,12 +204,6 @@ class Client {
             return response;
         });
     }
-    getPlanFeatures(realmName) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.api.getPlanFeatures(this.queenClient, realmName);
-            return response;
-        });
-    }
     /**
      * Removes a token object from the accounts available tokens.
      * @param {Token} token The token to remove from the account.
