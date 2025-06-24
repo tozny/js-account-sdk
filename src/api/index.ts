@@ -583,6 +583,34 @@ class API {
   }
 
   /**
+   * Subscribes to a plan.
+   *
+   * @param {string} realmName The realm name to subscribe to.
+   * @param {string} accountId The account id to subscribe to.
+   *
+   * @return {Promise<object>} The raw subscription object written
+   */
+  async subscribePlan(queenClient, realmName, accountId, planName) {
+    const body = JSON.stringify({
+      realm_name: realmName.toLowerCase(),
+      account_id: accountId,
+      plan_name: planName,
+    })
+    const headers = await this.withToken({
+      'Content-Type': 'application/json',
+    })
+    const response = await queenClient.authenticator.tsv1Fetch(
+      this.apiUrl + `/v2/account/subscriptions`,
+      {
+        method: 'POST',
+        headers,
+        body,
+      }
+    )
+    return validateRequestAsJSON(response)
+  }
+
+  /**
    * Requests a specific token is removed from the account by token value.
    *
    * @param {string} token The token value to delete from the server
